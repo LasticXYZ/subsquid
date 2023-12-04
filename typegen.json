@@ -9,6 +9,14 @@
       "calls": [],
       "storage": [],
       "constants": []
+    },
+    "Broker": {
+      "events": [
+        "HistoryInitialized",
+        "SaleInitialized",
+        "SalesStarted"
+      ],
+      "constants": true
     }
   }
 }

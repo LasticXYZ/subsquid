@@ -4,17 +4,29 @@ import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
 
 import {processor, ProcessorContext} from './processor'
-import {Account, Transfer} from './model'
+import {Account, Transfer, HistoryInitialized, SaleInitialized, SalesStarted} from './model'
 import {events} from './types'
+import { HistoryInitializedEvent, SaleInitializedEvent, SalesStartedEvent } from './interfaces'
 
 processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let transferEvents: TransferEvent[] = getTransferEvents(ctx)
 
+    let historyInitializedEvents: HistoryInitializedEvent[] = getHistoryInitializedEvents(ctx)
+    let saleInitializedEvents: SaleInitializedEvent[] = getSaleInitializedEvents(ctx)
+    let salesStartedEvents: SalesStartedEvent[] = getSalesStartedEvents(ctx)
+
+
     let accounts: Map<string, Account> = await createAccounts(ctx, transferEvents)
     let transfers: Transfer[] = createTransfers(transferEvents, accounts)
 
+    // Create entities for broker events
+    let historyInitializedEntities = createHistoryInitializedEntities(historyInitializedEvents)
+    let saleInitializedEntities = createSaleInitializedEntities(saleInitializedEvents)
+    let salesStartedEntities = createSalesStartedEntities(salesStartedEvents)
+
+
     await ctx.store.upsert([...accounts.values()])
-    await ctx.store.insert(transfers)
+    await ctx.store.insert([...transfers, ...historyInitializedEntities, ...saleInitializedEntities, ...salesStartedEntities])
 })
 
 interface TransferEvent {
@@ -112,4 +124,48 @@ function createTransfers(transferEvents: TransferEvent[], accounts: Map<string, 
         }))
     }
     return transfers
+}
+
+
+// Implement the logic to create HistoryInitialized entities from events
+function createHistoryInitializedEntities(events: HistoryInitializedEvent[]): HistoryInitialized[] {
+    return events.map(event => new HistoryInitialized({
+        id: event.id,
+        blockNumber: event.blockNumber,
+        timestamp: event.timestamp,
+        extrinsicHash: event.extrinsicHash,
+        when: BigInt(event.when),
+        privatePoolSize: BigInt(event.privatePoolSize),
+        systemPoolSize: BigInt(event.systemPoolSize)
+    }));
+}
+
+// Implement the logic to create SaleInitialized entities from events
+function createSaleInitializedEntities(events: SaleInitializedEvent[]): SaleInitialized[] {
+    return events.map(event => new SaleInitialized({
+        id: event.id,
+        blockNumber: event.blockNumber,
+        timestamp: event.timestamp,
+        extrinsicHash: event.extrinsicHash,
+        saleStart: BigInt(event.saleStart),
+        leadinLength: parseInt(event.leadinLength),
+        startPrice: BigInt(event.startPrice),
+        regularPrice: BigInt(event.regularPrice),
+        regionBegin: BigInt(event.regionBegin),
+        regionEnd: BigInt(event.regionEnd),
+        idealCoresSold: parseInt(event.idealCoresSold),
+        coresOffered: parseInt(event.coresOffered)
+    }));
+}
+
+// Implement the logic to create SalesStarted entities from events
+function createSalesStartedEntities(events: SalesStartedEvent[]): SalesStarted[] {
+    return events.map(event => new SalesStarted({
+        id: event.id,
+        blockNumber: event.blockNumber,
+        timestamp: event.timestamp,
+        extrinsicHash: event.extrinsicHash,
+        price: BigInt(event.price),
+        coreCount: parseInt(event.coreCount)
+    }));
 }
