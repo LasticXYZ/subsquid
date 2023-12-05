@@ -1,4 +1,17 @@
+
 // Define event interfaces
+
+interface TransferEvent {
+    id: string
+    blockNumber: number
+    timestamp: Date
+    extrinsicHash?: string
+    from: string
+    to: string
+    amount: bigint
+    fee?: bigint
+}
+
 interface HistoryInitializedEvent {
     id: string;
     blockNumber: number;
@@ -34,4 +47,4 @@ interface SalesStartedEvent {
 }
 
 
-export { HistoryInitializedEvent, SaleInitializedEvent, SalesStartedEvent}
+export { TransferEvent, HistoryInitializedEvent, SaleInitializedEvent, SalesStartedEvent}

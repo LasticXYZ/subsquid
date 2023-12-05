@@ -5,8 +5,8 @@ import assert from 'assert'
 
 import {processor, ProcessorContext} from './processor'
 import {Account, Transfer, HistoryInitialized, SaleInitialized, SalesStarted} from './model'
-import {events} from './types'
-import { HistoryInitializedEvent, SaleInitializedEvent, SalesStartedEvent } from './interfaces'
+import { TransferEvent, HistoryInitializedEvent, SaleInitializedEvent, SalesStartedEvent } from './interfaces'
+import { getTransferEvents, getHistoryInitializedEvents, getSaleInitializedEvents, getSalesStartedEvents } from './getEvents'
 
 processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let transferEvents: TransferEvent[] = getTransferEvents(ctx)
@@ -29,56 +29,7 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     await ctx.store.insert([...transfers, ...historyInitializedEntities, ...saleInitializedEntities, ...salesStartedEntities])
 })
 
-interface TransferEvent {
-    id: string
-    blockNumber: number
-    timestamp: Date
-    extrinsicHash?: string
-    from: string
-    to: string
-    amount: bigint
-    fee?: bigint
-}
 
-function getTransferEvents(ctx: ProcessorContext<Store>): TransferEvent[] {
-    // Filters and decodes the arriving events
-    let transfers: TransferEvent[] = []
-    for (let block of ctx.blocks) {
-        for (let event of block.events) {
-            if (event.name == events.balances.transfer.name) {
-                let rec: {from: string; to: string; amount: bigint}
-                if (events.balances.transfer.v1020.is(event)) {
-                    let [from, to, amount] = events.balances.transfer.v1020.decode(event)
-                    rec = {from, to, amount}
-                }
-                else if (events.balances.transfer.v1050.is(event)) {
-                    let [from, to, amount] = events.balances.transfer.v1050.decode(event)
-                    rec = {from, to, amount}
-                }
-                else if (events.balances.transfer.v9130.is(event)) {
-                    rec = events.balances.transfer.v9130.decode(event)
-                }
-                else {
-                    throw new Error('Unsupported spec')
-                }
-
-                assert(block.header.timestamp, `Got an undefined timestamp at block ${block.header.height}`)
-
-                transfers.push({
-                    id: event.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: event.extrinsic?.hash,
-                    from: ss58.codec('kusama').encode(rec.from),
-                    to: ss58.codec('kusama').encode(rec.to),
-                    amount: rec.amount,
-                    fee: event.extrinsic?.fee || 0n,
-                })
-            }
-        }
-    }
-    return transfers
-}
 
 async function createAccounts(ctx: ProcessorContext<Store>, transferEvents: TransferEvent[]): Promise<Map<string,Account>> {
     const accountIds = new Set<string>()
