@@ -10,12 +10,23 @@
       "storage": [],
       "constants": []
     },
+    "System": {
+      "events": [
+        "ExtrinsicSuccess",
+        "ExtrinsicFailed"
+      ],
+      "calls": [],
+      "storage": [],
+      "constants": []
+    },
     "Broker": {
       "events": [
         "HistoryInitialized",
         "SaleInitialized",
         "SalesStarted"
       ],
+      "calls": [],
+      "storage": [],
       "constants": true
     }
   }
