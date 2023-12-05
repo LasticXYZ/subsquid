@@ -3,6 +3,7 @@ import { TransferEvent, HistoryInitializedEvent, SaleInitializedEvent, SalesStar
 import { events } from './types'
 import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
+import { historyInitialized, saleInitialized, salesStarted } from './types/broker/events'
 
 import {TypeormDatabase, Store} from '@subsquid/typeorm-store'
 
@@ -14,8 +15,7 @@ function getTransferEvents(ctx: ProcessorContext<Store>): TransferEvent[] {
             if (event.name == events.balances.transfer.name) {
                 let rec: {from: string; to: string; amount: bigint}
                 if (events.balances.transfer.v268.is(event)) {
-                    let [from, to, amount] = events.balances.transfer.v268.decode(event)
-                    rec = {from, to, amount}
+                    rec = events.balances.transfer.v268.decode(event)
                 }
                 else {
                     throw new Error('Unsupported spec')
@@ -44,8 +44,8 @@ function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryIniti
     let events: HistoryInitializedEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
-            if (event.name == events.broker.historyInitialized.name) {
-                const decoded = events.broker.historyInitialized.decode(event) // adjust with actual decoder
+            if (event.name == historyInitialized.name) {
+                const decoded = historyInitialized.v268.decode(event) // adjust with actual decoder
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -67,8 +67,8 @@ function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitialized
     let events: SaleInitializedEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
-            if (event.name == events.broker.saleInitialized.name) {
-                const decoded = events.broker.saleInitialized.decode(event) // adjust with actual decoder
+            if (event.name == saleInitialized.name) {
+                const decoded = saleInitialized.v268.decode(event) // adjust with actual decoder
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
                 
                 events.push({
@@ -96,8 +96,8 @@ function getSalesStartedEvents(ctx: ProcessorContext<Store>): SalesStartedEvent[
     let events: SalesStartedEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
-            if (event.name == events.broker.salesStarted.name) {
-                const decoded = events.broker.salesStarted.decode(event) // adjust with actual decoder
+            if (event.name == salesStarted.name) {
+                const decoded = salesStarted.v268.decode(event) // adjust with actual decoder
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
                 
                 events.push({
