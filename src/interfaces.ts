@@ -17,9 +17,9 @@ interface HistoryInitializedEvent {
     blockNumber: number;
     timestamp: Date;
     extrinsicHash?: string;
-    when: string;
-    privatePoolSize: string;
-    systemPoolSize: string;
+    when: number;
+    privatePoolSize: number;
+    systemPoolSize: number;
 }
 
 interface SaleInitializedEvent {
@@ -27,14 +27,14 @@ interface SaleInitializedEvent {
     blockNumber: number;
     timestamp: Date;
     extrinsicHash?: string;
-    saleStart: string;
-    leadinLength: string;
-    startPrice: string;
-    regularPrice: string;
-    regionBegin: string;
-    regionEnd: string;
-    idealCoresSold: string;
-    coresOffered: string;
+    saleStart: number;
+    leadinLength: number;
+    startPrice: bigint;
+    regularPrice: bigint;
+    regionBegin: number;
+    regionEnd: number;
+    idealCoresSold: number;
+    coresOffered: number;
 }
 
 interface SalesStartedEvent {
@@ -42,8 +42,8 @@ interface SalesStartedEvent {
     blockNumber: number;
     timestamp: Date;
     extrinsicHash?: string;
-    price: string;
-    coreCount: string;
+    price: bigint;
+    coreCount: number;
 }
 
 

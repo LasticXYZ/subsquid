@@ -73,13 +73,13 @@ function createSaleInitializedEntities(events: SaleInitializedEvent[]): SaleInit
         timestamp: event.timestamp,
         extrinsicHash: event.extrinsicHash,
         saleStart: BigInt(event.saleStart),
-        leadinLength: parseInt(event.leadinLength),
+        leadinLength: event.leadinLength,
         startPrice: BigInt(event.startPrice),
         regularPrice: BigInt(event.regularPrice),
         regionBegin: BigInt(event.regionBegin),
         regionEnd: BigInt(event.regionEnd),
-        idealCoresSold: parseInt(event.idealCoresSold),
-        coresOffered: parseInt(event.coresOffered)
+        idealCoresSold: event.idealCoresSold,
+        coresOffered: event.coresOffered
     }));
 }
 
@@ -91,7 +91,7 @@ function createSalesStartedEntities(events: SalesStartedEvent[]): SalesStarted[]
         timestamp: event.timestamp,
         extrinsicHash: event.extrinsicHash,
         price: BigInt(event.price),
-        coreCount: parseInt(event.coreCount)
+        coreCount: event.coreCount
     }));
 }
 
