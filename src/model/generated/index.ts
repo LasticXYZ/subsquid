@@ -1,3 +1,5 @@
 export * from "./account.model"
 export * from "./transfer.model"
-export * from "./broker.model"
+export * from "./saleInitialized.broker.model"
+export * from "./salesStarted.broker.model"
+export * from "./historyInitialized.broker.model"

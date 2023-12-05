@@ -1,7 +1,8 @@
-import {Account, Transfer, HistoryInitialized, SaleInitialized, SalesStarted} from './model'
 import {processor, ProcessorContext} from './processor'
 import { TransferEvent, HistoryInitializedEvent, SaleInitializedEvent, SalesStartedEvent } from './interfaces'
 import { events } from './types'
+import * as ss58 from '@subsquid/ss58'
+import assert from 'assert'
 
 import {TypeormDatabase, Store} from '@subsquid/typeorm-store'
 
@@ -69,7 +70,6 @@ function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryIniti
     return events
 }
 
-// Implement the logic to extract SaleInitialized events
 function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitializedEvent[] {
     let events: SaleInitializedEvent[] = []
     for (let block of ctx.blocks) {
@@ -77,13 +77,20 @@ function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitialized
             if (event.name == events.broker.saleInitialized.name) {
                 const decoded = events.broker.saleInitialized.decode(event) // adjust with actual decoder
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
-
+                
                 events.push({
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
                     extrinsicHash: event.extrinsic?.hash,
-                    // ... map other fields similarly ...
+                    saleStart: decoded.saleStart,
+                    leadinLength: decoded.leadinLength,
+                    startPrice: decoded.startPrice,
+                    regularPrice: decoded.regularPrice,
+                    regionBegin: decoded.regionBegin,
+                    regionEnd: decoded.regionEnd,
+                    idealCoresSold: decoded.idealCoresSold,
+                    coresOffered: decoded.coresOffered
                 })
             }
         }
@@ -99,13 +106,14 @@ function getSalesStartedEvents(ctx: ProcessorContext<Store>): SalesStartedEvent[
             if (event.name == events.broker.salesStarted.name) {
                 const decoded = events.broker.salesStarted.decode(event) // adjust with actual decoder
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
-
+                
                 events.push({
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
                     extrinsicHash: event.extrinsic?.hash,
-                    // ... map other fields similarly ...
+                    price: decoded.price,
+                    coreCount: decoded.coreCount
                 })
             }
         }
