@@ -46,81 +46,79 @@ function getTransferEvents(ctx: ProcessorContext<Store>): TransferEvent[] {
     return transfers
 }
 
-// // Implement the logic to extract HistoryInitialized events
-// function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryInitializedEvent[] {
-//     let events: HistoryInitializedEvent[] = []
-//     for (let block of ctx.blocks) {
-//         for (let event of block.events) {
-//             if (event.name == events.broker.historyInitialized.name) {
-//                 const decoded = events.broker.historyInitialized.decode(event) // adjust with actual decoder
-//                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+// Implement the logic to extract HistoryInitialized events
+function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryInitializedEvent[] {
+    let events: HistoryInitializedEvent[] = []
+    for (let block of ctx.blocks) {
+        for (let event of block.events) {
+            if (event.name == events.broker.historyInitialized.name) {
+                const decoded = events.broker.historyInitialized.decode(event) // adjust with actual decoder
+                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
-//                 events.push({
-//                     id: event.id,
-//                     blockNumber: block.header.height,
-//                     timestamp: new Date(block.header.timestamp),
-//                     extrinsicHash: event.extrinsic?.hash,
-//                     when: decoded.when,
-//                     privatePoolSize: decoded.privatePoolSize,
-//                     systemPoolSize: decoded.systemPoolSize
-//                 })
-//             }
-//         }
-//     }
-//     return events
-// }
+                events.push({
+                    id: event.id,
+                    blockNumber: block.header.height,
+                    timestamp: new Date(block.header.timestamp),
+                    extrinsicHash: event.extrinsic?.hash,
+                    when: decoded.when,
+                    privatePoolSize: decoded.privatePoolSize,
+                    systemPoolSize: decoded.systemPoolSize
+                })
+            }
+        }
+    }
+    return events
+}
 
-// function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitializedEvent[] {
-//     let events: SaleInitializedEvent[] = []
-//     for (let block of ctx.blocks) {
-//         for (let event of block.events) {
-//             if (event.name == events.broker.saleInitialized.name) {
-//                 const decoded = events.broker.saleInitialized.decode(event) // adjust with actual decoder
-//                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitializedEvent[] {
+    let events: SaleInitializedEvent[] = []
+    for (let block of ctx.blocks) {
+        for (let event of block.events) {
+            if (event.name == events.broker.saleInitialized.name) {
+                const decoded = events.broker.saleInitialized.decode(event) // adjust with actual decoder
+                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
                 
-//                 events.push({
-//                     id: event.id,
-//                     blockNumber: block.header.height,
-//                     timestamp: new Date(block.header.timestamp),
-//                     extrinsicHash: event.extrinsic?.hash,
-//                     saleStart: decoded.saleStart,
-//                     leadinLength: decoded.leadinLength,
-//                     startPrice: decoded.startPrice,
-//                     regularPrice: decoded.regularPrice,
-//                     regionBegin: decoded.regionBegin,
-//                     regionEnd: decoded.regionEnd,
-//                     idealCoresSold: decoded.idealCoresSold,
-//                     coresOffered: decoded.coresOffered
-//                 })
-//             }
-//         }
-//     }
-//     return events
-// }
+                events.push({
+                    id: event.id,
+                    blockNumber: block.header.height,
+                    timestamp: new Date(block.header.timestamp),
+                    extrinsicHash: event.extrinsic?.hash,
+                    saleStart: decoded.saleStart,
+                    leadinLength: decoded.leadinLength,
+                    startPrice: decoded.startPrice,
+                    regularPrice: decoded.regularPrice,
+                    regionBegin: decoded.regionBegin,
+                    regionEnd: decoded.regionEnd,
+                    idealCoresSold: decoded.idealCoresSold,
+                    coresOffered: decoded.coresOffered
+                })
+            }
+        }
+    }
+    return events
+}
 
-// // Implement the logic to extract SalesStarted events
-// function getSalesStartedEvents(ctx: ProcessorContext<Store>): SalesStartedEvent[] {
-//     let events: SalesStartedEvent[] = []
-//     for (let block of ctx.blocks) {
-//         for (let event of block.events) {
-//             if (event.name == events.broker.salesStarted.name) {
-//                 const decoded = events.broker.salesStarted.decode(event) // adjust with actual decoder
-//                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+// Implement the logic to extract SalesStarted events
+function getSalesStartedEvents(ctx: ProcessorContext<Store>): SalesStartedEvent[] {
+    let events: SalesStartedEvent[] = []
+    for (let block of ctx.blocks) {
+        for (let event of block.events) {
+            if (event.name == events.broker.salesStarted.name) {
+                const decoded = events.broker.salesStarted.decode(event) // adjust with actual decoder
+                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
                 
-//                 events.push({
-//                     id: event.id,
-//                     blockNumber: block.header.height,
-//                     timestamp: new Date(block.header.timestamp),
-//                     extrinsicHash: event.extrinsic?.hash,
-//                     price: decoded.price,
-//                     coreCount: decoded.coreCount
-//                 })
-//             }
-//         }
-//     }
-//     return events
-// }
+                events.push({
+                    id: event.id,
+                    blockNumber: block.header.height,
+                    timestamp: new Date(block.header.timestamp),
+                    extrinsicHash: event.extrinsic?.hash,
+                    price: decoded.price,
+                    coreCount: decoded.coreCount
+                })
+            }
+        }
+    }
+    return events
+}
 
-//export { getTransferEvents, getHistoryInitializedEvents, getSaleInitializedEvents, getSalesStartedEvents}
-
-export { getTransferEvents }
+export { getTransferEvents, getHistoryInitializedEvents, getSaleInitializedEvents, getSalesStartedEvents}
