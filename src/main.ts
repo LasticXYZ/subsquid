@@ -24,6 +24,9 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
 
 
     await ctx.store.upsert([...accounts.values()])
-    await ctx.store.insert([...transfers, ...historyInitializedEntities, ...saleInitializedEntities, ...salesStartedEntities])
+    await ctx.store.insert(transfers)
+    await ctx.store.insert(historyInitializedEntities)
+    await ctx.store.insert(saleInitializedEntities)
+    await ctx.store.insert(salesStartedEntities)
 })
 

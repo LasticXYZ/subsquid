@@ -20,9 +20,9 @@ type HistoryInitialized @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   extrinsicHash: String @index
-  when: BigInt!
-  privatePoolSize: BigInt!
-  systemPoolSize: BigInt!
+  when: Int!
+  privatePoolSize: Int!
+  systemPoolSize: Int!
 }
 
 type SaleInitialized @entity {
@@ -30,12 +30,12 @@ type SaleInitialized @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   extrinsicHash: String @index
-  saleStart: BigInt!
+  saleStart: Int!
   leadinLength: Int!
   startPrice: BigInt!
   regularPrice: BigInt!
-  regionBegin: BigInt!
-  regionEnd: BigInt!
+  regionBegin: Int!
+  regionEnd: Int!
   idealCoresSold: Int!
   coresOffered: Int!
 }

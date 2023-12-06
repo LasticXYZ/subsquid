@@ -18,8 +18,8 @@ export class SaleInitialized {
   @Column()
   extrinsicHash!: string
 
-  @Column("bigint")
-  saleStart!: bigint
+  @Column("int")
+  saleStart!: number
 
   @Column("int")
   leadinLength!: number
@@ -30,11 +30,11 @@ export class SaleInitialized {
   @Column("bigint")
   regularPrice!: bigint
 
-  @Column("bigint")
-  regionBegin!: bigint
+  @Column("int")
+  regionBegin!: number
 
-  @Column("bigint")
-  regionEnd!: bigint
+  @Column("int")
+  regionEnd!: number
 
   @Column("int")
   idealCoresSold!: number

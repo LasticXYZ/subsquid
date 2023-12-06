@@ -18,12 +18,12 @@ export class HistoryInitialized {
   @Column()
   extrinsicHash!: string
 
-  @Column("bigint")
-  when!: bigint
+  @Column("int")
+  when!: number
 
-  @Column("bigint")
-  privatePoolSize!: bigint
+  @Column("int")
+  privatePoolSize!: number
 
-  @Column("bigint")
-  systemPoolSize!: bigint
+  @Column("int")
+  systemPoolSize!: number
 }

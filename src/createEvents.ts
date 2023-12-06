@@ -59,9 +59,9 @@ function createHistoryInitializedEntities(events: HistoryInitializedEvent[]): Hi
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
         extrinsicHash: event.extrinsicHash,
-        when: BigInt(event.when),
-        privatePoolSize: BigInt(event.privatePoolSize),
-        systemPoolSize: BigInt(event.systemPoolSize)
+        when: event.when,
+        privatePoolSize: event.privatePoolSize,
+        systemPoolSize: event.systemPoolSize
     }));
 }
 
@@ -72,12 +72,12 @@ function createSaleInitializedEntities(events: SaleInitializedEvent[]): SaleInit
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
         extrinsicHash: event.extrinsicHash,
-        saleStart: BigInt(event.saleStart),
+        saleStart: event.saleStart,
         leadinLength: event.leadinLength,
-        startPrice: BigInt(event.startPrice),
-        regularPrice: BigInt(event.regularPrice),
-        regionBegin: BigInt(event.regionBegin),
-        regionEnd: BigInt(event.regionEnd),
+        startPrice: event.startPrice,
+        regularPrice: event.regularPrice,
+        regionBegin: event.regionBegin,
+        regionEnd: event.regionEnd,
         idealCoresSold: event.idealCoresSold,
         coresOffered: event.coresOffered
     }));
@@ -90,7 +90,7 @@ function createSalesStartedEntities(events: SalesStartedEvent[]): SalesStarted[]
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
         extrinsicHash: event.extrinsicHash,
-        price: BigInt(event.price),
+        price: event.price,
         coreCount: event.coreCount
     }));
 }
