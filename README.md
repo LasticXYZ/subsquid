@@ -238,3 +238,29 @@ sqd typegen
 ```sh
 npx substrate-metadata-explorer --rpc ws://localhost:9944 --out myMetadata.jsonl
 ```
+
+
+
+Available `sqd` shortcuts:
+```bash
+# Build the project, remove any old migrations, then run `npx squid-typeorm-migration generate`
+sqd migration:generate
+
+# Run npx squid-typeorm-migration apply
+sqd migration:apply
+```
+
+
+---
+
+```sh
+sqd down
+sqd up 
+sqd process
+```
+
+seperate tab:
+
+```sh
+sqd serve
+```

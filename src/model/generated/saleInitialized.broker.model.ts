@@ -15,8 +15,8 @@ export class SaleInitialized {
   @Column("timestamp")
   timestamp!: Date
 
-  @Column()
-  extrinsicHash!: string
+  @Column("text", {nullable: true})
+  extrinsicHash!: string | undefined | null
 
   @Column("int")
   saleStart!: number

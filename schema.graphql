@@ -12,7 +12,7 @@ type Transfer @entity {
   from: Account!
   to: Account!
   amount: BigInt! @index
-  fee: BigInt! # Fee may be zero for some old extrinsics
+  fee: BigInt!
 }
 
 type HistoryInitialized @entity {
