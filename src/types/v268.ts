@@ -2,6 +2,59 @@ import {sts, Result, Option, Bytes, BitSequence} from './support'
 
 export const PalletId = sts.bytes()
 
+export const CoreAssignment: sts.Type<CoreAssignment> = sts.closedEnum(() => {
+    return  {
+        Idle: sts.unit(),
+        Pool: sts.unit(),
+        Task: sts.number(),
+    }
+})
+
+export type CoreAssignment = CoreAssignment_Idle | CoreAssignment_Pool | CoreAssignment_Task
+
+export interface CoreAssignment_Idle {
+    __kind: 'Idle'
+}
+
+export interface CoreAssignment_Pool {
+    __kind: 'Pool'
+}
+
+export interface CoreAssignment_Task {
+    __kind: 'Task'
+    value: number
+}
+
+export const ScheduleItem: sts.Type<ScheduleItem> = sts.struct(() => {
+    return  {
+        mask: CoreMask,
+        assignment: CoreAssignment,
+    }
+})
+
+export const CoreMask = sts.bytes()
+
+export interface ScheduleItem {
+    mask: CoreMask
+    assignment: CoreAssignment
+}
+
+export type CoreMask = Bytes
+
+export const RegionId: sts.Type<RegionId> = sts.struct(() => {
+    return  {
+        begin: sts.number(),
+        core: sts.number(),
+        mask: CoreMask,
+    }
+})
+
+export interface RegionId {
+    begin: number
+    core: number
+    mask: CoreMask
+}
+
 export const AccountId32 = sts.bytes()
 
 export const DispatchError: sts.Type<DispatchError> = sts.closedEnum(() => {

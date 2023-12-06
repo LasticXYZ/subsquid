@@ -235,11 +235,19 @@ npx squid-substrate-typegen typegen.json
 sqd typegen    
 ```
 
+Generate specVersions:
 ```sh
 npx substrate-metadata-explorer --rpc ws://localhost:9944 --out myMetadata.jsonl
 ```
 
+Generate from graphQl with:
 
+```sh
+sqd codegen
+```
+
+
+---
 
 Available `sqd` shortcuts:
 ```bash
