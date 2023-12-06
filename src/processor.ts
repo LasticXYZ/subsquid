@@ -30,6 +30,21 @@ export const processor = new SubstrateBatchProcessor()
         name: [events.balances.transfer.name],
         extrinsic: true
     })
+    .addEvent({
+        name: [
+            'System.ExtrinsicSuccess',
+            'System.ExtrinsicFailed'
+        ],
+        extrinsic: true
+    })
+    .addEvent({
+        name: [
+            'Broker.HistoryInitialized',
+            'Broker.SaleInitialized',
+            'Broker.SalesStarted'
+        ],
+        extrinsic: true
+    })
     .setFields({
         event: {
             args: true
