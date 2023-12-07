@@ -170,10 +170,10 @@ function createRenewableEntities(events: RenewableEvent[]): Renewable[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
-        regionId: event.regionId,
+        core: event.core,
         price: event.price,
-        duration: event.duration
+        begin: event.begin,
+        workload: event.workload
     }));
 }
 
@@ -183,9 +183,12 @@ function createRenewedEntities(events: RenewedEvent[]): Renewed[] {
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
         who: event.who,
-        regionId: event.regionId,
         price: event.price,
-        duration: event.duration
+        oldCore: event.oldCore,
+        core: event.core,
+        begin: event.begin,
+        duration: event.duration,
+        workload: event.workload
     }));
 }
 
@@ -194,10 +197,10 @@ function createTransferredEntities(events: TransferredEvent[]): Transferred[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
         regionId: event.regionId,
-        price: event.price,
-        duration: event.duration
+        duration: event.duration,
+        oldOwner: event.oldOwner,
+        owner: event.owner
     }));
 }
 

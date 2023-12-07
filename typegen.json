@@ -21,7 +21,7 @@
     },
     "Broker": {
       "events": true,
-      "calls": [],
+      "calls": true,
       "storage": [],
       "constants": true
     }
