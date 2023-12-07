@@ -94,16 +94,16 @@ interface PartitionedEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
-    oldRegionId: number;
-    newRegionIds: [number, number];
+    oldRegionId: RegionId;
+    newRegionIds: [RegionId, RegionId];
 }
 
 interface InterlacedEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
-    oldRegionId: number;
-    newRegionIds: [number, number];
+    oldRegionId: RegionId;
+    newRegionIds: [RegionId, RegionId];
 }
 
 interface AssignedEvent {
@@ -173,7 +173,7 @@ interface RevenueClaimBegunEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
-    region: number;
+    region: RegionId;
     maxTimeslices: number;
 }
 
@@ -191,7 +191,7 @@ interface RevenueClaimPaidEvent {
     timestamp: Date;
     who: string;
     amount: bigint;
-    next: number | null;
+    next: RegionId | null;
 }
 
 interface CreditPurchasedEvent {
@@ -249,7 +249,7 @@ interface CoreAssignedEvent {
     timestamp: Date;
     core: number;
     when: number;
-    assignment: CoreAssignment[];
+    assignment: [CoreAssignment, number][];
 }
 
 interface AllowedRenewalDroppedEvent {

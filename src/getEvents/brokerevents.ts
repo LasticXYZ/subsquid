@@ -291,10 +291,9 @@ function getAssignedEvents(ctx: ProcessorContext<Store>): AssignedEvent[] {
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    who: ss58.codec('kusama').encode(decoded.who),
                     regionId: decoded.regionId,
-                    price: decoded.price,
-                    duration: decoded.duration
+                    duration: decoded.duration,
+                    task: decoded.task
                 })
             }
         }
@@ -422,8 +421,8 @@ function getLeasedEvents(ctx: ProcessorContext<Store>): LeasedEvent[] {
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    index: decoded.index,
-                    workload: decoded.workload.map(w => ({ mask: w.mask, assignment: w.assignment })) // Assuming ScheduleItem[] mapping
+                    task: decoded.task,
+                    until: decoded.until
                 })
             }
         }
@@ -444,12 +443,14 @@ function getLeaseEndingEvents(ctx: ProcessorContext<Store>): LeaseEndingEvent[] 
                     id: event.id,
                     timestamp: new Date(block.header.timestamp),
                     blockNumber: block.header.height,
-                    index: decoded.index,
-                    workload: decoded.workload.map(w => ({ mask: w.mask, assignment: w.assignment })) // Assuming ScheduleItem[] mapping
+                    task: decoded.task,
+                    when: decoded.when
                 })
             }
         }
     }
+
+    return events
 }
 
 function getRevenueClaimBegunEvents(ctx: ProcessorContext<Store>): RevenueClaimBegunEvent[] {
@@ -486,8 +487,8 @@ function getRevenueClaimItemEvents(ctx: ProcessorContext<Store>): RevenueClaimIt
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    region: decoded.region,
-                    timeslices: decoded.timeslices
+                    when: decoded.when,
+                    amount: decoded.amount
                 })
             }
         }
@@ -508,8 +509,9 @@ function getRevenueClaimPaidEvents(ctx: ProcessorContext<Store>): RevenueClaimPa
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    when: ss58.codec('kusama').encode(decoded.who),
-                    amount: decoded.amount
+                    who: ss58.codec('kusama').encode(decoded.who),
+                    amount: decoded.amount,
+                    next: decoded.next ? decoded.next : null
                 })
             }
         }
@@ -531,6 +533,7 @@ function getCreditPurchasedEvents(ctx: ProcessorContext<Store>): CreditPurchased
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
                     who: ss58.codec('kusama').encode(decoded.who),
+                    beneficiary: ss58.codec('kusama').encode(decoded.beneficiary),
                     amount: decoded.amount
                 })
             }
@@ -552,7 +555,8 @@ function getRegionDroppedEvents(ctx: ProcessorContext<Store>): RegionDroppedEven
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    region: decoded.region
+                    regionId: decoded.regionId,
+                    duration: decoded.duration
                 })
             }
         }
@@ -573,7 +577,7 @@ function getContributionDroppedEvents(ctx: ProcessorContext<Store>): Contributio
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    region: decoded.region
+                    regionId: decoded.regionId
                 })
             }
         }
@@ -593,7 +597,9 @@ function getHistoryDroppedEvents(ctx: ProcessorContext<Store>): HistoryDroppedEv
                 events.push({
                     id: event.id,
                     blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp)
+                    timestamp: new Date(block.header.timestamp),
+                    when: decoded.when,
+                    revenue: decoded.revenue
                 })
             }
         }
@@ -635,7 +641,7 @@ function getClaimsReadyEvents(ctx: ProcessorContext<Store>): ClaimsReadyEvent[] 
                 events.push({
                     id: event.id, 
                     blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp)
+                    timestamp: new Date(block.header.timestamp),
                     when: decoded.when,
                     systemPayout: decoded.systemPayout,
                     privatePayout: decoded.privatePayout
@@ -661,7 +667,7 @@ function getCoreAssignedEvents(ctx: ProcessorContext<Store>): CoreAssignedEvent[
                     blockNumber: block.header.height,
                     core: decoded.core,
                     when: decoded.when,
-                    assignment: decoded.assignment.map(a => ({ mask: a.mask, assignment: a.assignment })) // Assuming ScheduleItem[] mapping
+                    assignment: decoded.assignment
                 })
             }
         }
@@ -680,8 +686,8 @@ function getAllowedRenewalDroppedEvents(ctx: ProcessorContext<Store>): AllowedRe
 
                 events.push({
                     id: event.id,
-                    timestamp: new Date(block.header.timestamp),
                     blockNumber: block.header.height,
+                    timestamp: new Date(block.header.timestamp),
                     when: decoded.when,
                     core: decoded.core
                 })
