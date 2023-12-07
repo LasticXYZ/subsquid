@@ -65,7 +65,23 @@ import {
 
 } from './interfaces'
 
+// ================================== Helper functions ================================================
+
+import {RegionId as RegionIdForModel} from './model/generated/_regionId'
+import {RegionId as RegionIdFromEvent} from './types/v268'
+
 import {TypeormDatabase, Store} from '@subsquid/typeorm-store'
+
+function convertRegionId(regionId: RegionIdFromEvent): RegionIdForModel {
+    return {
+        begin: regionId.begin,
+        core: regionId.core,
+        mask: regionId.mask
+    };
+}
+
+
+// ====================================================================================================
 
 async function createAccounts(ctx: ProcessorContext<Store>, transferEvents: TransferEvent[]): Promise<Map<string,Account>> {
     const accountIds = new Set<string>()
@@ -159,7 +175,7 @@ function createPurchasedEntities(events: PurchasedEvent[]): Purchased[] {
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
         who: event.who,
-        regionId: event.regionId,
+        regionId: convertRegionId(event.regionId),
         price: event.price,
         duration: event.duration
     }));
@@ -197,7 +213,7 @@ function createTransferredEntities(events: TransferredEvent[]): Transferred[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        regionId: event.regionId,
+        regionId: convertRegionId(event.regionId),
         duration: event.duration,
         oldOwner: event.oldOwner,
         owner: event.owner
@@ -209,10 +225,8 @@ function createPartitionedEntities(events: PartitionedEvent[]): Partitioned[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
-        regionId: event.regionId,
-        price: event.price,
-        duration: event.duration
+        oldRegionId: event.oldRegionId,
+        newRegionIds: event.newRegionIds
     }));
 }
 
@@ -221,10 +235,8 @@ function createInterlacedEntities(events: InterlacedEvent[]): Interlaced[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
-        regionId: event.regionId,
-        price: event.price,
-        duration: event.duration
+        oldRegionId: event.oldRegionId,
+        newRegionIds: event.newRegionIds
     }));
 }
 
@@ -233,9 +245,9 @@ function createAssignedEntities(events: AssignedEvent[]): Assigned[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
-        regionId: event.regionId,
-        core: event.core
+        regionId: convertRegionId(event.regionId), // Convert to the expected type
+        duration: event.duration,
+        task: event.task
     }));
 }
 
