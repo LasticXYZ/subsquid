@@ -1,5 +1,5 @@
 
-import { CoreAssignment, ScheduleItem } from "./types/v268"
+import { CoreAssignment, ScheduleItem, RegionId, AccountId32 } from "./types/v268"
 
 
 interface TransferEvent {
@@ -47,13 +47,12 @@ interface SalesStartedEvent {
     coreCount: number;
 }
 
-
 interface PurchasedEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
     who: string;
-    regionId: number;
+    regionId: RegionId;
     price: bigint;
     duration: number;
 }
@@ -85,7 +84,7 @@ interface TransferredEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
-    regionId: number;
+    regionId: RegionId;
     duration: number;
     oldOwner: string;
     owner: string;
@@ -111,7 +110,7 @@ interface AssignedEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
-    regionId: number;
+    regionId: RegionId;
     duration: number;
     task: number;
 }
@@ -120,7 +119,7 @@ interface PooledEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
-    regionId: number;
+    regionId: RegionId;
     duration: number;
 }
 
@@ -208,7 +207,7 @@ interface RegionDroppedEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
-    regionId: number;
+    regionId: RegionId;
     duration: number;
 }
 
@@ -216,7 +215,7 @@ interface ContributionDroppedEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
-    regionId: number;
+    regionId: RegionId;
 }
 
 interface HistoryDroppedEvent {

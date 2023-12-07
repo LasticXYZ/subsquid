@@ -41,7 +41,33 @@ export const processor = new SubstrateBatchProcessor()
         name: [
             'Broker.HistoryInitialized',
             'Broker.SaleInitialized',
-            'Broker.SalesStarted'
+            'Broker.SalesStarted',
+            'Broker.Purchased',
+            'Broker.Renewable',
+            'Broker.Renewed',
+            'Broker.Transferred',
+            'Broker.Partitioned',
+            'Broker.Interlaced',
+            'Broker.Assigned',
+            'Broker.Pooled',
+            'Broker.CoreCountRequested',
+            'Broker.CoreCountChanged',
+            'Broker.ReservationMade',
+            'Broker.ReservationCancelled',
+            'Broker.Leased',
+            'Broker.LeaseEnding',
+            'Broker.RevenueClaimBegun',
+            'Broker.RevenueClaimItem',
+            'Broker.RevenueClaimPaid',
+            'Broker.CreditPurchased',
+            'Broker.RegionDropped',
+            'Broker.ContributionDropped',
+            'Broker.HistoryDropped',
+            'Broker.HistoryIgnored',
+            'Broker.ClaimsReady',
+            'Broker.CoreAssigned',
+            'Broker.AllowedRenewalDropped'
+
         ],
         extrinsic: true
     })
