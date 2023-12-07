@@ -19,7 +19,7 @@ type HistoryInitialized @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  extrinsicHash: String @index
+  extrinsicHash: String! @index
   when: Int!
   privatePoolSize: Int!
   systemPoolSize: Int!
@@ -29,7 +29,7 @@ type SaleInitialized @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  extrinsicHash: String @index
+  extrinsicHash: String! @index
   saleStart: Int!
   leadinLength: Int!
   startPrice: BigInt!
@@ -44,7 +44,7 @@ type SalesStarted @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  extrinsicHash: String @index
+  extrinsicHash: String! @index
   price: BigInt!
   coreCount: Int!
 }
@@ -54,7 +54,7 @@ type Purchased @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   who: String!
-  regionId: Int!
+  regionId: RegionId!
   price: BigInt!
   duration: Int!
 }
@@ -86,7 +86,7 @@ type Transferred @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  regionId: Int!
+  regionId: RegionId!
   duration: Int!
   oldOwner: String!
   owner: String!
@@ -96,23 +96,23 @@ type Partitioned @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  oldRegionId: Int!
-  newRegionIds: [Int!]! # Assuming this is an array of integers
+  oldRegionId: RegionId!
+  newRegionIds: [RegionIdPair!]!
 }
 
 type Interlaced @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  oldRegionId: Int!
-  newRegionIds: [Int!]! # Assuming this is an array of integers
+  oldRegionId: RegionId!
+  newRegionIds: [RegionIdPair!]!
 }
 
 type Assigned @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  regionId: Int!
+  regionId: RegionId!
   duration: Int!
   task: Int!
 }
@@ -121,7 +121,7 @@ type Pooled @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  regionId: Int!
+  regionId: RegionId!
   duration: Int!
 }
 
@@ -144,7 +144,7 @@ type ReservationMade @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   index: Int!
-  workload: [ScheduleItem!]! 
+  workload: [ScheduleItem!]!
 }
 
 type ReservationCancelled @entity {
@@ -152,7 +152,7 @@ type ReservationCancelled @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   index: Int!
-  workload: [ScheduleItem!]! 
+  workload: [ScheduleItem!]!
 }
 
 type Leased @entity {
@@ -209,7 +209,7 @@ type RegionDropped @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  regionId: Int!
+  regionId: RegionId!
   duration: Int!
 }
 
@@ -217,7 +217,7 @@ type ContributionDropped @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  regionId: Int!
+  regionId: RegionId!
 }
 
 type HistoryDropped @entity {
@@ -251,7 +251,7 @@ type CoreAssigned @entity {
   timestamp: DateTime! @index
   core: Int!
   when: Int!
-  assignment: [CoreAssignment!]!
+  assignment: [CoreAssignmentTuple!]!
 }
 
 type AllowedRenewalDropped @entity {
@@ -267,6 +267,11 @@ type ScheduleItem {
   assignment: CoreAssignment!
 }
 
+type CoreAssignmentTuple {
+  assignment: CoreAssignment!
+  value: Int!
+}
+
 type CoreAssignment {
   kind: CoreAssignmentKind!
   value: Int
@@ -276,4 +281,15 @@ enum CoreAssignmentKind {
   Idle
   Pool
   Task
+}
+
+type RegionId {
+    begin: Int!
+    core: Int!
+    mask: Bytes!
+}
+
+type RegionIdPair {
+  first: RegionId!
+  second: RegionId!
 }

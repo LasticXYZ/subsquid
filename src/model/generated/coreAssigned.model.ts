@@ -1,6 +1,6 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_} from "typeorm"
 import * as marshal from "./marshal"
-import {CoreAssignment} from "./_coreAssignment"
+import {CoreAssignmentTuple} from "./_coreAssignmentTuple"
 
 @Entity_()
 export class CoreAssigned {
@@ -25,6 +25,6 @@ export class CoreAssigned {
     @Column_("int4", {nullable: false})
     when!: number
 
-    @Column_("jsonb", {transformer: {to: obj => obj.map((val: any) => val.toJSON()), from: obj => obj == null ? undefined : marshal.fromList(obj, val => new CoreAssignment(undefined, marshal.nonNull(val)))}, nullable: false})
-    assignment!: (CoreAssignment)[]
+    @Column_("jsonb", {transformer: {to: obj => obj.map((val: any) => val.toJSON()), from: obj => obj == null ? undefined : marshal.fromList(obj, val => new CoreAssignmentTuple(undefined, marshal.nonNull(val)))}, nullable: false})
+    assignment!: (CoreAssignmentTuple)[]
 }
