@@ -18,8 +18,8 @@ export class HistoryInitialized {
     timestamp!: Date
 
     @Index_()
-    @Column_("text", {nullable: false})
-    extrinsicHash!: string
+    @Column_("text", {nullable: true})
+    extrinsicHash!: string | undefined | null
 
     @Column_("int4", {nullable: false})
     when!: number

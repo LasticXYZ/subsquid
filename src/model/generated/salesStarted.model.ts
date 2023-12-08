@@ -19,8 +19,8 @@ export class SalesStarted {
     timestamp!: Date
 
     @Index_()
-    @Column_("text", {nullable: false})
-    extrinsicHash!: string
+    @Column_("text", {nullable: true})
+    extrinsicHash!: string | undefined | null
 
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     price!: bigint

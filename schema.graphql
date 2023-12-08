@@ -19,7 +19,7 @@ type HistoryInitialized @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  extrinsicHash: String! @index
+  extrinsicHash: String @index
   when: Int!
   privatePoolSize: Int!
   systemPoolSize: Int!
@@ -29,7 +29,7 @@ type SaleInitialized @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  extrinsicHash: String! @index
+  extrinsicHash: String @index
   saleStart: Int!
   leadinLength: Int!
   startPrice: BigInt!
@@ -44,7 +44,7 @@ type SalesStarted @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  extrinsicHash: String! @index
+  extrinsicHash: String @index
   price: BigInt!
   coreCount: Int!
 }

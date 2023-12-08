@@ -251,10 +251,9 @@ sqd codegen
 
 Available `sqd` shortcuts:
 ```bash
-# Build the project, remove any old migrations, then run `npx squid-typeorm-migration generate`
+sqd down
+sqd up 
 sqd migration:generate
-
-# Run npx squid-typeorm-migration apply
 sqd migration:apply
 ```
 
