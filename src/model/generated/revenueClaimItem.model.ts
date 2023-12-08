@@ -18,8 +18,8 @@ export class RevenueClaimItem {
     @Column_("timestamp with time zone", {nullable: false})
     timestamp!: Date
 
-    @Column_("int4", {nullable: false})
-    when!: number
+    @Column_("text", {nullable: false})
+    who!: string
 
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     amount!: bigint

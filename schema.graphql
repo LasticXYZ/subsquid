@@ -175,7 +175,7 @@ type RevenueClaimBegun @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  region: Int!
+  region: RegionId!
   maxTimeslices: Int!
 }
 
@@ -183,7 +183,7 @@ type RevenueClaimItem @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  when: Int!
+  who: String!
   amount: BigInt!
 }
 
@@ -251,7 +251,7 @@ type CoreAssigned @entity {
   timestamp: DateTime! @index
   core: Int!
   when: Int!
-  assignment: [CoreAssignmentTuple!]!
+  assignment: CoreAssignmentTuple!
 }
 
 type AllowedRenewalDropped @entity {

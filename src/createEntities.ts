@@ -104,7 +104,7 @@ async function createAccounts(ctx: ProcessorContext<Store>, transferEvents: Tran
         if (acc == null) {
             accounts.set(id, new Account({id}))
         }
-    }
+    } 
 
     return accounts
 }
@@ -256,7 +256,8 @@ function createPooledEntities(events: PooledEvent[]): Pooled[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        core: event.core
+        regionId: convertRegionId(event.regionId),
+        duration: event.duration
     }));
 }
 
@@ -265,7 +266,7 @@ function createCoreCountRequestedEntities(events: CoreCountRequestedEvent[]): Co
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        core: event.core
+        
     }));
 }
 
@@ -274,7 +275,7 @@ function createCoreCountChangedEntities(events: CoreCountChangedEvent[]): CoreCo
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        core: event.core
+        coreCount: event.coreCount
     }));
 }
 
@@ -283,9 +284,8 @@ function createReservationMadeEntities(events: ReservationMadeEvent[]): Reservat
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
-        core: event.core,
-        duration: event.duration
+        index: event.index,
+        workload: event.workload
     }));
 }
 
@@ -294,9 +294,8 @@ function createReservationCancelledEntities(events: ReservationCancelledEvent[])
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
-        core: event.core,
-        duration: event.duration
+        index: event.index,
+        workload: event.workload
     }));
 }
 
@@ -305,8 +304,7 @@ function createLeasedEntities(events: LeasedEvent[]): Leased[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
-        core: event.core,
+        task: event.task,
         until: event.until
     }));
 }
@@ -316,8 +314,8 @@ function createLeaseEndingEntities(events: LeaseEndingEvent[]): LeaseEnding[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        core: event.core,
-        when: event.when
+        task: event.task,
+        when: event.when        
     }));
 }
 
@@ -326,8 +324,8 @@ function createRevenueClaimBegunEntities(events: RevenueClaimBegunEvent[]): Reve
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
-        regionId: event.regionId
+        region: convertRegionId(event.region),
+        maxTimeslices: event.maxTimeslices        
     }));
 }
 
@@ -336,9 +334,7 @@ function createRevenueClaimItemEntities(events: RevenueClaimItemEvent[]): Revenu
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        claimId: event.claimId,
-        core: event.core,
-        amount: event.amount
+        
     }));
 }
 
@@ -347,8 +343,8 @@ function createRevenueClaimPaidEntities(events: RevenueClaimPaidEvent[]): Revenu
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        claimId: event.claimId,
-        amount: event.amount
+        who: event.who,
+        amount: event.amount       
     }));
 }
 
@@ -368,7 +364,7 @@ function createRegionDroppedEntities(events: RegionDroppedEvent[]): RegionDroppe
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        regionId: event.regionId,
+        regionId: convertRegionId(event.regionId),
         duration: event.duration
     }));
 }
@@ -378,7 +374,7 @@ function createContributionDroppedEntities(events: ContributionDroppedEvent[]): 
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        regionId: event.regionId,
+        regionId: convertRegionId(event.regionId),
     }));
 }
 
@@ -407,7 +403,9 @@ function createClaimsReadyEntities(events: ClaimsReadyEvent[]): ClaimsReady[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        when: event.when
+        when: event.when,
+        systemPayout: event.systemPayout,
+        privatePayout: event.privatePayout
     }));
 }
 
@@ -416,8 +414,9 @@ function createCoreAssignedEntities(events: CoreAssignedEvent[]): CoreAssigned[]
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        who: event.who,
-        core: event.core
+        core: event.core,
+        when: event.when,
+        assignment: event.assignment
     }));
 }
 
