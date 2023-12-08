@@ -251,7 +251,7 @@ type CoreAssigned @entity {
   timestamp: DateTime! @index
   core: Int!
   when: Int!
-  assignment: CoreAssignmentTuple!
+  assignment: [CoreAssignmentTuple!]!
 }
 
 type AllowedRenewalDropped @entity {
@@ -286,7 +286,7 @@ enum CoreAssignmentKind {
 type RegionId {
     begin: Int!
     core: Int!
-    mask: Bytes!
+    mask: String!
 }
 
 type RegionIdPair {

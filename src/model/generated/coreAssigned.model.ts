@@ -25,6 +25,6 @@ export class CoreAssigned {
     @Column_("int4", {nullable: false})
     when!: number
 
-    @Column_("jsonb", {transformer: {to: obj => obj.toJSON(), from: obj => obj == null ? undefined : new CoreAssignmentTuple(undefined, obj)}, nullable: false})
-    assignment!: CoreAssignmentTuple
+    @Column_("jsonb", {transformer: {to: obj => obj.map((val: any) => val.toJSON()), from: obj => obj == null ? undefined : marshal.fromList(obj, val => new CoreAssignmentTuple(undefined, marshal.nonNull(val)))}, nullable: false})
+    assignment!: (CoreAssignmentTuple)[]
 }

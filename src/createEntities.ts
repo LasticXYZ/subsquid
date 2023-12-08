@@ -68,16 +68,72 @@ import {
 // ================================== Helper functions ================================================
 
 import {RegionId as RegionIdForModel} from './model/generated/_regionId'
-import {RegionId as RegionIdFromEvent} from './types/v268'
+import {ScheduleItem as ScheduleItemModel} from './model/generated/_scheduleItem'
+import {CoreAssignment as CoreAssignmentModel} from './model/generated/_coreAssignment'
+import {CoreAssignmentKind} from "./model/generated/_coreAssignmentKind"
+import {CoreAssignmentTuple as CoreAssignmentTupleModel} from './model/generated/_coreAssignmentTuple'
+import {RegionIdPair as RegionIdPairModel} from './model/generated/_regionIdPair'
+import {
+    RegionId as RegionIdFromEvent,
+    ScheduleItem as ScheduleItemEvent,
+    CoreAssignment as CoreAssignmentEvent,
+} from './types/v268'
 
-import {TypeormDatabase, Store} from '@subsquid/typeorm-store'
+import {Store} from '@subsquid/typeorm-store'
 
 function convertRegionId(regionId: RegionIdFromEvent): RegionIdForModel {
-    return {
+    return new RegionIdForModel({
         begin: regionId.begin,
         core: regionId.core,
         mask: regionId.mask
-    };
+    });
+}
+
+function transformCoreAssignment(assignment: CoreAssignmentEvent): CoreAssignmentModel {
+
+    let kind: CoreAssignmentKind;
+    let value: number | null = null;
+
+    switch (assignment.__kind) {
+        case 'Idle':
+            kind = CoreAssignmentKind.Idle;
+            break;
+        case 'Pool':
+            kind = CoreAssignmentKind.Pool;
+            break;
+        case 'Task':
+            kind = CoreAssignmentKind.Task;
+            value = assignment.value;
+            break;
+        default:
+            throw new Error('Unknown CoreAssignment kind');
+    }
+
+    return new CoreAssignmentModel({ kind, value });
+
+}
+
+function transformScheduleItem(scheduledItem: ScheduleItemEvent): ScheduleItemModel {
+    return new ScheduleItemModel({
+        mask: scheduledItem.mask,
+        assignment: scheduledItem.assignment ? transformCoreAssignment(scheduledItem.assignment) : undefined,
+    });
+}
+
+function transformCoreAssignments(assignments: [CoreAssignmentEvent, number][]): CoreAssignmentTupleModel[] {
+    return assignments.map(([assignment, value]) => {
+        return new CoreAssignmentTupleModel({
+            assignment: transformCoreAssignment(assignment),
+            value: value
+        });
+    });
+}
+
+function convertRegionIds(regionIds: [RegionIdFromEvent, RegionIdFromEvent]): RegionIdPairModel {
+    return new RegionIdPairModel({
+        first: convertRegionId(regionIds[0]),
+        second: convertRegionId(regionIds[1])
+    });
 }
 
 
@@ -189,7 +245,7 @@ function createRenewableEntities(events: RenewableEvent[]): Renewable[] {
         core: event.core,
         price: event.price,
         begin: event.begin,
-        workload: event.workload
+        workload: event.workload.map(item => transformScheduleItem(item)) // Transform each ScheduleItem
     }));
 }
 
@@ -204,7 +260,7 @@ function createRenewedEntities(events: RenewedEvent[]): Renewed[] {
         core: event.core,
         begin: event.begin,
         duration: event.duration,
-        workload: event.workload
+        workload: event.workload.map(item => transformScheduleItem(item)) // Transform each ScheduleItem
     }));
 }
 
@@ -225,8 +281,8 @@ function createPartitionedEntities(events: PartitionedEvent[]): Partitioned[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        oldRegionId: event.oldRegionId,
-        newRegionIds: event.newRegionIds
+        oldRegionId: convertRegionId(event.oldRegionId),
+        newRegionIds: convertRegionIds(event.newRegionIds),
     }));
 }
 
@@ -235,8 +291,8 @@ function createInterlacedEntities(events: InterlacedEvent[]): Interlaced[] {
         id: event.id,
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
-        oldRegionId: event.oldRegionId,
-        newRegionIds: event.newRegionIds
+        oldRegionId: convertRegionId(event.oldRegionId),
+        newRegionIds: convertRegionIds(event.newRegionIds),
     }));
 }
 
@@ -285,7 +341,7 @@ function createReservationMadeEntities(events: ReservationMadeEvent[]): Reservat
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
         index: event.index,
-        workload: event.workload
+        workload: event.workload.map(item => transformScheduleItem(item)) // Transform each ScheduleItem
     }));
 }
 
@@ -295,7 +351,7 @@ function createReservationCancelledEntities(events: ReservationCancelledEvent[])
         blockNumber: event.blockNumber,
         timestamp: event.timestamp,
         index: event.index,
-        workload: event.workload
+        workload: event.workload.map(item => transformScheduleItem(item)) // Transform each ScheduleItem
     }));
 }
 
@@ -416,7 +472,7 @@ function createCoreAssignedEntities(events: CoreAssignedEvent[]): CoreAssigned[]
         timestamp: event.timestamp,
         core: event.core,
         when: event.when,
-        assignment: event.assignment
+        assignment: transformCoreAssignments(event.assignment),
     }));
 }
 

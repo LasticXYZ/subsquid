@@ -4,14 +4,14 @@ import * as marshal from "./marshal"
 export class RegionId {
     private _begin!: number
     private _core!: number
-    private _mask!: Uint8Array
+    private _mask!: string
 
     constructor(props?: Partial<Omit<RegionId, 'toJSON'>>, json?: any) {
         Object.assign(this, props)
         if (json != null) {
             this._begin = marshal.int.fromJSON(json.begin)
             this._core = marshal.int.fromJSON(json.core)
-            this._mask = marshal.bytes.fromJSON(json.mask)
+            this._mask = marshal.string.fromJSON(json.mask)
         }
     }
 
@@ -33,12 +33,12 @@ export class RegionId {
         this._core = value
     }
 
-    get mask(): Uint8Array {
+    get mask(): string {
         assert(this._mask != null, 'uninitialized access')
         return this._mask
     }
 
-    set mask(value: Uint8Array) {
+    set mask(value: string) {
         this._mask = value
     }
 
@@ -46,7 +46,7 @@ export class RegionId {
         return {
             begin: this.begin,
             core: this.core,
-            mask: marshal.bytes.toJSON(this.mask),
+            mask: this.mask,
         }
     }
 }
