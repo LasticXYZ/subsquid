@@ -20,12 +20,8 @@
       "constants": []
     },
     "Broker": {
-      "events": [
-        "HistoryInitialized",
-        "SaleInitialized",
-        "SalesStarted"
-      ],
-      "calls": [],
+      "events": true,
+      "calls": true,
       "storage": [],
       "constants": true
     }

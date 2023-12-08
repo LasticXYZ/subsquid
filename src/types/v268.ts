@@ -2,6 +2,104 @@ import {sts, Result, Option, Bytes, BitSequence} from './support'
 
 export const PalletId = sts.bytes()
 
+export const Finality: sts.Type<Finality> = sts.closedEnum(() => {
+    return  {
+        Final: sts.unit(),
+        Provisional: sts.unit(),
+    }
+})
+
+export type Finality = Finality_Final | Finality_Provisional
+
+export interface Finality_Final {
+    __kind: 'Final'
+}
+
+export interface Finality_Provisional {
+    __kind: 'Provisional'
+}
+
+export const CoreMask = sts.bytes()
+
+export const ConfigRecord: sts.Type<ConfigRecord> = sts.struct(() => {
+    return  {
+        advanceNotice: sts.number(),
+        interludeLength: sts.number(),
+        leadinLength: sts.number(),
+        regionLength: sts.number(),
+        idealBulkProportion: Perbill,
+        limitCoresOffered: sts.option(() => sts.number()),
+        renewalBump: Perbill,
+        contributionTimeout: sts.number(),
+    }
+})
+
+export const Perbill = sts.number()
+
+export interface ConfigRecord {
+    advanceNotice: number
+    interludeLength: number
+    leadinLength: number
+    regionLength: number
+    idealBulkProportion: Perbill
+    limitCoresOffered?: (number | undefined)
+    renewalBump: Perbill
+    contributionTimeout: number
+}
+
+export type Perbill = number
+
+export const CoreAssignment: sts.Type<CoreAssignment> = sts.closedEnum(() => {
+    return  {
+        Idle: sts.unit(),
+        Pool: sts.unit(),
+        Task: sts.number(),
+    }
+})
+
+export type CoreAssignment = CoreAssignment_Idle | CoreAssignment_Pool | CoreAssignment_Task
+
+export interface CoreAssignment_Idle {
+    __kind: 'Idle'
+}
+
+export interface CoreAssignment_Pool {
+    __kind: 'Pool'
+}
+
+export interface CoreAssignment_Task {
+    __kind: 'Task'
+    value: number
+}
+
+export const ScheduleItem: sts.Type<ScheduleItem> = sts.struct(() => {
+    return  {
+        mask: CoreMask,
+        assignment: CoreAssignment,
+    }
+})
+
+export interface ScheduleItem {
+    mask: CoreMask
+    assignment: CoreAssignment
+}
+
+export type CoreMask = Bytes
+
+export const RegionId: sts.Type<RegionId> = sts.struct(() => {
+    return  {
+        begin: sts.number(),
+        core: sts.number(),
+        mask: CoreMask,
+    }
+})
+
+export interface RegionId {
+    begin: number
+    core: number
+    mask: CoreMask
+}
+
 export const AccountId32 = sts.bytes()
 
 export const DispatchError: sts.Type<DispatchError> = sts.closedEnum(() => {

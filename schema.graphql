@@ -21,8 +21,8 @@ type HistoryInitialized @entity {
   timestamp: DateTime! @index
   extrinsicHash: String @index
   when: Int!
-  privatePoolSize: Int!
-  systemPoolSize: Int!
+  privatePoolSize: BigInt!
+  systemPoolSize: BigInt!
 }
 
 type SaleInitialized @entity {
@@ -47,4 +47,249 @@ type SalesStarted @entity {
   extrinsicHash: String @index
   price: BigInt!
   coreCount: Int!
+}
+
+type Purchased @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  who: String!
+  regionId: RegionId!
+  price: BigInt!
+  duration: Int!
+}
+
+type Renewable @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  core: Int!
+  price: BigInt!
+  begin: Int!
+  workload: [ScheduleItem!]!
+}
+
+type Renewed @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  who: String!
+  price: BigInt!
+  oldCore: Int!
+  core: Int!
+  begin: Int!
+  duration: Int!
+  workload: [ScheduleItem!]!
+}
+
+type Transferred @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  regionId: RegionId!
+  duration: Int!
+  oldOwner: String!
+  owner: String!
+}
+
+type Partitioned @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  oldRegionId: RegionId!
+  newRegionIds: RegionIdPair!
+}
+
+type Interlaced @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  oldRegionId: RegionId!
+  newRegionIds: RegionIdPair!
+}
+
+type Assigned @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  regionId: RegionId!
+  duration: Int!
+  task: Int!
+}
+
+type Pooled @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  regionId: RegionId!
+  duration: Int!
+}
+
+type CoreCountRequested @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  coreCount: Int!
+}
+
+type CoreCountChanged @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  coreCount: Int!
+}
+
+type ReservationMade @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  index: Int!
+  workload: [ScheduleItem!]!
+}
+
+type ReservationCancelled @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  index: Int!
+  workload: [ScheduleItem!]!
+}
+
+type Leased @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  task: Int!
+  until: Int!
+}
+
+type LeaseEnding @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  task: Int!
+  when: Int!
+}
+
+type RevenueClaimBegun @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  region: RegionId!
+  maxTimeslices: Int!
+}
+
+type RevenueClaimItem @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  who: String!
+  amount: BigInt!
+}
+
+type RevenueClaimPaid @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  who: String!
+  amount: BigInt!
+  next: Int
+}
+
+type CreditPurchased @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  who: String!
+  beneficiary: String!
+  amount: BigInt!
+}
+
+type RegionDropped @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  regionId: RegionId!
+  duration: Int!
+}
+
+type ContributionDropped @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  regionId: RegionId!
+}
+
+type HistoryDropped @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  when: Int!
+  revenue: BigInt!
+}
+
+type HistoryIgnored @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  when: Int!
+  revenue: BigInt!
+}
+
+type ClaimsReady @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  when: Int!
+  systemPayout: BigInt!
+  privatePayout: BigInt!
+}
+
+type CoreAssigned @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  core: Int!
+  when: Int!
+  assignment: [CoreAssignmentTuple!]!
+}
+
+type AllowedRenewalDropped @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  when: Int!
+  core: Int!
+}
+
+type ScheduleItem {
+  mask: String!
+  assignment: CoreAssignment!
+}
+
+type CoreAssignmentTuple {
+  assignment: CoreAssignment!
+  value: Int!
+}
+
+type CoreAssignment {
+  kind: CoreAssignmentKind!
+  value: Int
+}
+
+enum CoreAssignmentKind {
+  Idle
+  Pool
+  Task
+}
+
+type RegionId {
+    begin: Int!
+    core: Int!
+    mask: String!
+}
+
+type RegionIdPair {
+  first: RegionId!
+  second: RegionId!
 }
