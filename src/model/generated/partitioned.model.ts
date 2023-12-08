@@ -23,6 +23,6 @@ export class Partitioned {
     @Column_("jsonb", {transformer: {to: obj => obj.toJSON(), from: obj => obj == null ? undefined : new RegionId(undefined, obj)}, nullable: false})
     oldRegionId!: RegionId
 
-    @Column_("jsonb", {transformer: {to: obj => obj.map((val: any) => val.toJSON()), from: obj => obj == null ? undefined : marshal.fromList(obj, val => new RegionIdPair(undefined, marshal.nonNull(val)))}, nullable: false})
-    newRegionIds!: (RegionIdPair)[]
+    @Column_("jsonb", {transformer: {to: obj => obj.toJSON(), from: obj => obj == null ? undefined : new RegionIdPair(undefined, obj)}, nullable: false})
+    newRegionIds!: RegionIdPair
 }

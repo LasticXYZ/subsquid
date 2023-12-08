@@ -97,7 +97,7 @@ type Partitioned @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   oldRegionId: RegionId!
-  newRegionIds: [RegionIdPair!]!
+  newRegionIds: RegionIdPair!
 }
 
 type Interlaced @entity {
@@ -105,7 +105,7 @@ type Interlaced @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   oldRegionId: RegionId!
-  newRegionIds: [RegionIdPair!]!
+  newRegionIds: RegionIdPair!
 }
 
 type Assigned @entity {
