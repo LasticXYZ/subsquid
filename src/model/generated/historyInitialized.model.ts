@@ -1,4 +1,5 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_} from "typeorm"
+import * as marshal from "./marshal"
 
 @Entity_()
 export class HistoryInitialized {
@@ -24,9 +25,9 @@ export class HistoryInitialized {
     @Column_("int4", {nullable: false})
     when!: number
 
-    @Column_("int4", {nullable: false})
-    privatePoolSize!: number
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    privatePoolSize!: bigint
 
-    @Column_("int4", {nullable: false})
-    systemPoolSize!: number
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
+    systemPoolSize!: bigint
 }

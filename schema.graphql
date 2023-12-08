@@ -21,8 +21,8 @@ type HistoryInitialized @entity {
   timestamp: DateTime! @index
   extrinsicHash: String @index
   when: Int!
-  privatePoolSize: Int!
-  systemPoolSize: Int!
+  privatePoolSize: BigInt!
+  systemPoolSize: BigInt!
 }
 
 type SaleInitialized @entity {

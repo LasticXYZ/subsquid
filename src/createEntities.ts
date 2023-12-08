@@ -192,8 +192,8 @@ function createHistoryInitializedEntities(events: HistoryInitializedEvent[]): Hi
         timestamp: event.timestamp,
         extrinsicHash: event.extrinsicHash,
         when: event.when,
-        privatePoolSize: event.privatePoolSize,
-        systemPoolSize: event.systemPoolSize
+        privatePoolSize: BigInt(event.privatePoolSize),
+        systemPoolSize: BigInt(event.systemPoolSize)
     }));
 }
 
