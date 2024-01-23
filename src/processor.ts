@@ -26,7 +26,6 @@ export const processor = new SubstrateBatchProcessor()
             rateLimit: 300
         }
     })
-    .setBlockRange({ from: 222220 })
     .addEvent({
         name: [events.balances.transfer.name],
         extrinsic: true
@@ -87,7 +86,7 @@ export const processor = new SubstrateBatchProcessor()
     .setBlockRange({
         // genesis block happens to not have a timestamp, so it's easier
         // to start from 1 in cases when the deployment height is unknown
-        from: 1
+        from: 268800
     })
     // Uncomment to disable RPC ingestion and drastically reduce no of RPC calls
     //.useArchiveOnly()
