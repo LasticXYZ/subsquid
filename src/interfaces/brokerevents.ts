@@ -1,5 +1,5 @@
 
-import { CoreAssignment, ScheduleItem, RegionId, AccountId32 } from "../types/v268"
+import { CoreAssignment, ScheduleItem, RegionId, AccountId32 } from "../types/v9430"
 
 
 interface TransferEvent {
