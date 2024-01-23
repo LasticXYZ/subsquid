@@ -77,7 +77,7 @@ import {
     RegionId as RegionIdFromEvent,
     ScheduleItem as ScheduleItemEvent,
     CoreAssignment as CoreAssignmentEvent,
-} from './types/v268'
+} from './types/v9430'
 
 import {Store} from '@subsquid/typeorm-store'
 

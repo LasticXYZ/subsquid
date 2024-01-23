@@ -14,8 +14,8 @@ function getTransferEvents(ctx: ProcessorContext<Store>): TransferEvent[] {
         for (let event of block.events) {
             if (event.name == events.balances.transfer.name) {
                 let rec: {from: string; to: string; amount: bigint}
-                if (events.balances.transfer.v268.is(event)) {
-                    rec = events.balances.transfer.v268.decode(event)
+                if (events.balances.transfer.v9430.is(event)) {
+                    rec = events.balances.transfer.v9430.decode(event)
                 }
                 else {
                     throw new Error('Unsupported spec')
