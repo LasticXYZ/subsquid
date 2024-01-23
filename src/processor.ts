@@ -26,6 +26,7 @@ export const processor = new SubstrateBatchProcessor()
             rateLimit: 300
         }
     })
+    .setBlockRange({ from: 222220 })
     .addEvent({
         name: [events.balances.transfer.name],
         extrinsic: true
