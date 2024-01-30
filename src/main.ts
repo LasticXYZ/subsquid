@@ -2,8 +2,6 @@ import {TypeormDatabase, Store} from '@subsquid/typeorm-store'
 
 import {processor, ProcessorContext} from './processor'
 import {
-    Account,
-    Transfer,
     HistoryInitialized,
     SaleInitialized,
     SalesStarted,
@@ -33,8 +31,26 @@ import {
     CoreAssigned,
     AllowedRenewalDropped
 } from './model'
-import { 
-    TransferEvent,
+import {
+    ConfigureCall,
+    ReserveCall,
+    UnreserveCall,
+    SetLeaseCall,
+    StartSalesCall,
+    PurchaseCall,
+    RenewCall,
+    TransferCall,
+    PartitionCall,
+    InterlaceCall,
+    AssignCall,
+    PoolCall,
+    ClaimRevenueCall,
+    PurchaseCreditCall,
+    DropRegionCall,
+    DropContributionCall,
+    DropHistoryCall,
+    DropRenewalCall,
+    RequestCoreCountCall,
     HistoryInitializedEvent, 
     SaleInitializedEvent,
     SalesStartedEvent,
@@ -66,7 +82,6 @@ import {
  } from './interfaces'
 
 import { 
-    getTransferEvents,
     getHistoryInitializedEvents,
     getSaleInitializedEvents, 
     getSalesStartedEvents, 
@@ -97,8 +112,9 @@ import {
     getAllowedRenewalDroppedEvents
 } from './getEvents'
 
+import { getPurchaseCalls } from './getCalls'
+
 import { 
-    createAccounts, 
     createTransfers, 
     createHistoryInitializedEntities, 
     createSaleInitializedEntities, 
@@ -129,10 +145,10 @@ import {
     createCoreAssignedEntities,
     createAllowedRenewalDroppedEntities
  } from './createEntities'
+import { get } from 'http'
 
 processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
-    let transferEvents: TransferEvent[] = getTransferEvents(ctx)
-
+    // Fetch broker events
     let historyInitializedEvents: HistoryInitializedEvent[] = getHistoryInitializedEvents(ctx)
     let saleInitializedEvents: SaleInitializedEvent[] = getSaleInitializedEvents(ctx)
     let salesStartedEvents: SalesStartedEvent[] = getSalesStartedEvents(ctx)
@@ -162,8 +178,8 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let coreAssignedEvents: CoreAssignedEvent[] = getCoreAssignedEvents(ctx)
     let allowedRenewalDroppedEvents: AllowedRenewalDroppedEvent[] = getAllowedRenewalDroppedEvents(ctx)
 
-    let accounts: Map<string, Account> = await createAccounts(ctx, transferEvents)
-    let transfers: Transfer[] = createTransfers(transferEvents, accounts)
+    // Fetch broker calls
+    let purchaseCalls: PurchaseCall[] = getPurchaseCalls(ctx)
 
     // Create entities for broker events
     let historyInitializedEntities: HistoryInitialized[] = createHistoryInitializedEntities(historyInitializedEvents)
@@ -195,8 +211,6 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let coreAssignedEntities: CoreAssigned[] = createCoreAssignedEntities(coreAssignedEvents)
     let allowedRenewalDroppedEntities: AllowedRenewalDropped[] = createAllowedRenewalDroppedEntities(allowedRenewalDroppedEvents)
 
-    await ctx.store.upsert([...accounts.values()])
-    await ctx.store.insert(transfers)
     await ctx.store.insert(historyInitializedEntities)
     await ctx.store.insert(saleInitializedEntities)
     await ctx.store.insert(salesStartedEntities)
