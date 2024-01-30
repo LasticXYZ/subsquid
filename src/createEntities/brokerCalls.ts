@@ -74,27 +74,18 @@ import {
     transformCoreAssignments
 } from './helper'
 
-function createPurchaseCallEntities(transferEvents: TransferEvent[], accounts: Map<string, Account>): Transfer[] {
-    let transfers: [] = []
-    for (let t of transferEvents) {
-        let {id, blockNumber, timestamp, extrinsicHash, amount, fee} = t
-        let from = accounts.get(t.from)
-        let to = accounts.get(t.to)
-        transfers.push(new ({
-            id,
-            blockNumber,
-            timestamp,
-            extrinsicHash,
-            from,
-            to,
-            amount,
-            fee,
-        }))
-    }
-    return transfers
+function createPurchaseCallEntities(calls: PurchaseCall[]): Purchase___[] {
+    return calls.map(call => new Purchase___({
+        id: call.id,
+        blockNumber: call.blockNumber,
+        timestamp: call.timestamp,
+        extrinsicHash: call.extrinsicHash,
+        priceLimit: call.priceLimit
+    }));
 }
 
 
+
 export {
-    createPurchaseCallEntity
+    createPurchaseCallEntities
 }
