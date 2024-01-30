@@ -63,6 +63,7 @@ function getConfigureCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getReserveCalls(ctx: ProcessorContext<Store>) {
@@ -83,6 +84,7 @@ function getReserveCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getUnreserveCalls(ctx: ProcessorContext<Store>) {
@@ -103,6 +105,7 @@ function getUnreserveCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getSetLeaseCalls(ctx: ProcessorContext<Store>) {
@@ -124,6 +127,7 @@ function getSetLeaseCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getStartSalesCalls(ctx: ProcessorContext<Store>) {
@@ -145,6 +149,7 @@ function getStartSalesCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getPurchaseCalls(ctx: ProcessorContext<Store>) {
@@ -165,6 +170,7 @@ function getPurchaseCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getRenewCalls(ctx: ProcessorContext<Store>) {
@@ -185,6 +191,7 @@ function getRenewCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getTransferCalls(ctx: ProcessorContext<Store>) {
@@ -206,6 +213,7 @@ function getTransferCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getPartitionCalls(ctx: ProcessorContext<Store>) {
@@ -226,6 +234,7 @@ function getPartitionCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getInterlaceCalls(ctx: ProcessorContext<Store>) {
@@ -246,6 +255,7 @@ function getInterlaceCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getAssignCalls(ctx: ProcessorContext<Store>) {
@@ -267,6 +277,7 @@ function getAssignCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getPoolCalls(ctx: ProcessorContext<Store>) {
@@ -289,6 +300,7 @@ function getPoolCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 
@@ -311,6 +323,7 @@ function getClaimRevenueCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getPurchaseCreditCalls(ctx: ProcessorContext<Store>) {
@@ -332,6 +345,7 @@ function getPurchaseCreditCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getDropRegionCalls(ctx: ProcessorContext<Store>) {
@@ -351,6 +365,7 @@ function getDropRegionCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getDropContributionCalls(ctx: ProcessorContext<Store>) {
@@ -371,6 +386,7 @@ function getDropContributionCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getDropHistoryCalls(ctx: ProcessorContext<Store>) {
@@ -391,6 +407,7 @@ function getDropHistoryCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getDropRenewalCalls(ctx: ProcessorContext<Store>) {
@@ -412,6 +429,7 @@ function getDropRenewalCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 function getRequestCoreCountCalls(ctx: ProcessorContext<Store>) {
@@ -431,6 +449,7 @@ function getRequestCoreCountCalls(ctx: ProcessorContext<Store>) {
             }
         }
     }
+    return calls;
 }
 
 export {
