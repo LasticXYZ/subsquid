@@ -135,6 +135,7 @@ import {
  } from './getCalls'
 
 import { 
+    createPurchaseCallEntities,
     createHistoryInitializedEntities, 
     createSaleInitializedEntities, 
     createSalesStartedEntities,
@@ -164,7 +165,6 @@ import {
     createCoreAssignedEntities,
     createAllowedRenewalDroppedEntities
  } from './createEntities'
-import { get } from 'http'
 
 processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     // Fetch broker events
@@ -251,6 +251,7 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     //Create entities for broker calls
     let purchaseCallEntities: Purchase[] = createPurchaseCallEntities(purchaseCalls)
 
+    // Insert broker events
     await ctx.store.insert(historyInitializedEntities)
     await ctx.store.insert(saleInitializedEntities)
     await ctx.store.insert(salesStartedEntities)
@@ -279,5 +280,8 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     await ctx.store.insert(claimsReadyEntities)
     await ctx.store.insert(coreAssignedEntities)
     await ctx.store.insert(allowedRenewalDroppedEntities)
+
+    // Insert broker calls
+    await ctx.store.insert(purchaseCallEntities)
 })
 
