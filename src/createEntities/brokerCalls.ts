@@ -87,8 +87,8 @@ function createSetLeaseCallEntities(calls: SetLeaseCall[]): SetLeaseExt[] {
         blockNumber: call.blockNumber,
         timestamp: call.timestamp,
         extrinsicHash: call.extrinsicHash,
-        regionId: convertRegionId(call.regionId),
-        duration: call.duration,
+        task: call.task,
+        until: call.until,
     }));
 }
 
@@ -98,7 +98,7 @@ function createStartSalesCallEntities(calls: StartSalesCall[]): StartSalesExt[] 
         blockNumber: call.blockNumber,
         timestamp: call.timestamp,
         extrinsicHash: call.extrinsicHash,
-        price: call.price,
+        initialPrice: call.initialPrice,
         coreCount: call.coreCount,
     }));
 }
@@ -109,6 +109,8 @@ function createPurchaseCreditCallEntities(calls: PurchaseCreditCall[]): Purchase
         blockNumber: call.blockNumber,
         timestamp: call.timestamp,
         extrinsicHash: call.extrinsicHash,
+        amount: call.amount,
+        beneficiary: call.beneficiary,
     }));
 }
 
@@ -160,7 +162,8 @@ function createAssignCallEntities(calls: AssignCall[]): AssignExt[] {
         blockNumber: call.blockNumber,
         timestamp: call.timestamp,
         regionId: convertRegionId(call.regionId),
-        assignments: transformCoreAssignments(call.assignments),
+        task: call.task,
+        finality: call.finality.toString(),
     }));
 }
 
@@ -169,7 +172,9 @@ function createPoolCallEntities(calls: PoolCall[]): PoolExt[] {
         id: call.id,
         blockNumber: call.blockNumber,
         timestamp: call.timestamp,
-        core: call.core,
+        regionId: convertRegionId(call.regionId),
+        payee: call.payee,
+        finality: call.finality.toString(),
     }));
 }
 
@@ -179,6 +184,7 @@ function createClaimRevenueCallEntities(calls: ClaimRevenueCall[]): ClaimRevenue
         blockNumber: call.blockNumber,
         timestamp: call.timestamp,
         regionId: convertRegionId(call.regionId),
+        maxTimeslices: call.maxTimeslices,
     }));
 }
 
@@ -205,6 +211,7 @@ function createDropHistoryCallEntities(calls: DropHistoryCall[]): DropHistoryExt
         id: call.id,
         blockNumber: call.blockNumber,
         timestamp: call.timestamp,
+        when: call.when,
     }));
 }
 
@@ -213,6 +220,8 @@ function createDropRenewalCallEntities(calls: DropRenewalCall[]): DropRenewalExt
         id: call.id,
         blockNumber: call.blockNumber,
         timestamp: call.timestamp,
+        core: call.core,
+        when: call.when,
     }));
 }
 
