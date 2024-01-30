@@ -112,10 +112,29 @@ import {
     getAllowedRenewalDroppedEvents
 } from './getEvents'
 
-import { getPurchaseCalls } from './getCalls'
+import { 
+    getConfigureCalls,
+    getReserveCalls,
+    getUnreserveCalls,
+    getSetLeaseCalls,
+    getStartSalesCalls,
+    getPurchaseCalls,
+    getRenewCalls,
+    getTransferCalls,
+    getPartitionCalls,
+    getInterlaceCalls,
+    getAssignCalls,
+    getPoolCalls,
+    getClaimRevenueCalls,
+    getPurchaseCreditCalls,
+    getDropRegionCalls,
+    getDropContributionCalls,
+    getDropHistoryCalls,
+    getDropRenewalCalls,
+    getRequestCoreCountCalls,
+ } from './getCalls'
 
 import { 
-    createTransfers, 
     createHistoryInitializedEntities, 
     createSaleInitializedEntities, 
     createSalesStartedEntities,
@@ -179,7 +198,25 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let allowedRenewalDroppedEvents: AllowedRenewalDroppedEvent[] = getAllowedRenewalDroppedEvents(ctx)
 
     // Fetch broker calls
+    let configureCalls: ConfigureCall[] = getConfigureCalls(ctx)
+    let reserveCalls: ReserveCall[] = getReserveCalls(ctx)
+    let unreserveCalls: UnreserveCall[] = getUnreserveCalls(ctx)
+    let setLeaseCalls: SetLeaseCall[] = getSetLeaseCalls(ctx)
+    let startSalesCalls: StartSalesCall[] = getStartSalesCalls(ctx)
     let purchaseCalls: PurchaseCall[] = getPurchaseCalls(ctx)
+    let renewCalls: RenewCall[] = getRenewCalls(ctx)
+    let transferCalls: TransferCall[] = getTransferCalls(ctx)
+    let partitionCalls: PartitionCall[] = getPartitionCalls(ctx)
+    let interlaceCalls: InterlaceCall[] = getInterlaceCalls(ctx)
+    let assignCalls: AssignCall[] = getAssignCalls(ctx)
+    let poolCalls: PoolCall[] = getPoolCalls(ctx)
+    let claimRevenueCalls: ClaimRevenueCall[] = getClaimRevenueCalls(ctx)
+    let purchaseCreditCalls: PurchaseCreditCall[] = getPurchaseCreditCalls(ctx)
+    let dropRegionCalls: DropRegionCall[] = getDropRegionCalls(ctx)
+    let dropContributionCalls: DropContributionCall[] = getDropContributionCalls(ctx)
+    let dropHistoryCalls: DropHistoryCall[] = getDropHistoryCalls(ctx)
+    let dropRenewalCalls: DropRenewalCall[] = getDropRenewalCalls(ctx)
+    let requestCoreCountCalls: RequestCoreCountCall[] = getRequestCoreCountCalls(ctx)
 
     // Create entities for broker events
     let historyInitializedEntities: HistoryInitialized[] = createHistoryInitializedEntities(historyInitializedEvents)
@@ -210,6 +247,9 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let claimsReadyEntities: ClaimsReady[] = createClaimsReadyEntities(claimsReadyEvents)
     let coreAssignedEntities: CoreAssigned[] = createCoreAssignedEntities(coreAssignedEvents)
     let allowedRenewalDroppedEntities: AllowedRenewalDropped[] = createAllowedRenewalDroppedEntities(allowedRenewalDroppedEvents)
+
+    //Create entities for broker calls
+    let purchaseCallEntities: Purchase[] = createPurchaseCallEntities(purchaseCalls)
 
     await ctx.store.insert(historyInitializedEntities)
     await ctx.store.insert(saleInitializedEntities)
