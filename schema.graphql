@@ -262,6 +262,178 @@ type AllowedRenewalDropped @entity {
   core: Int!
 }
 
+
+
+
+type ConfigureExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  config: ConfigRecord!
+}
+
+type ReserveExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  workload: [ScheduleItem!]!
+}
+
+type UnreserveExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  itemIndex: Int!
+}
+
+type SetLeaseExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  task: Int!
+  until: Int!
+}
+
+type StartSalesExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  initialPrice: BigInt!
+  coreCount: Int!
+}
+
+type PurchaseExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  priceLimit: BigInt!
+}
+
+type RenewExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  core: Int!
+}
+
+type TransferExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  regionId: RegionId!
+  newOwner: String!
+}
+
+type PartitionExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  regionId: RegionId!
+  pivot: Int!
+}
+
+type InterlaceExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  regionId: RegionId!
+  pivot: String!
+}
+
+type AssignExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  regionId: RegionId!
+  task: Int!
+  finality: String!
+}
+
+type PoolExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  regionId: RegionId!
+  payee: String!
+  finality: String!
+}
+
+type ClaimRevenueExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  regionId: RegionId!
+  maxTimeslices: Int!
+}
+
+type PurchaseCreditExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  amount: BigInt!
+  beneficiary: String!
+}
+
+type DropRegionExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  regionId: RegionId!
+}
+
+type DropContributionExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  regionId: RegionId!
+}
+
+type DropHistoryExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  when: Int!
+}
+
+type DropRenewalExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  core: Int!
+  when: Int!
+}
+
+type RequestCoreCountExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String @index
+  coreCount: Int!
+}
+
+
+
+
+
+
 type ScheduleItem {
   mask: String!
   assignment: CoreAssignment!
@@ -292,4 +464,15 @@ type RegionId {
 type RegionIdPair {
   first: RegionId!
   second: RegionId!
+}
+
+type ConfigRecord {
+    advanceNotice: Int!,
+    interludeLength: Int!,
+    leadinLength: Int!,
+    regionLength: Int!,
+    idealBulkProportion: Int!,
+    limitCoresOffered: Int,
+    renewalBump: Int!,
+    contributionTimeout: Int!,
 }

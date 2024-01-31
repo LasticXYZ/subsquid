@@ -1,4 +1,4 @@
-import {processor, ProcessorContext} from '../processor'
+import { ProcessorContext } from '../processor'
 import {
     HistoryInitializedEvent,
     SaleInitializedEvent,

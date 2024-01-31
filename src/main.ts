@@ -2,8 +2,6 @@ import {TypeormDatabase, Store} from '@subsquid/typeorm-store'
 
 import {processor, ProcessorContext} from './processor'
 import {
-    Account,
-    Transfer,
     HistoryInitialized,
     SaleInitialized,
     SalesStarted,
@@ -31,10 +29,47 @@ import {
     HistoryIgnored,
     ClaimsReady,
     CoreAssigned,
-    AllowedRenewalDropped
+    AllowedRenewalDropped,
+    ConfigureExt,
+    ReserveExt,
+    UnreserveExt,
+    SetLeaseExt,
+    StartSalesExt,
+    PurchaseExt,
+    RenewExt,
+    TransferExt,
+    PartitionExt,
+    InterlaceExt,
+    AssignExt,
+    PoolExt,
+    ClaimRevenueExt, 
+    PurchaseCreditExt,
+    DropRegionExt,
+    DropContributionExt,
+    DropHistoryExt,
+    DropRenewalExt,
+    RequestCoreCountExt    
 } from './model'
-import { 
-    TransferEvent,
+import {
+    ConfigureCall,
+    ReserveCall,
+    UnreserveCall,
+    SetLeaseCall,
+    StartSalesCall,
+    PurchaseCall,
+    RenewCall,
+    TransferCall,
+    PartitionCall,
+    InterlaceCall,
+    AssignCall,
+    PoolCall,
+    ClaimRevenueCall,
+    PurchaseCreditCall,
+    DropRegionCall,
+    DropContributionCall,
+    DropHistoryCall,
+    DropRenewalCall,
+    RequestCoreCountCall,
     HistoryInitializedEvent, 
     SaleInitializedEvent,
     SalesStartedEvent,
@@ -66,7 +101,6 @@ import {
  } from './interfaces'
 
 import { 
-    getTransferEvents,
     getHistoryInitializedEvents,
     getSaleInitializedEvents, 
     getSalesStartedEvents, 
@@ -98,8 +132,47 @@ import {
 } from './getEvents'
 
 import { 
-    createAccounts, 
-    createTransfers, 
+    getConfigureCalls,
+    getReserveCalls,
+    getUnreserveCalls,
+    getSetLeaseCalls,
+    getStartSalesCalls,
+    getPurchaseCalls,
+    getRenewCalls,
+    getTransferCalls,
+    getPartitionCalls,
+    getInterlaceCalls,
+    getAssignCalls,
+    getPoolCalls,
+    getClaimRevenueCalls,
+    getPurchaseCreditCalls,
+    getDropRegionCalls,
+    getDropContributionCalls,
+    getDropHistoryCalls,
+    getDropRenewalCalls,
+    getRequestCoreCountCalls,
+ } from './getCalls'
+
+import { 
+    createConfigureCallEntities,
+    createReserveCallEntities,
+    createUnreserveCallEntities,
+    createSetLeaseCallEntities,
+    createStartSalesCallEntities,
+    createPurchaseCreditCallEntities,
+    createPurchaseCallEntities,
+    createRenewCallEntities,
+    createTransferCallEntities,
+    createPartitionCallEntities,
+    createInterlaceCallEntities,
+    createAssignCallEntities,
+    createPoolCallEntities,
+    createClaimRevenueCallEntities,
+    createDropRegionCallEntities,
+    createDropContributionCallEntities,
+    createDropHistoryCallEntities,
+    createDropRenewalCallEntities,
+    createRequestCoreCountCallEntities,
     createHistoryInitializedEntities, 
     createSaleInitializedEntities, 
     createSalesStartedEntities,
@@ -131,8 +204,7 @@ import {
  } from './createEntities'
 
 processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
-    let transferEvents: TransferEvent[] = getTransferEvents(ctx)
-
+    // Fetch broker events
     let historyInitializedEvents: HistoryInitializedEvent[] = getHistoryInitializedEvents(ctx)
     let saleInitializedEvents: SaleInitializedEvent[] = getSaleInitializedEvents(ctx)
     let salesStartedEvents: SalesStartedEvent[] = getSalesStartedEvents(ctx)
@@ -162,8 +234,26 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let coreAssignedEvents: CoreAssignedEvent[] = getCoreAssignedEvents(ctx)
     let allowedRenewalDroppedEvents: AllowedRenewalDroppedEvent[] = getAllowedRenewalDroppedEvents(ctx)
 
-    let accounts: Map<string, Account> = await createAccounts(ctx, transferEvents)
-    let transfers: Transfer[] = createTransfers(transferEvents, accounts)
+    // Fetch broker calls
+    let configureCalls: ConfigureCall[] = getConfigureCalls(ctx)
+    let reserveCalls: ReserveCall[] = getReserveCalls(ctx)
+    let unreserveCalls: UnreserveCall[] = getUnreserveCalls(ctx)
+    let setLeaseCalls: SetLeaseCall[] = getSetLeaseCalls(ctx)
+    let startSalesCalls: StartSalesCall[] = getStartSalesCalls(ctx)
+    let purchaseCalls: PurchaseCall[] = getPurchaseCalls(ctx)
+    let renewCalls: RenewCall[] = getRenewCalls(ctx)
+    let transferCalls: TransferCall[] = getTransferCalls(ctx)
+    let partitionCalls: PartitionCall[] = getPartitionCalls(ctx)
+    let interlaceCalls: InterlaceCall[] = getInterlaceCalls(ctx)
+    let assignCalls: AssignCall[] = getAssignCalls(ctx)
+    let poolCalls: PoolCall[] = getPoolCalls(ctx)
+    let claimRevenueCalls: ClaimRevenueCall[] = getClaimRevenueCalls(ctx)
+    let purchaseCreditCalls: PurchaseCreditCall[] = getPurchaseCreditCalls(ctx)
+    let dropRegionCalls: DropRegionCall[] = getDropRegionCalls(ctx)
+    let dropContributionCalls: DropContributionCall[] = getDropContributionCalls(ctx)
+    let dropHistoryCalls: DropHistoryCall[] = getDropHistoryCalls(ctx)
+    let dropRenewalCalls: DropRenewalCall[] = getDropRenewalCalls(ctx)
+    let requestCoreCountCalls: RequestCoreCountCall[] = getRequestCoreCountCalls(ctx)
 
     // Create entities for broker events
     let historyInitializedEntities: HistoryInitialized[] = createHistoryInitializedEntities(historyInitializedEvents)
@@ -195,8 +285,28 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let coreAssignedEntities: CoreAssigned[] = createCoreAssignedEntities(coreAssignedEvents)
     let allowedRenewalDroppedEntities: AllowedRenewalDropped[] = createAllowedRenewalDroppedEntities(allowedRenewalDroppedEvents)
 
-    await ctx.store.upsert([...accounts.values()])
-    await ctx.store.insert(transfers)
+    //Create entities for broker calls
+    let configureCallEntities: ConfigureExt[] = createConfigureCallEntities(configureCalls)
+    let reserveCallEntities: ReserveExt[] = createReserveCallEntities(reserveCalls)
+    let unreserveCallEntities: UnreserveExt[] = createUnreserveCallEntities(unreserveCalls)
+    let setLeaseCallEntities: SetLeaseExt[] = createSetLeaseCallEntities(setLeaseCalls)
+    let startSalesCallEntities: StartSalesExt[] = createStartSalesCallEntities(startSalesCalls)
+    let purchaseCreditCallEntities: PurchaseCreditExt[] = createPurchaseCreditCallEntities(purchaseCreditCalls)
+    let renewCallEntities: RenewExt[] = createRenewCallEntities(renewCalls)
+    let transferCallEntities: TransferExt[] = createTransferCallEntities(transferCalls)
+    let partitionCallEntities: PartitionExt[] = createPartitionCallEntities(partitionCalls)
+    let interlaceCallEntities: InterlaceExt[] = createInterlaceCallEntities(interlaceCalls)
+    let assignCallEntities: AssignExt[] = createAssignCallEntities(assignCalls)
+    let poolCallEntities: PoolExt[] = createPoolCallEntities(poolCalls)
+    let claimRevenueCallEntities: ClaimRevenueExt[] = createClaimRevenueCallEntities(claimRevenueCalls)
+    let dropRegionCallEntities: DropRegionExt[] = createDropRegionCallEntities(dropRegionCalls)
+    let dropContributionCallEntities: DropContributionExt[] = createDropContributionCallEntities(dropContributionCalls)
+    let dropHistoryCallEntities: DropHistoryExt[] = createDropHistoryCallEntities(dropHistoryCalls)
+    let dropRenewalCallEntities: DropRenewalExt[] = createDropRenewalCallEntities(dropRenewalCalls)
+    let requestCoreCountCallEntities: RequestCoreCountExt[] = createRequestCoreCountCallEntities(requestCoreCountCalls)
+    let purchaseCallEntities: PurchaseExt[] = createPurchaseCallEntities(purchaseCalls)
+
+    // Insert broker events
     await ctx.store.insert(historyInitializedEntities)
     await ctx.store.insert(saleInitializedEntities)
     await ctx.store.insert(salesStartedEntities)
@@ -225,5 +335,26 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     await ctx.store.insert(claimsReadyEntities)
     await ctx.store.insert(coreAssignedEntities)
     await ctx.store.insert(allowedRenewalDroppedEntities)
+
+    // Insert broker calls
+    await ctx.store.insert(purchaseCallEntities)
+    await ctx.store.insert(configureCallEntities)
+    await ctx.store.insert(reserveCallEntities)
+    await ctx.store.insert(unreserveCallEntities)
+    await ctx.store.insert(setLeaseCallEntities)
+    await ctx.store.insert(startSalesCallEntities)
+    await ctx.store.insert(purchaseCreditCallEntities)
+    await ctx.store.insert(renewCallEntities)
+    await ctx.store.insert(transferCallEntities)
+    await ctx.store.insert(partitionCallEntities)
+    await ctx.store.insert(interlaceCallEntities)
+    await ctx.store.insert(assignCallEntities)
+    await ctx.store.insert(poolCallEntities)
+    await ctx.store.insert(claimRevenueCallEntities)
+    await ctx.store.insert(dropRegionCallEntities)
+    await ctx.store.insert(dropContributionCallEntities)
+    await ctx.store.insert(dropHistoryCallEntities)
+    await ctx.store.insert(dropRenewalCallEntities)
+    await ctx.store.insert(requestCoreCountCallEntities)
 })
 
