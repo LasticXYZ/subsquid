@@ -43,12 +43,10 @@ import {
     RequestCoreCountCall
 } from '../interfaces'
 
-import {Store} from '@subsquid/typeorm-store'
 import {
     convertRegionId, 
-    convertRegionIds, 
+    convertConfigureRecord, 
     transformScheduleItem, 
-    transformCoreAssignments
 } from './helper'
 
 function createConfigureCallEntities(calls: ConfigureCall[]): ConfigureExt[] {
@@ -57,7 +55,7 @@ function createConfigureCallEntities(calls: ConfigureCall[]): ConfigureExt[] {
         blockNumber: call.blockNumber,
         timestamp: call.timestamp,
         extrinsicHash: call.extrinsicHash,
-        config: call.config,
+        config: convertConfigureRecord(call.config),
     }));
 }
 

@@ -8,7 +8,10 @@ import {
     RegionId as RegionIdFromEvent,
     ScheduleItem as ScheduleItemEvent,
     CoreAssignment as CoreAssignmentEvent,
+    ConfigRecord as ConfigRecordCall,
 } from '../types/v9430'
+import { ConfigureCall } from '../interfaces'
+import { ConfigRecord } from '../model'
 
 function convertRegionId(regionId: RegionIdFromEvent): RegionIdForModel {
     return new RegionIdForModel({
@@ -65,11 +68,25 @@ function convertRegionIds(regionIds: [RegionIdFromEvent, RegionIdFromEvent]): Re
     });
 }
 
+function convertConfigureRecord(config_recod: ConfigRecordCall): ConfigRecord {
+    return new ConfigRecord({
+        advanceNotice: config_recod.advanceNotice,
+        interludeLength: config_recod.interludeLength,
+        leadinLength: config_recod.leadinLength,
+        regionLength: config_recod.regionLength,
+        idealBulkProportion: config_recod.idealBulkProportion,
+        limitCoresOffered: config_recod.limitCoresOffered,
+        renewalBump: config_recod.renewalBump,
+        contributionTimeout: config_recod.contributionTimeout,
+    });
+}
+
 
 export {
     convertRegionId,
     transformCoreAssignment,
     transformScheduleItem,
     transformCoreAssignments,
-    convertRegionIds
+    convertRegionIds,
+    convertConfigureRecord,
 }
