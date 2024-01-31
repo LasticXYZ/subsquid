@@ -50,7 +50,7 @@ function getConfigureCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === configure.name) {
-                const decoded = configure.v9430.decode(call.args);
+                const decoded = configure.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
                 calls.push({
@@ -71,7 +71,7 @@ function getReserveCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === reserve.name) {
-                const decoded = reserve.v9430.decode(call.args);
+                const decoded = reserve.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
                 calls.push({
@@ -92,7 +92,7 @@ function getUnreserveCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === unreserve.name) {
-                const decoded = unreserve.v9430.decode(call.args);
+                const decoded = unreserve.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
                 calls.push({
@@ -113,7 +113,7 @@ function getSetLeaseCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === setLease.name) {
-                const decoded = setLease.v9430.decode(call.args);
+                const decoded = setLease.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
                 calls.push({
@@ -135,7 +135,7 @@ function getStartSalesCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === startSales.name) {
-                const decoded = startSales.v9430.decode(call.args);
+                const decoded = startSales.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
                 calls.push({
@@ -157,7 +157,7 @@ function getPurchaseCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === purchase.name) {
-                const decoded = purchase.v9430.decode(call.args);
+                const decoded = purchase.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
                 calls.push({
@@ -178,7 +178,7 @@ function getRenewCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === renew.name) {
-                const decoded = renew.v9430.decode(call.args);
+                const decoded = renew.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
                 calls.push({
@@ -199,7 +199,7 @@ function getTransferCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === transfer.name) {
-                const decoded = transfer.v9430.decode(call.args);
+                const decoded = transfer.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
                 calls.push({
@@ -221,7 +221,7 @@ function getPartitionCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === partition.name) {
-                const decoded = partition.v9430.decode(call.args);
+                const decoded = partition.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 calls.push({
                     id: call.id,
@@ -242,7 +242,7 @@ function getInterlaceCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === interlace.name) {
-                const decoded = interlace.v9430.decode(call.args);
+                const decoded = interlace.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 calls.push({
                     id: call.id,
@@ -263,7 +263,7 @@ function getAssignCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === assign.name) {
-                const decoded = assign.v9430.decode(call.args);
+                const decoded = assign.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 calls.push({
                     id: call.id,
@@ -285,7 +285,7 @@ function getPoolCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === pool.name) {
-                const decoded = pool.v9430.decode(call.args);
+                const decoded = pool.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 
                 calls.push({
@@ -309,7 +309,7 @@ function getClaimRevenueCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === claimRevenue.name) {
-                const decoded = claimRevenue.v9430.decode(call.args);
+                const decoded = claimRevenue.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 
                 calls.push({
@@ -331,7 +331,7 @@ function getPurchaseCreditCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === purchaseCredit.name) {
-                const decoded = purchaseCredit.v9430.decode(call.args);
+                const decoded = purchaseCredit.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 
                 calls.push({
@@ -353,7 +353,7 @@ function getDropRegionCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === dropRegion.name) {
-                const decoded = dropRegion.v9430.decode(call.args);
+                const decoded = dropRegion.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 
                 calls.push({
@@ -373,7 +373,7 @@ function getDropContributionCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === dropContribution.name) {
-                const decoded = dropContribution.v9430.decode(call.args);
+                const decoded = dropContribution.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 
                 calls.push({
@@ -394,7 +394,7 @@ function getDropHistoryCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === dropHistory.name) {
-                const decoded = dropHistory.v9430.decode(call.args);
+                const decoded = dropHistory.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 
                 calls.push({
@@ -415,7 +415,7 @@ function getDropRenewalCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === dropRenewal.name) {
-                const decoded = dropRenewal.v9430.decode(call.args);
+                const decoded = dropRenewal.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 
                 calls.push({
@@ -437,7 +437,7 @@ function getRequestCoreCountCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === requestCoreCount.name) {
-                const decoded = requestCoreCount.v9430.decode(call.args);
+                const decoded = requestCoreCount.v9430.decode(call);
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                 
                 calls.push({

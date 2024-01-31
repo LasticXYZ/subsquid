@@ -20,7 +20,6 @@ import {
     DropRenewalExt,
     RequestCoreCountExt
 } from '../model'
-import {In} from 'typeorm'
 import {
     ConfigureCall,
     ReserveCall,

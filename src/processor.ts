@@ -27,17 +27,6 @@ export const processor = new SubstrateBatchProcessor()
         }
     })
     .addEvent({
-        name: [events.balances.transfer.name],
-        extrinsic: true
-    })
-    .addEvent({
-        name: [
-            'System.ExtrinsicSuccess',
-            'System.ExtrinsicFailed'
-        ],
-        extrinsic: true
-    })
-    .addEvent({
         name: [
             'Broker.HistoryInitialized',
             'Broker.SaleInitialized',
@@ -69,7 +58,8 @@ export const processor = new SubstrateBatchProcessor()
             'Broker.AllowedRenewalDropped'
 
         ],
-        extrinsic: true
+        call: true,
+        extrinsic: true,
     })
     .setFields({
         event: {
@@ -86,7 +76,7 @@ export const processor = new SubstrateBatchProcessor()
     .setBlockRange({
         // genesis block happens to not have a timestamp, so it's easier
         // to start from 1 in cases when the deployment height is unknown
-        from: 268800
+        from: 268800        // putting this here temporarily to speed up testing
     })
     // Uncomment to disable RPC ingestion and drastically reduce no of RPC calls
     //.useArchiveOnly()
