@@ -150,6 +150,7 @@ function createInterlaceCallEntities(calls: InterlaceCall[]): InterlaceExt[] {
         timestamp: call.timestamp,
         extrinsicHash: call.extrinsicHash,
         regionId: convertRegionId(call.regionId),
+        pivot: call.pivot,
     }));
 }
 
