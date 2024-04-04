@@ -5,7 +5,7 @@ The project indexes code on
 
 ## Summary
 
-- [Quickstart](#quickly-running-the-sample)
+- [Quick Start](#quick-start)
 - [Public archives for Parachains](#public-archives-for-parachains)
 - [Self-hosted archive](#self-hosted-archive)
 - [Development flow](#dev-flow)
