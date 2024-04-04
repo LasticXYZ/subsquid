@@ -5,7 +5,8 @@
     "node": ">=16"
   },
   "scripts": {
-    "build": "rm -rf lib && tsc"
+    "build": "rm -rf lib && tsc",
+    "ctag": "ctags package.json src/* README.md schema.graphql squid.yaml scripts/* commands.json .env run.sh tsconfig.json typegen.json docker-compose.yml "
   },
   "dependencies": {
     "@subsquid/archive-registry": "^3.3.0",

@@ -9,3 +9,6 @@
 /.idea
 
 /db/migrations
+.aider*
+
+./myMetadata.jsonl
