@@ -6,6 +6,8 @@
   },
   "scripts": {
     "build": "rm -rf lib && tsc",
+    "docker:build": "docker build . -t squid-processor",
+    "docker:run": "docker run --rm -e DB_HOST=host.docker.internal --env-file=.env -p 4350:4350 squid-processor",
     "ctag": "ctags package.json src/* README.md schema.graphql squid.yaml scripts/* commands.json .env run.sh tsconfig.json typegen.json docker-compose.yml "
   },
   "dependencies": {
