@@ -35,6 +35,20 @@ After execution, a GraphiQL playground will be accessible at [localhost:4350/gra
 
 ## Development Workflow
 
+## Running with Docker
+
+To run the application using Docker, ensure you have Docker installed and use the following commands:
+
+```bash
+# Build the Docker image
+npm run docker:build
+
+# Run the Docker container
+npm run docker:run
+```
+
+This will start the application and expose it on the port specified in the `.env` file (default is 4350). You can then access the GraphiQL playground at [localhost:4350/graphql](http://localhost:4350/graphql).
+
 ### Defining the Database Schema
 
 Initiate your development by creating the `schema.graphql` file, which outlines your database's schema. This file should contain GraphQL type declarations, annotated with custom directives. For a comprehensive guide on the `schema.graphql` dialect, visit [Subsquid Docs](https://docs.subsquid.io/store/postgres/schema-file/).
