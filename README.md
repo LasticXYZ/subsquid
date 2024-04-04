@@ -1,118 +1,101 @@
 # Squid Indexer for Coretime Chain
 
-Template taken from starter [Squid code](https://subsquid.io).
-The project indexes code on 
+This project utilizes a template from the [Squid starter code](https://subsquid.io) to index code on the Coretime Chain, providing a streamlined process for developers.
 
-## Summary
+## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Quick Start](#quick-start)
-- [Public archives for Parachains](#public-archives-for-parachains)
-- [Self-hosted archive](#self-hosted-archive)
-- [Development flow](#dev-flow)
-  - [Database Schema](#1-define-database-schema)
-  - [Entity classes](#2-generate-typeorm-classes)
-  - [DB migrations](#3-generate-database-migration)
-  - [Typegen for Events, Extrinsics and Storage Calls](#4-generate-typescript-definitions-for-substrate-events-calls-and-storage)
-- [Deploy the Squid](#deploy-the-squid)
-- [Conventions](#project-conventions)
-- [Type Bundles](#types-bundle)
+- [Development Workflow](#development-workflow)
+  - [Defining the Database Schema](#defining-the-database-schema)
+  - [Generating TypeORM Classes](#generating-typeorm-classes)
+  - [Creating Database Migrations](#creating-database-migrations)
+  - [Generating TypeScript Definitions](#generating-typescript-definitions)
+- [Deploying the Squid](#deploying-the-squid)
+- [Project Conventions](#project-conventions)
+- [Type Bundles](#type-bundles)
 
 ## Prerequisites
 
-* node 16.x
-* docker
-* npm -- note that `yarn` package manager is not supported
+Ensure you have the following installed before starting:
+
+- Node.js version 16.x
+- Docker
+- npm (Note: `yarn` package manager is not supported)
 
 ## Quick Start
 
-Example commands below use [sqd](https://docs.subsquid.io/squid-cli/).
-Please [install](https://docs.subsquid.io/squid-cli/installation/) it before proceeding.
+To install dependencies and start the project, use the following command. This script utilizes [sqd](https://docs.subsquid.io/squid-cli/), so please ensure it's [installed](https://docs.subsquid.io/squid-cli/installation/) beforehand.
 
-This command installs the dependencies, starts 
 ```bash
 ./run.sh
 ```
-A GraphiQL playground will be available at [localhost:4350/graphql](http://localhost:4350/graphql).
 
+After execution, a GraphiQL playground will be accessible at [localhost:4350/graphql](http://localhost:4350/graphql).
 
-## Dev flow
+## Development Workflow
 
-### 1. Define database schema
+### Defining the Database Schema
 
-Start development by defining the schema of the target database via `schema.graphql`.
-Schema definition consists of regular graphql type declarations annotated with custom directives.
-Full description of `schema.graphql` dialect is available [here](https://docs.subsquid.io/store/postgres/schema-file/).
+Initiate your development by creating the `schema.graphql` file, which outlines your database's schema. This file should contain GraphQL type declarations, annotated with custom directives. For a comprehensive guide on the `schema.graphql` dialect, visit [Subsquid Docs](https://docs.subsquid.io/store/postgres/schema-file/).
 
-Generate from graphQl with:
+Generate the required code with:
 
 ```sh
 sqd codegen
 ```
 
-### 2. Generate TypeORM classes
+### Generating TypeORM Classes
 
-Mapping developers use [TypeORM](https://typeorm.io) entities
-to interact with the target database during data processing. All necessary entity classes are
-[generated](https://docs.subsquid.io/store/postgres/schema-file/intro/) by the squid framework from `schema.graphql`. This is done by running `npx squid-typeorm-codegen`
-or (equivalently) `sqd codegen` command.
+[TypeORM](https://typeorm.io) entities enable interaction with your database. These entities are generated from the `schema.graphql` file using the Squid framework. Generate entity classes and specVersions with:
 
-Generate specVersions:
 ```sh
+npx squid-typeorm-codegen
 npx substrate-metadata-explorer --rpc ws://localhost:9944 --out myMetadata.jsonl
 ```
 
-See './typegen.json' modify as necessary.
-
-Generate typegen with:
+For custom configurations, modify './typegen.json' as necessary. Then, generate type definitions with:
 
 ```sh
-npx squid-substrate-typegen typegen.json  
-sqd typegen    
+npx squid-substrate-typegen typegen.json
+sqd typegen
 ```
 
-### 3. Generate database migration
+### Creating Database Migrations
 
-All database changes are applied through migration files located at `db/migrations`.
-`squid-typeorm-migration(1)` tool provides several commands to drive the process.
-It is all [TypeORM](https://typeorm.io/#/migrations) under the hood.
+Database changes are managed through migrations found in `db/migrations`. Utilize the `squid-typeorm-migration(1)` tool to facilitate this process, which is built on [TypeORM migrations](https://typeorm.io/#/migrations).
+
+To generate, create, apply, or revert migrations, use the following commands:
 
 ```bash
-# Connect to database, analyze its state and generate migration to match the target schema.
-# The target schema is derived from entity classes generated earlier.
-# Don't forget to compile your entity classes beforehand!
+# Generate a new migration file to match the target schema.
 npx squid-typeorm-migration generate
 
-# Create template file for custom database changes
+# Create a template for manual database alterations.
 npx squid-typeorm-migration create
 
-# Apply database migrations from `db/migrations`
+# Apply pending migrations.
 npx squid-typeorm-migration apply
 
-# Revert the last performed migration
-npx squid-typeorm-migration revert         
+# Revert the most recent migration.
+npx squid-typeorm-migration revert
 ```
-Available `sqd` shortcuts:
-```bash
-# Build the project, remove any old migrations, then run `npx squid-typeorm-migration generate`
-sqd migration:generate
 
-# Run npx squid-typeorm-migration apply
+Simplify migration tasks with `sqd` shortcuts:
+
+```bash
+sqd migration:generate
 sqd migration:apply
 ```
 
-## Project conventions
+## Project Conventions
 
-Squid tools assume a certain project layout.
+The Squid tools adhere to specific project structures for optimal performance:
 
-* All compiled js files must reside in `lib` and all TypeScript sources in `src`. 
-The layout of `lib` must reflect `src`.
-* All TypeORM classes must be exported by `src/model/index.ts` (`lib/model` module).
-* Database schema must be defined in `schema.graphql`.
-* Database migrations must reside in `db/migrations` and must be plain js files.
-* `squid-*(1)` executables consult `.env` file for a number of environment variables.
+- JavaScript compilations should be placed in `lib`, and TypeScript sources in `src`. The `lib` directory should mirror the structure of `src`.
+- Export all TypeORM classes through `src/model/index.ts` (or the `lib/model` module).
+- Define the database schema within `schema.graphql`.
+- Store database migration files in `db/migrations` as plain JavaScript files.
+- Configuration variables are set in the `.env` file, which is used by `squid-*` executables.
 
-See the [full desription](https://docs.subsquid.io/basics/squid-structure/) in the documentation.
-
----
-
-
+For detailed information on project structure and conventions, refer to the [Subsquid Documentation](https://docs.subsquid.io/basics/squid-structure/).
