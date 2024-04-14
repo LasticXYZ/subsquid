@@ -1,32 +1,40 @@
-FROM node:16-alpine as builder
+FROM node:16-alpine AS node
 
-# Create app directory
-WORKDIR /usr/src/app
+FROM node AS node-with-gyp
+RUN apk add g++ make python3
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-RUN npm ci --only=production
-
-# Bundle app source
-COPY . .
-
-# Build the project
+FROM node-with-gyp AS builder
+WORKDIR /squid
+ADD package.json .
+ADD package-lock.json .
+RUN npm ci
+ADD tsconfig.json .
+ADD src src
 RUN npm run build
 
-FROM node:16-alpine
+FROM node-with-gyp AS deps
+WORKDIR /squid
+ADD package.json .
+ADD package-lock.json .
+RUN npm ci --production
 
-# Create app directory
-WORKDIR /usr/src/app
+FROM node AS squid
+WORKDIR /squid
+COPY --from=deps /squid/package.json .
+COPY --from=deps /squid/package-lock.json .
+COPY --from=deps /squid/node_modules node_modules
+COPY --from=builder /squid/lib lib
+ADD db db
+ADD schema.graphql .
+# TODO: use shorter PROMETHEUS_PORT
+ENV PROCESSOR_PROMETHEUS_PORT 3000
+EXPOSE 3000
+EXPOSE 4000
 
-# Install runtime dependencies
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/dist ./dist
-COPY --from=builder /usr/src/app/package*.json ./
 
-# Expose the port the app runs on
-EXPOSE 4350
+FROM squid AS processor
+CMD ["npm", "run", "processor:start"]
 
-# Run the application
-CMD ["npm", "start"]
+
+FROM squid AS query-node
+CMD ["npm", "run", "query-node:start"]

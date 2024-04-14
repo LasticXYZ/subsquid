@@ -7,8 +7,11 @@
   "scripts": {
     "build": "rm -rf lib && tsc",
     "docker:build": "docker build . -t squid-processor",
-    "docker:run": "docker run --rm -e DB_HOST=host.docker.internal --env-file=.env -p 4350:4350 squid-processor",
-    "ctag": "ctags package.json src/* README.md schema.graphql squid.yaml scripts/* commands.json .env run.sh tsconfig.json typegen.json docker-compose.yml "
+    "docker:run": "docker run -d --name squid-processor -e DB_PORT=5432 -p 4000:4000 -v my-app-data:/var/lib/postgresql/data squid-processor",
+    "ctag": "ctags package.json src/* README.md schema.graphql squid.yaml scripts/* commands.json .env run.sh tsconfig.json typegen.json docker-compose.yml ",
+    "processor:start": "node lib/processor.js",
+    "query-node:start": "squid-graphql-server",
+    "db:migrate": "npx sqd db migrate"
   },
   "dependencies": {
     "@subsquid/archive-registry": "^3.3.0",
