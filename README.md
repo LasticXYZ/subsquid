@@ -28,6 +28,8 @@ Ensure you have the following installed before starting:
 To install dependencies and start the project, use the following command. This script utilizes [sqd](https://docs.subsquid.io/squid-cli/), so please ensure it's [installed](https://docs.subsquid.io/squid-cli/installation/) beforehand.
 
 ```bash
+npm install
+npm run build
 ./run.sh
 ```
 
