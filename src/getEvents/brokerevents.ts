@@ -63,6 +63,7 @@ import {
 } from '../types/broker/events'
 
 import {Store} from '@subsquid/typeorm-store'
+import { getChainConfig } from '../const'
 
 // Implement the logic to extract HistoryInitialized events
 function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryInitializedEvent[] {
@@ -151,7 +152,7 @@ function getPurchasedEvents(ctx: ProcessorContext<Store>): PurchasedEvent[] {
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    who: ss58.codec('kusama').encode(decoded.who),
+                    who: ss58.codec(getChainConfig().prefix).encode(decoded.who),
                     regionId: decoded.regionId,
                     price: decoded.price,
                     duration: decoded.duration
@@ -197,7 +198,7 @@ function getRenewedEvents(ctx: ProcessorContext<Store>): RenewedEvent[] {
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    who: ss58.codec('kusama').encode(decoded.who),
+                    who: ss58.codec(getChainConfig().prefix).encode(decoded.who),
                     price: decoded.price,
                     oldCore: decoded.oldCore,
                     core: decoded.core,
@@ -226,8 +227,8 @@ function getTransferredEvents(ctx: ProcessorContext<Store>): TransferredEvent[] 
                     timestamp: new Date(block.header.timestamp),
                     regionId: decoded.regionId,
                     duration: decoded.duration,
-                    oldOwner: ss58.codec('kusama').encode(decoded.oldOwner),
-                    owner: ss58.codec('kusama').encode(decoded.owner)
+                    oldOwner: ss58.codec(getChainConfig().prefix).encode(decoded.oldOwner),
+                    owner: ss58.codec(getChainConfig().prefix).encode(decoded.owner)
                 })
             }
         }
@@ -509,7 +510,7 @@ function getRevenueClaimPaidEvents(ctx: ProcessorContext<Store>): RevenueClaimPa
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    who: ss58.codec('kusama').encode(decoded.who),
+                    who: ss58.codec(getChainConfig().prefix).encode(decoded.who),
                     amount: decoded.amount,
                     next: decoded.next ? decoded.next : null
                 })
@@ -532,8 +533,8 @@ function getCreditPurchasedEvents(ctx: ProcessorContext<Store>): CreditPurchased
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    who: ss58.codec('kusama').encode(decoded.who),
-                    beneficiary: ss58.codec('kusama').encode(decoded.beneficiary),
+                    who: ss58.codec(getChainConfig().prefix).encode(decoded.who),
+                    beneficiary: ss58.codec(getChainConfig().prefix).encode(decoded.beneficiary),
                     amount: decoded.amount
                 })
             }

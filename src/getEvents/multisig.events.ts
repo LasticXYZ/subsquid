@@ -15,6 +15,7 @@ import {
 } from '../types/multisig/events'
 
 import {Store} from '@subsquid/typeorm-store'
+import { getChainConfig } from '../const'
 
 // Implement the logic to extract NewMultisigEvents events
 function getNewMultisigEvents(ctx: ProcessorContext<Store>): newMultisigEvent[] {
@@ -29,8 +30,8 @@ function getNewMultisigEvents(ctx: ProcessorContext<Store>): newMultisigEvent[] 
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    approving: ss58.codec('kusama').encode(decoded.approving),
-                    multisig: ss58.codec('kusama').encode(decoded.multisig),
+                    approving: ss58.codec(getChainConfig().prefix).encode(decoded.approving),
+                    multisig: ss58.codec(getChainConfig().prefix).encode(decoded.multisig),
                     callHash: event.extrinsic?.hash
                 })
             }
@@ -52,7 +53,7 @@ function getMultisigApprovalEvents(ctx: ProcessorContext<Store>): multisigApprov
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    approving: ss58.codec('kusama').encode(decoded.approving),
+                    approving: ss58.codec(getChainConfig().prefix).encode(decoded.approving),
                     timepoint: decoded.timepoint,
                     callHash: event.extrinsic?.hash
                 })
@@ -75,9 +76,9 @@ function getMultisigExecutedEvents(ctx: ProcessorContext<Store>): multisigExecut
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    approving: ss58.codec('kusama').encode(decoded.approving),
+                    approving: ss58.codec(getChainConfig().prefix).encode(decoded.approving),
                     timepoint: decoded.timepoint,
-                    multisig: ss58.codec('kusama').encode(decoded.multisig),
+                    multisig: ss58.codec('rococo').encode(decoded.multisig),
                     callHash: event.extrinsic?.hash,
                     result: decoded.result
                 })
@@ -100,8 +101,10 @@ function getMultisigCancelledEvents(ctx: ProcessorContext<Store>): multisigCance
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    regionId: decoded.regionId,
-                    duration: decoded.duration
+                    cancelling: ss58.codec(getChainConfig().prefix).encode(decoded.cancelling),
+                    timepoint: decoded.timepoint,
+                    multisig: ss58.codec(getChainConfig().prefix).encode(decoded.multisig),
+                    callHash: event.extrinsic?.hash
                 })
             }
         }

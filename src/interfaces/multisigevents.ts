@@ -1,5 +1,8 @@
-import { CoreAssignment, ScheduleItem, Timepoint, RegionId, AccountId32, V3Response } from "../types/v9430"
+import { DispatchError, Timepoint, AccountId32 } from "../types/v9430"
 
+interface ResultType {
+    __kind: string;
+}
 interface newMultisigEvent {
     id: string;
     blockNumber: number;
@@ -26,14 +29,17 @@ interface multisigExecutedEvent {
     timepoint: Timepoint;
     multisig: AccountId32;
     callHash?: string;
-    result: V3Response;
+    result: ResultType;
 }
 
 interface multisigCancelledEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
-    
+    cancelling: AccountId32;
+    timepoint: Timepoint;
+    multisig: AccountId32;
+    callHash?: string;
 }
 
 
