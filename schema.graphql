@@ -1,20 +1,3 @@
-type Account @entity {
-  id: ID! # Account address
-  transfersTo: [Transfer!] @derivedFrom(field: "to")
-  transfersFrom: [Transfer!] @derivedFrom(field: "from")
-}
-
-type Transfer @entity {
-  id: ID!
-  blockNumber: Int! @index
-  timestamp: DateTime! @index
-  extrinsicHash: String @index
-  from: Account!
-  to: Account!
-  amount: BigInt! @index
-  fee: BigInt!
-}
-
 type HistoryInitialized @entity {
   id: ID!
   blockNumber: Int! @index
@@ -475,4 +458,55 @@ type ConfigRecord {
     limitCoresOffered: Int,
     renewalBump: Int!,
     contributionTimeout: Int!,
+}
+
+
+type NewMultisig @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  approving: String! @index
+  multisig: String! @index
+  callHash: String @index
+}
+
+type Timepoint {
+  height: Int!
+  index: Int!
+}
+
+type MultisigApproval @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  approving: String! @index
+  timepoint: Timepoint!
+  callHash: String @index
+}
+
+
+type ResultType {
+  __kind: String!
+}
+
+type MultisigExecuted @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  approving: String! @index
+  timepoint: Timepoint!
+  multisig: String! @index
+  callHash: String @index
+  result: ResultType!
+}
+
+
+type MultisigCancelled @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  cancelling: String! @index
+  timepoint: Timepoint!
+  multisig: String! @index
+  callHash: String @index
 }
