@@ -1,5 +1,5 @@
 {
-  "name": "rococo-coretime",
+  "name": "kusama-coretime",
   "private": true,
   "engines": {
     "node": ">=16"
