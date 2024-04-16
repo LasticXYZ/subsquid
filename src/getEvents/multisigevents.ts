@@ -1,9 +1,9 @@
 import { ProcessorContext } from '../processor'
 import {
-    newMultisigEvent,
-    multisigApprovalEvent,
-    multisigExecutedEvent,
-    multisigCancelledEvent
+    NewMultisigEvent,
+    MultisigApprovalEvent,
+    MultisigExecutedEvent,
+    MultisigCancelledEvent
  } from '../interfaces'
 import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
@@ -18,8 +18,8 @@ import {Store} from '@subsquid/typeorm-store'
 import { getChainConfig } from '../const'
 
 // Implement the logic to extract NewMultisigEvents events
-function getNewMultisigEvents(ctx: ProcessorContext<Store>): newMultisigEvent[] {
-    let events: newMultisigEvent[] = []
+function getNewMultisigEvents(ctx: ProcessorContext<Store>): NewMultisigEvent[] {
+    let events: NewMultisigEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == newMultisig.name) {
@@ -41,8 +41,8 @@ function getNewMultisigEvents(ctx: ProcessorContext<Store>): newMultisigEvent[] 
 }
 
 // Implement the logic to extract MultisigApproval events
-function getMultisigApprovalEvents(ctx: ProcessorContext<Store>): multisigApprovalEvent[] {
-    let events: multisigApprovalEvent[] = []
+function getMultisigApprovalEvents(ctx: ProcessorContext<Store>): MultisigApprovalEvent[] {
+    let events: MultisigApprovalEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == multisigApproval.name) {
@@ -64,8 +64,8 @@ function getMultisigApprovalEvents(ctx: ProcessorContext<Store>): multisigApprov
 }
 
 // Implement the logic to extract MultisigExecuted events
-function getMultisigExecutedEvents(ctx: ProcessorContext<Store>): multisigExecutedEvent[] {
-    let events: multisigExecutedEvent[] = []
+function getMultisigExecutedEvents(ctx: ProcessorContext<Store>): MultisigExecutedEvent[] {
+    let events: MultisigExecutedEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == multisigExecuted.name) {
@@ -89,8 +89,8 @@ function getMultisigExecutedEvents(ctx: ProcessorContext<Store>): multisigExecut
 }
 
 // Implement the logic to extract MultisigCancelled events
-function getMultisigCancelledEvents(ctx: ProcessorContext<Store>): multisigCancelledEvent[] {
-    let events: multisigCancelledEvent[] = []
+function getMultisigCancelledEvents(ctx: ProcessorContext<Store>): MultisigCancelledEvent[] {
+    let events: MultisigCancelledEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == multisigCancelled.name) {
