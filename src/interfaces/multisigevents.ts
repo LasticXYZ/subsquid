@@ -3,7 +3,7 @@ import { DispatchError, Timepoint, AccountId32 } from "../types/v9430"
 interface ResultType {
     __kind: string;
 }
-interface newMultisigEvent {
+interface NewMultisigEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
@@ -12,7 +12,7 @@ interface newMultisigEvent {
     callHash?: string;
 }
 
-interface multisigApprovalEvent {
+interface MultisigApprovalEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
@@ -21,7 +21,7 @@ interface multisigApprovalEvent {
     callHash?: string;
 }
 
-interface multisigExecutedEvent {
+interface MultisigExecutedEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
@@ -32,7 +32,7 @@ interface multisigExecutedEvent {
     result: ResultType;
 }
 
-interface multisigCancelledEvent {
+interface MultisigCancelledEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
@@ -44,8 +44,8 @@ interface multisigCancelledEvent {
 
 
 export {
-    newMultisigEvent,
-    multisigApprovalEvent,
-    multisigExecutedEvent,
-    multisigCancelledEvent
+    NewMultisigEvent,
+    MultisigApprovalEvent,
+    MultisigExecutedEvent,
+    MultisigCancelledEvent
 }

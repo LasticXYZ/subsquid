@@ -1,6 +1,6 @@
-import {TypeormDatabase, Store} from '@subsquid/typeorm-store'
+import {TypeormDatabase} from '@subsquid/typeorm-store'
 
-import {processor, ProcessorContext} from './processor'
+import {processor} from './processor'
 import {
     HistoryInitialized,
     SaleInitialized,
