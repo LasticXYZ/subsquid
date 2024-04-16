@@ -10,8 +10,6 @@ import {
     Extrinsic as _Extrinsic
 } from '@subsquid/substrate-processor'
 
-import {events} from './types'
-
 export const processor = new SubstrateBatchProcessor()
     .setDataSource({
         // Lookup archive by the network name in Subsquid registry
@@ -21,7 +19,7 @@ export const processor = new SubstrateBatchProcessor()
         chain: {
             // Set via .env for local runs or via secrets when deploying to Subsquid Cloud
             // https://docs.subsquid.io/deploy-squid/env-variables/
-            url: 'wss://rococo-coretime-rpc.polkadot.io',
+            url: 'wss://kusama-coretime-rpc.polkadot.io',
             // More RPC connection options at https://docs.subsquid.io/substrate-indexing/setup/general/#set-data-source
             rateLimit: 300
         }
@@ -76,11 +74,11 @@ export const processor = new SubstrateBatchProcessor()
             timestamp: true
         }
     })
-    .setBlockRange({
-        // genesis block happens to not have a timestamp, so it's easier
-        // to start from 1 in cases when the deployment height is unknown
-        from: 268800        // putting this here temporarily to speed up testing
-    })
+    // .setBlockRange({
+    //     // genesis block happens to not have a timestamp, so it's easier
+    //     // to start from 1 in cases when the deployment height is unknown
+    //     from: 268800        // putting this here temporarily to speed up testing
+    // })
     // Uncomment to disable RPC ingestion and drastically reduce no of RPC calls
     //.useArchiveOnly()
 
