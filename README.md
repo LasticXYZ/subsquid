@@ -50,26 +50,23 @@ The Squid tools adhere to specific project structures for optimal performance:
 For detailed information on project structure and conventions, refer to the [Subsquid Documentation](https://docs.subsquid.io/basics/squid-structure/).
 
 
-Generate 
+### Generate types
+Generate specVersions:
 ```sh
 npx substrate-metadata-explorer --rpc wss://rococo-coretime-rpc.polkadot.io --out myMetadata.jsonl
 ```
 
 Generate typegen with:
-
 ```sh
 npx squid-substrate-typegen typegen.json  
 sqd typegen    
 ```
 
-Generate specVersions:
 
 Generate from graphQl with:
-
 ```sh
 sqd codegen
 ```
-
 
 ---
 

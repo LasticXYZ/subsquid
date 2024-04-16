@@ -486,7 +486,7 @@ type MultisigApproval @entity {
 
 
 type ResultType {
-  __kind: String!
+  kind: String!
 }
 
 type MultisigExecuted @entity {
