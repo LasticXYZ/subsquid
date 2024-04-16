@@ -1,6 +1,6 @@
-import {TypeormDatabase, Store} from '@subsquid/typeorm-store'
+import {TypeormDatabase} from '@subsquid/typeorm-store'
 
-import {processor, ProcessorContext} from './processor'
+import {processor} from './processor'
 import {
     HistoryInitialized,
     SaleInitialized,
@@ -48,7 +48,11 @@ import {
     DropContributionExt,
     DropHistoryExt,
     DropRenewalExt,
-    RequestCoreCountExt    
+    RequestCoreCountExt,
+    NewMultisig,
+    MultisigApproval,
+    MultisigExecuted,
+    MultisigCancelled
 } from './model'
 import {
     ConfigureCall,
@@ -97,7 +101,11 @@ import {
     HistoryIgnoredEvent,
     ClaimsReadyEvent,
     CoreAssignedEvent,
-    AllowedRenewalDroppedEvent
+    AllowedRenewalDroppedEvent,
+    NewMultisigEvent,
+    MultisigApprovalEvent,
+    MultisigExecutedEvent,
+    MultisigCancelledEvent
  } from './interfaces'
 
 import { 
@@ -128,7 +136,11 @@ import {
     getHistoryIgnoredEvents,
     getClaimsReadyEvents,
     getCoreAssignedEvents,
-    getAllowedRenewalDroppedEvents
+    getAllowedRenewalDroppedEvents,
+    getNewMultisigEvents,
+    getMultisigApprovalEvents,
+    getMultisigExecutedEvents,
+    getMultisigCancelledEvents
 } from './getEvents'
 
 import { 
@@ -200,7 +212,11 @@ import {
     createHistoryIgnoredEntities,
     createClaimsReadyEntities,
     createCoreAssignedEntities,
-    createAllowedRenewalDroppedEntities
+    createAllowedRenewalDroppedEntities,
+    createNewMultisigntities,
+    createMultisigApprovalEntities,
+    createMultisigExecutedEntities,
+    createMultisigCancelledEntities
  } from './createEntities'
 
 processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
@@ -233,6 +249,12 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let claimsReadyEvents: ClaimsReadyEvent[] = getClaimsReadyEvents(ctx)
     let coreAssignedEvents: CoreAssignedEvent[] = getCoreAssignedEvents(ctx)
     let allowedRenewalDroppedEvents: AllowedRenewalDroppedEvent[] = getAllowedRenewalDroppedEvents(ctx)
+
+    // Fetch multisig events
+    let newMultisigEvents: NewMultisigEvent[] = getNewMultisigEvents(ctx)
+    let multisigApprovalEvents: MultisigApprovalEvent[] = getMultisigApprovalEvents(ctx)
+    let multisigExecutedEvents: MultisigExecutedEvent[] = getMultisigExecutedEvents(ctx)
+    let multisigCancelledEvents: MultisigCancelledEvent[] = getMultisigCancelledEvents(ctx)
 
     // Fetch broker calls
     let configureCalls: ConfigureCall[] = getConfigureCalls(ctx)
@@ -285,6 +307,12 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let coreAssignedEntities: CoreAssigned[] = createCoreAssignedEntities(coreAssignedEvents)
     let allowedRenewalDroppedEntities: AllowedRenewalDropped[] = createAllowedRenewalDroppedEntities(allowedRenewalDroppedEvents)
 
+    // Create entities for multisig events
+    let newMultisigEntities: NewMultisig[] = createNewMultisigntities(newMultisigEvents)
+    let multisigApprovalEntities: MultisigApproval[] = createMultisigApprovalEntities(multisigApprovalEvents)
+    let multisigExecutedEntities: MultisigExecuted[] = createMultisigExecutedEntities(multisigExecutedEvents)
+    let multisigCancelledEntities: MultisigCancelled[] = createMultisigCancelledEntities(multisigCancelledEvents)
+
     //Create entities for broker calls
     let configureCallEntities: ConfigureExt[] = createConfigureCallEntities(configureCalls)
     let reserveCallEntities: ReserveExt[] = createReserveCallEntities(reserveCalls)
@@ -335,6 +363,12 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     await ctx.store.insert(claimsReadyEntities)
     await ctx.store.insert(coreAssignedEntities)
     await ctx.store.insert(allowedRenewalDroppedEntities)
+
+    // Insert multisig events
+    await ctx.store.insert(newMultisigEntities)
+    await ctx.store.insert(multisigApprovalEntities)
+    await ctx.store.insert(multisigExecutedEntities)
+    await ctx.store.insert(multisigCancelledEntities)
 
     // Insert broker calls
     await ctx.store.insert(purchaseCallEntities)

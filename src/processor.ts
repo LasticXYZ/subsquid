@@ -55,8 +55,11 @@ export const processor = new SubstrateBatchProcessor()
             'Broker.HistoryIgnored',
             'Broker.ClaimsReady',
             'Broker.CoreAssigned',
-            'Broker.AllowedRenewalDropped'
-
+            'Broker.AllowedRenewalDropped',
+            'Multisig.NewMultisig',
+            'Multisig.MultisigApproval',
+            'Multisig.MultisigExecuted',
+            'Multisig.MultisigCancelled',
         ],
         call: true,
         extrinsic: true,

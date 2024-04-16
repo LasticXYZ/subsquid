@@ -2,13 +2,11 @@
   "outDir": "src/types",
   "specVersions": "myMetadata.jsonl",
   "pallets": {
-    "Balances": {
-      "events": [
-        "Transfer"
-      ],
-      "calls": [],
+    "Multisig": {
+      "events": true,
+      "calls": true,
       "storage": [],
-      "constants": []
+      "constants": true
     },
     "System": {
       "events": [

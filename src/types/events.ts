@@ -1,3 +1,3 @@
 export * as system from './system/events'
-export * as balances from './balances/events'
+export * as multisig from './multisig/events'
 export * as broker from './broker/events'

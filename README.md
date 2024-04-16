@@ -48,3 +48,34 @@ The Squid tools adhere to specific project structures for optimal performance:
 - Configuration variables are set in the `.env` file, which is used by `squid-*` executables.
 
 For detailed information on project structure and conventions, refer to the [Subsquid Documentation](https://docs.subsquid.io/basics/squid-structure/).
+
+
+### Generate types
+Generate specVersions:
+```sh
+npx substrate-metadata-explorer --rpc wss://rococo-coretime-rpc.polkadot.io --out myMetadata.jsonl
+```
+
+Generate typegen with:
+```sh
+npx squid-substrate-typegen typegen.json  
+sqd typegen    
+```
+
+
+Generate from graphQl with:
+```sh
+sqd codegen
+```
+
+---
+
+Available `sqd` shortcuts:
+```bash
+sqd down
+sqd up 
+sqd migration:generate
+sqd migration:apply
+sqd up
+sqd process
+```

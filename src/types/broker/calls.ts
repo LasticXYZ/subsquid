@@ -272,3 +272,14 @@ export const notifyCoreCount =  {
         })
     ),
 }
+
+export const swapLeases =  {
+    name: 'Broker.swap_leases',
+    v1010000: new CallType(
+        'Broker.swap_leases',
+        sts.struct({
+            id: sts.number(),
+            other: sts.number(),
+        })
+    ),
+}
