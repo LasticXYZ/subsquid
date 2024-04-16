@@ -44,6 +44,7 @@ import {
     dropRenewal,
     requestCoreCount
 } from "../types/broker/calls";
+import { getChainConfig } from "../const";
 
 function getConfigureCalls(ctx: ProcessorContext<Store>) {
     let calls: ConfigureCall[] = [];
