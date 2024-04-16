@@ -1,7 +1,7 @@
 manifestVersion: subsquid.io/v0.1
-name: rococo-coretime
+name: kusama-coretime
 version: 1
-description: Squid for indexing Rococo Coretime by Lastic
+description: Squid for indexing Kusama Coretime by Lastic
 build: 
 deploy:
   addons:
