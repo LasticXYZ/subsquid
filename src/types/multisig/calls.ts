@@ -1,51 +1,52 @@
 import {sts, Block, Bytes, Option, Result, CallType, RuntimeCtx} from '../support'
-import * as v9430 from '../v9430'
-import * as v1005000 from '../v1005000'
-import * as v1005001 from '../v1005001'
-import * as v1007000 from '../v1007000'
-import * as v1009000 from '../v1009000'
-import * as v1010000 from '../v1010000'
+import * as coretimeRococoV9430 from '../coretimeRococoV9430'
+import * as v1002000 from '../v1002000'
+import * as coretimeRococoV1005000 from '../coretimeRococoV1005000'
+import * as coretimeRococoV1005001 from '../coretimeRococoV1005001'
+import * as coretimeRococoV1007000 from '../coretimeRococoV1007000'
+import * as coretimeRococoV1009000 from '../coretimeRococoV1009000'
+import * as coretimeRococoV1010000 from '../coretimeRococoV1010000'
 
 export const asMultiThreshold1 =  {
     name: 'Multisig.as_multi_threshold_1',
     /**
      * See [`Pallet::as_multi_threshold_1`].
      */
-    v9430: new CallType(
+    coretimeRococoV9430: new CallType(
         'Multisig.as_multi_threshold_1',
         sts.struct({
-            otherSignatories: sts.array(() => v9430.AccountId32),
-            call: v9430.Call,
+            otherSignatories: sts.array(() => coretimeRococoV9430.AccountId32),
+            call: coretimeRococoV9430.Call,
         })
     ),
     /**
      * See [`Pallet::as_multi_threshold_1`].
      */
-    v1005000: new CallType(
+    coretimeRococoV1005000: new CallType(
         'Multisig.as_multi_threshold_1',
         sts.struct({
-            otherSignatories: sts.array(() => v1005000.AccountId32),
-            call: v1005000.Call,
+            otherSignatories: sts.array(() => coretimeRococoV1005000.AccountId32),
+            call: coretimeRococoV1005000.Call,
         })
     ),
     /**
      * See [`Pallet::as_multi_threshold_1`].
      */
-    v1005001: new CallType(
+    coretimeRococoV1005001: new CallType(
         'Multisig.as_multi_threshold_1',
         sts.struct({
-            otherSignatories: sts.array(() => v1005001.AccountId32),
-            call: v1005001.Call,
+            otherSignatories: sts.array(() => coretimeRococoV1005001.AccountId32),
+            call: coretimeRococoV1005001.Call,
         })
     ),
     /**
      * See [`Pallet::as_multi_threshold_1`].
      */
-    v1007000: new CallType(
+    coretimeRococoV1007000: new CallType(
         'Multisig.as_multi_threshold_1',
         sts.struct({
-            otherSignatories: sts.array(() => v1007000.AccountId32),
-            call: v1007000.Call,
+            otherSignatories: sts.array(() => coretimeRococoV1007000.AccountId32),
+            call: coretimeRococoV1007000.Call,
         })
     ),
     /**
@@ -62,11 +63,11 @@ export const asMultiThreshold1 =  {
      * ## Complexity
      * O(Z + C) where Z is the length of the call and C its execution weight.
      */
-    v1009000: new CallType(
+    coretimeRococoV1009000: new CallType(
         'Multisig.as_multi_threshold_1',
         sts.struct({
-            otherSignatories: sts.array(() => v1009000.AccountId32),
-            call: v1009000.Call,
+            otherSignatories: sts.array(() => coretimeRococoV1009000.AccountId32),
+            call: coretimeRococoV1009000.Call,
         })
     ),
     /**
@@ -83,11 +84,21 @@ export const asMultiThreshold1 =  {
      * ## Complexity
      * O(Z + C) where Z is the length of the call and C its execution weight.
      */
-    v1010000: new CallType(
+    coretimeRococoV1010000: new CallType(
         'Multisig.as_multi_threshold_1',
         sts.struct({
-            otherSignatories: sts.array(() => v1010000.AccountId32),
-            call: v1010000.Call,
+            otherSignatories: sts.array(() => coretimeRococoV1010000.AccountId32),
+            call: coretimeRococoV1010000.Call,
+        })
+    ),
+    /**
+     * See [`Pallet::as_multi_threshold_1`].
+     */
+    v1002000: new CallType(
+        'Multisig.as_multi_threshold_1',
+        sts.struct({
+            otherSignatories: sts.array(() => v1002000.AccountId32),
+            call: v1002000.Call,
         })
     ),
 }
@@ -97,53 +108,53 @@ export const asMulti =  {
     /**
      * See [`Pallet::as_multi`].
      */
-    v9430: new CallType(
+    coretimeRococoV9430: new CallType(
         'Multisig.as_multi',
         sts.struct({
             threshold: sts.number(),
-            otherSignatories: sts.array(() => v9430.AccountId32),
-            maybeTimepoint: sts.option(() => v9430.Timepoint),
-            call: v9430.Call,
-            maxWeight: v9430.Weight,
+            otherSignatories: sts.array(() => coretimeRococoV9430.AccountId32),
+            maybeTimepoint: sts.option(() => coretimeRococoV9430.Timepoint),
+            call: coretimeRococoV9430.Call,
+            maxWeight: coretimeRococoV9430.Weight,
         })
     ),
     /**
      * See [`Pallet::as_multi`].
      */
-    v1005000: new CallType(
+    coretimeRococoV1005000: new CallType(
         'Multisig.as_multi',
         sts.struct({
             threshold: sts.number(),
-            otherSignatories: sts.array(() => v1005000.AccountId32),
-            maybeTimepoint: sts.option(() => v1005000.Timepoint),
-            call: v1005000.Call,
-            maxWeight: v1005000.Weight,
+            otherSignatories: sts.array(() => coretimeRococoV1005000.AccountId32),
+            maybeTimepoint: sts.option(() => coretimeRococoV1005000.Timepoint),
+            call: coretimeRococoV1005000.Call,
+            maxWeight: coretimeRococoV1005000.Weight,
         })
     ),
     /**
      * See [`Pallet::as_multi`].
      */
-    v1005001: new CallType(
+    coretimeRococoV1005001: new CallType(
         'Multisig.as_multi',
         sts.struct({
             threshold: sts.number(),
-            otherSignatories: sts.array(() => v1005001.AccountId32),
-            maybeTimepoint: sts.option(() => v1005001.Timepoint),
-            call: v1005001.Call,
-            maxWeight: v1005001.Weight,
+            otherSignatories: sts.array(() => coretimeRococoV1005001.AccountId32),
+            maybeTimepoint: sts.option(() => coretimeRococoV1005001.Timepoint),
+            call: coretimeRococoV1005001.Call,
+            maxWeight: coretimeRococoV1005001.Weight,
         })
     ),
     /**
      * See [`Pallet::as_multi`].
      */
-    v1007000: new CallType(
+    coretimeRococoV1007000: new CallType(
         'Multisig.as_multi',
         sts.struct({
             threshold: sts.number(),
-            otherSignatories: sts.array(() => v1007000.AccountId32),
-            maybeTimepoint: sts.option(() => v1007000.Timepoint),
-            call: v1007000.Call,
-            maxWeight: v1007000.Weight,
+            otherSignatories: sts.array(() => coretimeRococoV1007000.AccountId32),
+            maybeTimepoint: sts.option(() => coretimeRococoV1007000.Timepoint),
+            call: coretimeRococoV1007000.Call,
+            maxWeight: coretimeRococoV1007000.Weight,
         })
     ),
     /**
@@ -187,14 +198,14 @@ export const asMulti =  {
      * - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
      *   taken for its lifetime of `DepositBase + threshold * DepositFactor`.
      */
-    v1009000: new CallType(
+    coretimeRococoV1009000: new CallType(
         'Multisig.as_multi',
         sts.struct({
             threshold: sts.number(),
-            otherSignatories: sts.array(() => v1009000.AccountId32),
-            maybeTimepoint: sts.option(() => v1009000.Timepoint),
-            call: v1009000.Call,
-            maxWeight: v1009000.Weight,
+            otherSignatories: sts.array(() => coretimeRococoV1009000.AccountId32),
+            maybeTimepoint: sts.option(() => coretimeRococoV1009000.Timepoint),
+            call: coretimeRococoV1009000.Call,
+            maxWeight: coretimeRococoV1009000.Weight,
         })
     ),
     /**
@@ -238,14 +249,27 @@ export const asMulti =  {
      * - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
      *   taken for its lifetime of `DepositBase + threshold * DepositFactor`.
      */
-    v1010000: new CallType(
+    coretimeRococoV1010000: new CallType(
         'Multisig.as_multi',
         sts.struct({
             threshold: sts.number(),
-            otherSignatories: sts.array(() => v1010000.AccountId32),
-            maybeTimepoint: sts.option(() => v1010000.Timepoint),
-            call: v1010000.Call,
-            maxWeight: v1010000.Weight,
+            otherSignatories: sts.array(() => coretimeRococoV1010000.AccountId32),
+            maybeTimepoint: sts.option(() => coretimeRococoV1010000.Timepoint),
+            call: coretimeRococoV1010000.Call,
+            maxWeight: coretimeRococoV1010000.Weight,
+        })
+    ),
+    /**
+     * See [`Pallet::as_multi`].
+     */
+    v1002000: new CallType(
+        'Multisig.as_multi',
+        sts.struct({
+            threshold: sts.number(),
+            otherSignatories: sts.array(() => v1002000.AccountId32),
+            maybeTimepoint: sts.option(() => v1002000.Timepoint),
+            call: v1002000.Call,
+            maxWeight: v1002000.Weight,
         })
     ),
 }
@@ -255,14 +279,14 @@ export const approveAsMulti =  {
     /**
      * See [`Pallet::approve_as_multi`].
      */
-    v9430: new CallType(
+    coretimeRococoV9430: new CallType(
         'Multisig.approve_as_multi',
         sts.struct({
             threshold: sts.number(),
-            otherSignatories: sts.array(() => v9430.AccountId32),
-            maybeTimepoint: sts.option(() => v9430.Timepoint),
+            otherSignatories: sts.array(() => coretimeRococoV9430.AccountId32),
+            maybeTimepoint: sts.option(() => coretimeRococoV9430.Timepoint),
             callHash: sts.bytes(),
-            maxWeight: v9430.Weight,
+            maxWeight: coretimeRococoV9430.Weight,
         })
     ),
 }
@@ -272,12 +296,12 @@ export const cancelAsMulti =  {
     /**
      * See [`Pallet::cancel_as_multi`].
      */
-    v9430: new CallType(
+    coretimeRococoV9430: new CallType(
         'Multisig.cancel_as_multi',
         sts.struct({
             threshold: sts.number(),
-            otherSignatories: sts.array(() => v9430.AccountId32),
-            timepoint: v9430.Timepoint,
+            otherSignatories: sts.array(() => coretimeRococoV9430.AccountId32),
+            timepoint: coretimeRococoV9430.Timepoint,
             callHash: sts.bytes(),
         })
     ),

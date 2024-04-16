@@ -1,5 +1,5 @@
 {
-  "name": "squid",
+  "name": "rococo-coretime",
   "private": true,
   "engines": {
     "node": ">=16"
