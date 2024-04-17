@@ -1,5 +1,7 @@
+const IDX_CHAIN: string="rococo"
+
 export function getChainConfig() {
-    switch (process.env.IDX_CHAIN) {
+    switch (IDX_CHAIN) {
         case 'rococo':
             return {
                 url: 'wss://rococo-coretime-rpc.polkadot.io',
