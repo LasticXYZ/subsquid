@@ -1,23 +1,13 @@
 import { Call, Timepoint, Weight } from "../types/v9430";
 
-
-interface AsMultiThreshold1Call {
+interface AsMultiCall {
     id: string;
     blockNumber: number;
     timestamp: Date;
     extrinsicHash?: string;
     otherSignatories: string[];
-    call: Call;
-}
-
-interface AsMulti {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
-    extrinsicHash?: string;
-    otherSignatories: string[];
-    maybeTimepoint: Timepoint | null;
-    call: Call;
+    maybeTimepoint?: Timepoint;
+    callHash: string;
     maxWeight: Weight;
 }
 
@@ -33,19 +23,7 @@ interface ApproveAsMultiCall {
     maxWeight: Weight;
 }
 
-interface CancelAsMultiCall {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
-    extrinsicHash?: string;
-    threshold: number;
-    timepoint: Timepoint;
-    callHash: string;
-}
-
 export {
-    AsMultiThreshold1Call,
-    AsMulti,
+    AsMultiCall,
     ApproveAsMultiCall,
-    CancelAsMultiCall
 }

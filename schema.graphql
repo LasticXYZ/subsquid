@@ -511,3 +511,14 @@ type MultisigCancelled @entity {
   multisig: String! @index
   callHash: String @index
 }
+
+
+type AsMultiExt @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  extrinsicHash: String! @index
+  otherSignatories: String[]! @index
+  maybeTimepoint: Timepoint
+  callHash: String! @index;
+}
