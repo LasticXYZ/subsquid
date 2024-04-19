@@ -518,7 +518,7 @@ type AsMultiExt @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   extrinsicHash: String! @index
-  otherSignatories: String[]! @index
+  otherSignatories: [String!]!
   maybeTimepoint: Timepoint
-  callHash: String! @index;
+  callHash: String! @index
 }
