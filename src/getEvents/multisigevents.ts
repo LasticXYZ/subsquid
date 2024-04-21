@@ -78,7 +78,7 @@ function getMultisigExecutedEvents(ctx: ProcessorContext<Store>): MultisigExecut
                     timestamp: new Date(block.header.timestamp),
                     approving: ss58.codec(getChainConfig().prefix).encode(decoded.approving),
                     timepoint: decoded.timepoint,
-                    multisig: ss58.codec('rococo').encode(decoded.multisig),
+                    multisig: ss58.codec(getChainConfig().prefix).encode(decoded.multisig),
                     callHash: event.extrinsic?.hash,
                     result: decoded.result
                 })

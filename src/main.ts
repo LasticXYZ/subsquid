@@ -52,7 +52,7 @@ import {
     NewMultisig,
     MultisigApproval,
     MultisigExecuted,
-    MultisigCancelled
+    MultisigCancelled,
 } from './model'
 import {
     ConfigureCall,
@@ -105,7 +105,7 @@ import {
     NewMultisigEvent,
     MultisigApprovalEvent,
     MultisigExecutedEvent,
-    MultisigCancelledEvent
+    MultisigCancelledEvent,
  } from './interfaces'
 
 import { 
@@ -216,7 +216,7 @@ import {
     createNewMultisigntities,
     createMultisigApprovalEntities,
     createMultisigExecutedEntities,
-    createMultisigCancelledEntities
+    createMultisigCancelledEntities,
  } from './createEntities'
 
 processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
