@@ -53,7 +53,6 @@ import {
     MultisigApproval,
     MultisigExecuted,
     MultisigCancelled,
-    AsMultiExt
 } from './model'
 import {
     ConfigureCall,
@@ -107,7 +106,6 @@ import {
     MultisigApprovalEvent,
     MultisigExecutedEvent,
     MultisigCancelledEvent,
-    AsMultiCall
  } from './interfaces'
 
 import { 
@@ -165,7 +163,6 @@ import {
     getDropHistoryCalls,
     getDropRenewalCalls,
     getRequestCoreCountCalls,
-    getAsMultiCalls
  } from './getCalls'
 
 import { 
@@ -220,7 +217,6 @@ import {
     createMultisigApprovalEntities,
     createMultisigExecutedEntities,
     createMultisigCancelledEntities,
-    createAsMultiCallEntities
  } from './createEntities'
 
 processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
@@ -281,9 +277,6 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let dropRenewalCalls: DropRenewalCall[] = getDropRenewalCalls(ctx)
     let requestCoreCountCalls: RequestCoreCountCall[] = getRequestCoreCountCalls(ctx)
 
-    // Fetch multisig calls
-    let asMultiCalls: AsMultiCall[] = getAsMultiCalls(ctx)
-
     // Create entities for broker events
     let historyInitializedEntities: HistoryInitialized[] = createHistoryInitializedEntities(historyInitializedEvents)
     let saleInitializedEntities: SaleInitialized[] = createSaleInitializedEntities(saleInitializedEvents)
@@ -341,9 +334,6 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     let requestCoreCountCallEntities: RequestCoreCountExt[] = createRequestCoreCountCallEntities(requestCoreCountCalls)
     let purchaseCallEntities: PurchaseExt[] = createPurchaseCallEntities(purchaseCalls)
 
-    //Create entities for multisig calls
-    let asMultiEntities: AsMultiExt[] = createAsMultiCallEntities(asMultiCalls)
-
     // Insert broker events
     await ctx.store.insert(historyInitializedEntities)
     await ctx.store.insert(saleInitializedEntities)
@@ -400,8 +390,5 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     await ctx.store.insert(dropHistoryCallEntities)
     await ctx.store.insert(dropRenewalCallEntities)
     await ctx.store.insert(requestCoreCountCallEntities)
-
-    // Insert multisig calls
-    await ctx.store.insert(asMultiEntities)
 })
 
