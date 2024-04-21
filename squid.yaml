@@ -1,4 +1,4 @@
-manifestVersion: subsquid.io/v0.1
+manifestVersion: subsquid.io/v0.2
 name: rococo-coretime
 version: 1
 description: Squid for indexing Rococo Coretime by Lastic
