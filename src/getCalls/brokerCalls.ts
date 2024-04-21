@@ -453,24 +453,29 @@ function getRequestCoreCountCalls(ctx: ProcessorContext<Store>) {
     return calls;
 }
 
-export {
-    getConfigureCalls,
-    getReserveCalls,
-    getUnreserveCalls,
-    getSetLeaseCalls,
-    getStartSalesCalls,
-    getPurchaseCalls,
-    getRenewCalls,
-    getTransferCalls,
-    getPartitionCalls,
-    getInterlaceCalls,
-    getAssignCalls,
-    getPoolCalls,
-    getClaimRevenueCalls,
-    getPurchaseCreditCalls,
-    getDropRegionCalls,
-    getDropContributionCalls,
-    getDropHistoryCalls,
-    getDropRenewalCalls,
-    getRequestCoreCountCalls,
+
+interface EntityMap {
+    [key: string]: any;
 }
+
+export const brokerCallFetchers: EntityMap = {
+    configure: getConfigureCalls,
+    reserve: getReserveCalls,
+    unreserve: getUnreserveCalls,
+    setLease: getSetLeaseCalls,
+    startSales: getStartSalesCalls,
+    purchase: getPurchaseCalls,
+    renew: getRenewCalls,
+    transfer: getTransferCalls,
+    partition: getPartitionCalls,
+    interlace: getInterlaceCalls,
+    assign: getAssignCalls,
+    pool: getPoolCalls,
+    claimRevenue: getClaimRevenueCalls,
+    purchaseCredit: getPurchaseCreditCalls,
+    dropRegion: getDropRegionCalls,
+    dropContribution: getDropContributionCalls,
+    dropHistory: getDropHistoryCalls,
+    dropRenewal: getDropRenewalCalls,
+    requestCoreCount: getRequestCoreCountCalls,
+};

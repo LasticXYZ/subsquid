@@ -112,11 +112,13 @@ function getMultisigCancelledEvents(ctx: ProcessorContext<Store>): MultisigCance
     return events
 }
 
-
-
-export { 
-    getNewMultisigEvents,
-    getMultisigApprovalEvents,
-    getMultisigExecutedEvents,
-    getMultisigCancelledEvents
+interface EntityMap {
+    [key: string]: any;
 }
+
+export const multisigEventFetchers: EntityMap = {
+    newMultisig: getNewMultisigEvents,
+    multisigApproval: getMultisigApprovalEvents,
+    multisigExecuted: getMultisigExecutedEvents,
+    multisigCancelled: getMultisigCancelledEvents,
+};
