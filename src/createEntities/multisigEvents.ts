@@ -81,10 +81,14 @@ function createMultisigCancelledEntities(events: MultisigCancelledEvent[]): Mult
     }));
 }
 
-
-export {
-    createNewMultisigntities,
-    createMultisigApprovalEntities,
-    createMultisigExecutedEntities,
-    createMultisigCancelledEntities
+interface EntityCreationMap {
+    [key: string]: (items: any[]) => any[];
 }
+
+export const entityMultisigEventCreators: EntityCreationMap = {
+    newMultisig: createNewMultisigntities,
+    multisigApproval: createMultisigApprovalEntities,
+    multisigExecuted: createMultisigExecutedEntities,
+    multisigCancelled: createMultisigCancelledEntities,
+
+};

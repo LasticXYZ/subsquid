@@ -42,6 +42,16 @@ type Purchased @entity {
   duration: Int!
 }
 
+type CoreOwner @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  owner: String!
+  regionId: RegionId!
+  price: BigInt
+  duration: Int!
+}
+
 type Renewable @entity {
   id: ID!
   blockNumber: Int! @index

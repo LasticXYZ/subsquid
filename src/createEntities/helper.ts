@@ -13,6 +13,7 @@ import {
 import { ConfigureCall } from '../interfaces'
 import { ConfigRecord } from '../model'
 
+
 function convertRegionId(regionId: RegionIdFromEvent): RegionIdForModel {
     return new RegionIdForModel({
         begin: regionId.begin,

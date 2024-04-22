@@ -45,7 +45,7 @@ import {
 import {
     convertRegionId, 
     convertConfigureRecord, 
-    transformScheduleItem, 
+    transformScheduleItem,
 } from './helper'
 
 function createConfigureCallEntities(calls: ConfigureCall[]): ConfigureExt[] {
@@ -161,7 +161,7 @@ function createAssignCallEntities(calls: AssignCall[]): AssignExt[] {
         timestamp: call.timestamp,
         regionId: convertRegionId(call.regionId),
         task: call.task,
-        finality: call.finality.toString(),
+        finality: call.finality.__kind.toString(),
     }));
 }
 
@@ -242,24 +242,29 @@ function createPurchaseCallEntities(calls: PurchaseCall[]): PurchaseExt[] {
     }));
 }
 
-export {
-    createConfigureCallEntities,
-    createReserveCallEntities,
-    createPurchaseCallEntities,
-    createUnreserveCallEntities,
-    createSetLeaseCallEntities,
-    createStartSalesCallEntities,
-    createPurchaseCreditCallEntities,
-    createRenewCallEntities,
-    createTransferCallEntities,
-    createPartitionCallEntities,
-    createInterlaceCallEntities,
-    createAssignCallEntities,
-    createPoolCallEntities,
-    createClaimRevenueCallEntities,
-    createDropRegionCallEntities,
-    createDropContributionCallEntities,
-    createDropHistoryCallEntities,
-    createDropRenewalCallEntities,
-    createRequestCoreCountCallEntities
+interface EntityCreationMap {
+    [key: string]: (items: any[]) => any[];
 }
+
+export const entityBrokerCallCreators: EntityCreationMap = {
+    configure: createConfigureCallEntities,
+    reserve: createReserveCallEntities,
+    unreserve: createUnreserveCallEntities,
+    setLease: createSetLeaseCallEntities,
+    startSales: createStartSalesCallEntities,
+    purchase: createPurchaseCallEntities,  
+    renew: createRenewCallEntities,
+    transfer: createTransferCallEntities,
+    partition: createPartitionCallEntities,
+    interlace: createInterlaceCallEntities,
+    assign: createAssignCallEntities,
+    pool: createPoolCallEntities,
+    claimRevenue: createClaimRevenueCallEntities,
+    purchaseCredit: createPurchaseCreditCallEntities,
+    dropRegion: createDropRegionCallEntities,
+    dropContribution: createDropContributionCallEntities,
+    dropHistory: createDropHistoryCallEntities,
+    dropRenewal: createDropRenewalCallEntities,
+    requestCoreCount: createRequestCoreCountCallEntities,
+
+};
