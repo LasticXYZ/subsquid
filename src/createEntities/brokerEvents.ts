@@ -27,11 +27,10 @@ import {
     HistoryIgnored,
     ClaimsReady,
     CoreAssigned,
-    AllowedRenewalDropped
+    AllowedRenewalDropped,
 } from '../model'
 import {In} from 'typeorm'
 import {
-    TransferEvent,
     HistoryInitializedEvent,
     SaleInitializedEvent,
     SalesStartedEvent,
@@ -69,6 +68,7 @@ import {
     transformScheduleItem, 
     transformCoreAssignments
 } from './helper'
+import { RegionId } from '../types/v9430';
 
 function createHistoryInitializedEntities(events: HistoryInitializedEvent[]): HistoryInitialized[] {
     return events.map(event => new HistoryInitialized({
@@ -121,6 +121,7 @@ function createPurchasedEntities(events: PurchasedEvent[]): Purchased[] {
         duration: event.duration
     }));
 }
+
 
 function createRenewableEntities(events: RenewableEvent[]): Renewable[] {
     return events.map(event => new Renewable({
