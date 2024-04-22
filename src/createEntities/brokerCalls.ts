@@ -45,7 +45,7 @@ import {
 import {
     convertRegionId, 
     convertConfigureRecord, 
-    transformScheduleItem, 
+    transformScheduleItem,
 } from './helper'
 
 function createConfigureCallEntities(calls: ConfigureCall[]): ConfigureExt[] {
@@ -161,7 +161,7 @@ function createAssignCallEntities(calls: AssignCall[]): AssignExt[] {
         timestamp: call.timestamp,
         regionId: convertRegionId(call.regionId),
         task: call.task,
-        finality: call.finality.toString(),
+        finality: call.finality.__kind.toString(),
     }));
 }
 

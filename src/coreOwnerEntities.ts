@@ -57,7 +57,7 @@ export async function createCoreOwnerEntities(
                 timestamp: event.timestamp,
                 owner: event.owner,
                 regionId: convertRegionId(event.regionId),
-                price: null, // Assuming transferred events don't have a price
+                price: null,   // transferred events don't have a price
                 duration: event.duration
             });
             await ctx.store.upsert(coreOwner);
@@ -155,7 +155,7 @@ export async function createCoreOwnerEntities(
                 owner: existingCoreRegionId.owner,
                 regionId: convertRegionId(event.newRegionIds[1]),
                 price: existingCoreRegionId.price,
-                duration: 1260 - (event.newRegionIds[1].begin - event.newRegionIds[0].begin)
+                duration: existingCoreRegionId.duration - (event.newRegionIds[1].begin - event.newRegionIds[0].begin)
             });
             await ctx.store.upsert([coreOwner1, coreOwner2]);
 
