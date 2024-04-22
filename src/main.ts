@@ -1,7 +1,6 @@
-import {FindOneOptions, Store, TypeormDatabase} from '@subsquid/typeorm-store'
+import {TypeormDatabase} from '@subsquid/typeorm-store'
 
 import {Fields, processor} from './processor'
-import * as model from './model'
 import * as inter from './interfaces'
 
 import { brokerEventFetchers, multisigEventFetchers } from './getEvents'
@@ -9,9 +8,7 @@ import { brokerEventFetchers, multisigEventFetchers } from './getEvents'
 import {brokerCallFetchers} from './getCalls'
 
 import { entityBrokerEventCreators, entityBrokerCallCreators, entityMultisigEventCreators } from './createEntities'
-import { DataHandlerContext } from '@subsquid/substrate-processor'
-import { convertRegionId } from './createEntities/helper'
-import { FindOptionsWhere } from 'typeorm'
+import { createCoreOwnerEntities } from './coreOwnerEntities'
 
 interface EntityCreationMap {
     [key: string]: (items: any[]) => any[];
@@ -60,62 +57,6 @@ async function batchInsert(ctx: any, ...entitiesArray: any[][]) {
 }
 
 
-async function createCoreOwnerEntities(
-    ctx: DataHandlerContext<Store, Fields>,
-    purchasedEvents: inter.PurchasedEvent[], 
-    transferredEvents: inter.TransferredEvent[]
-) {
-    // Process purchased events and add them to the database
-    const purchasedCores = purchasedEvents.map(event => new model.CoreOwner({
-        id: event.id,
-        blockNumber: event.blockNumber,
-        timestamp: event.timestamp,
-        owner: event.who,
-        regionId: convertRegionId(event.regionId),
-        price: event.price,
-        duration: event.duration
-    }));
-    await ctx.store.upsert(purchasedCores);
-
-    // Process transferred events to update or add new CoreOwner entries
-    for (const event of transferredEvents) {
-        const regionIdForModel = convertRegionId(event.regionId);
-
-        const findOption: FindOptionsWhere<model.CoreOwner> | FindOptionsWhere<model.CoreOwner>[] = { 
-            owner: event.oldOwner,
-            regionId: {
-                begin: regionIdForModel.begin,
-                core: regionIdForModel.core,
-                mask: regionIdForModel.mask
-            }
-        }
-        const existingCoreOwner = await ctx.store.findOne(
-            model.CoreOwner, { where: findOption}
-        );
-
-        if (existingCoreOwner) {
-            // Update existing CoreOwner with new owner
-            existingCoreOwner.timestamp = event.timestamp;
-            existingCoreOwner.blockNumber = event.blockNumber;
-            existingCoreOwner.owner = event.owner;
-            await ctx.store.upsert(existingCoreOwner);
-        } else {
-            // Add new CoreOwner with updated owner
-            const coreOwner = new model.CoreOwner({
-                id: event.id,
-                blockNumber: event.blockNumber,
-                timestamp: event.timestamp,
-                owner: event.owner,
-                regionId: convertRegionId(event.regionId),
-                price: null, // Assuming transferred events don't have a price
-                duration: event.duration
-            });
-            await ctx.store.upsert(coreOwner);
-        }
-    }
-}
-
-
 processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
 
     const allBrokerEvents = fetchAll(brokerEventFetchers, ctx);
@@ -129,7 +70,10 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
     createCoreOwnerEntities(
         ctx,
         allBrokerEvents.purchased as inter.PurchasedEvent[],
-        allBrokerEvents.transferred as inter.TransferredEvent[]
+        allBrokerEvents.transferred as inter.TransferredEvent[],
+        allBrokerEvents.interlaced as inter.InterlacedEvent[],
+        allBrokerEvents.partitioned as inter.PartitionedEvent[],
+        allBrokerEvents.assigned as inter.CoreAssignedEvent[]
     )
 
     // Perform batch insertions
