@@ -134,6 +134,8 @@ async function processPartitionedEvent(ctx: DataHandlerContext<Store, Fields>, e
     console.log(existingCoreRegionIdPart)
 
     if (existingCoreRegionIdPart) {
+        const oldDuration = existingCoreRegionIdPart.duration;
+
         // Change one Region
         existingCoreRegionIdPart.timestamp = event.timestamp;
         existingCoreRegionIdPart.blockNumber = event.blockNumber;
@@ -148,7 +150,7 @@ async function processPartitionedEvent(ctx: DataHandlerContext<Store, Fields>, e
             owner: existingCoreRegionIdPart.owner,
             regionId: convertRegionId(event.newRegionIds[1]),
             price: existingCoreRegionIdPart.price,
-            duration: existingCoreRegionIdPart.duration - (event.newRegionIds[1].begin - event.newRegionIds[0].begin)
+            duration: oldDuration - (event.newRegionIds[1].begin - event.newRegionIds[0].begin)
         });
         await ctx.store.upsert([existingCoreRegionIdPart, coreOwner2Part]);
     }
