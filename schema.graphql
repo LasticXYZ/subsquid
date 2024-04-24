@@ -29,7 +29,7 @@ type SalesStarted @entity {
   timestamp: DateTime! @index
   extrinsicHash: String @index
   price: BigInt!
-  coreCount: Int!
+  coreCount: Int
 }
 
 type Purchased @entity {
@@ -125,14 +125,14 @@ type CoreCountRequested @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  coreCount: Int!
+  coreCount: Int
 }
 
 type CoreCountChanged @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  coreCount: Int!
+  coreCount: Int
 }
 
 type ReservationMade @entity {
