@@ -57,6 +57,19 @@ interface PurchasedEvent {
     duration: number;
 }
 
+interface CoreOwnerEvent {
+    id: string;
+    blockNumber: number;
+    timestamp: Date;
+    owner: string;
+    regionId: RegionId;
+    price?: bigint | null;
+    duration: number;
+    pooled: boolean;
+    assigned: boolean;
+    task: number | null;
+}
+
 interface RenewableEvent {
     id: string;
     blockNumber: number;
@@ -268,6 +281,7 @@ export {
     SaleInitializedEvent,
     SalesStartedEvent,
     PurchasedEvent,
+    CoreOwnerEvent,
     RenewableEvent,
     RenewedEvent,
     TransferredEvent,

@@ -29,7 +29,7 @@ type SalesStarted @entity {
   timestamp: DateTime! @index
   extrinsicHash: String @index
   price: BigInt!
-  coreCount: Int!
+  coreCount: Int
 }
 
 type Purchased @entity {
@@ -40,6 +40,19 @@ type Purchased @entity {
   regionId: RegionId!
   price: BigInt!
   duration: Int!
+}
+
+type CoreOwner @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  owner: String!
+  regionId: RegionId!
+  price: BigInt
+  duration: Int!
+  pooled: Boolean! @index
+  assigned: Boolean! @index
+  task: Int
 }
 
 type Renewable @entity {
@@ -112,14 +125,14 @@ type CoreCountRequested @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  coreCount: Int!
+  coreCount: Int
 }
 
 type CoreCountChanged @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  coreCount: Int!
+  coreCount: Int
 }
 
 type ReservationMade @entity {

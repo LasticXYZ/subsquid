@@ -27,11 +27,10 @@ import {
     HistoryIgnored,
     ClaimsReady,
     CoreAssigned,
-    AllowedRenewalDropped
+    AllowedRenewalDropped,
 } from '../model'
 import {In} from 'typeorm'
 import {
-    TransferEvent,
     HistoryInitializedEvent,
     SaleInitializedEvent,
     SalesStartedEvent,
@@ -69,6 +68,7 @@ import {
     transformScheduleItem, 
     transformCoreAssignments
 } from './helper'
+import { RegionId } from '../types/v9430';
 
 function createHistoryInitializedEntities(events: HistoryInitializedEvent[]): HistoryInitialized[] {
     return events.map(event => new HistoryInitialized({
@@ -121,6 +121,7 @@ function createPurchasedEntities(events: PurchasedEvent[]): Purchased[] {
         duration: event.duration
     }));
 }
+
 
 function createRenewableEntities(events: RenewableEvent[]): Renewable[] {
     return events.map(event => new Renewable({
@@ -371,33 +372,37 @@ function createAllowedRenewalDroppedEntities(events: AllowedRenewalDroppedEvent[
     }));
 }
 
-export {
-    createHistoryInitializedEntities, 
-    createSaleInitializedEntities, 
-    createSalesStartedEntities,
-    createPurchasedEntities,
-    createRenewableEntities,
-    createRenewedEntities,
-    createTransferredEntities,
-    createPartitionedEntities,
-    createInterlacedEntities,
-    createAssignedEntities,
-    createPooledEntities,
-    createCoreCountRequestedEntities,
-    createCoreCountChangedEntities,
-    createReservationMadeEntities,
-    createReservationCancelledEntities,
-    createLeasedEntities,
-    createLeaseEndingEntities,
-    createRevenueClaimBegunEntities,
-    createRevenueClaimItemEntities,
-    createRevenueClaimPaidEntities,
-    createCreditPurchasedEntities,
-    createRegionDroppedEntities,
-    createContributionDroppedEntities,
-    createHistoryDroppedEntities,
-    createHistoryIgnoredEntities,
-    createClaimsReadyEntities,
-    createCoreAssignedEntities,
-    createAllowedRenewalDroppedEntities
+interface EntityCreationMap {
+    [key: string]: (items: any[]) => any[];
 }
+
+export const entityBrokerEventCreators: EntityCreationMap = {
+    historyInitialized: createHistoryInitializedEntities,
+    saleInitialized: createSaleInitializedEntities,
+    salesStarted: createSalesStartedEntities,
+    purchased: createPurchasedEntities,
+    renewable: createRenewableEntities,
+    renewed: createRenewedEntities,
+    transferred: createTransferredEntities,
+    partitioned: createPartitionedEntities,
+    interlaced: createInterlacedEntities,
+    assigned: createAssignedEntities,
+    pooled: createPooledEntities,
+    coreCountRequested: createCoreCountRequestedEntities,
+    coreCountChanged: createCoreCountChangedEntities,
+    reservationMade: createReservationMadeEntities,
+    reservationCancelled: createReservationCancelledEntities,
+    leased: createLeasedEntities,
+    leaseEnding: createLeaseEndingEntities,
+    revenueClaimBegun: createRevenueClaimBegunEntities,
+    revenueClaimItem: createRevenueClaimItemEntities,
+    revenueClaimPaid: createRevenueClaimPaidEntities,
+    creditPurchased: createCreditPurchasedEntities,
+    regionDropped: createRegionDroppedEntities,
+    contributionDropped: createContributionDroppedEntities,
+    historyDropped: createHistoryDroppedEntities,
+    historyIgnored: createHistoryIgnoredEntities,
+    claimsReady: createClaimsReadyEntities,
+    coreAssigned: createCoreAssignedEntities,
+    allowedRenewalDropped: createAllowedRenewalDroppedEntities,
+};

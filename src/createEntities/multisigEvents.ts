@@ -27,10 +27,10 @@ function convertResultType(result: ResultType): ResultEntity {
     });
 }
 
-function convertTimepoint(timepoint: TimepointType): Timepoint {
+export function convertTimepoint(timepoint?: TimepointType): Timepoint {
     return new Timepoint({
-        height: timepoint.height,
-        index: timepoint.index
+        height: timepoint?.height,
+        index: timepoint?.index
     });
 }
 
@@ -81,10 +81,14 @@ function createMultisigCancelledEntities(events: MultisigCancelledEvent[]): Mult
     }));
 }
 
-
-export {
-    createNewMultisigntities,
-    createMultisigApprovalEntities,
-    createMultisigExecutedEntities,
-    createMultisigCancelledEntities
+interface EntityCreationMap {
+    [key: string]: (items: any[]) => any[];
 }
+
+export const entityMultisigEventCreators: EntityCreationMap = {
+    newMultisig: createNewMultisigntities,
+    multisigApproval: createMultisigApprovalEntities,
+    multisigExecuted: createMultisigExecutedEntities,
+    multisigCancelled: createMultisigCancelledEntities,
+
+};

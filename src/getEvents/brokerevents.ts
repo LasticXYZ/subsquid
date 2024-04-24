@@ -27,7 +27,7 @@ import {
     HistoryIgnoredEvent,
     ClaimsReadyEvent,
     CoreAssignedEvent,
-    AllowedRenewalDroppedEvent
+    AllowedRenewalDroppedEvent,
  } from '../interfaces'
 import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
@@ -699,34 +699,38 @@ function getAllowedRenewalDroppedEvents(ctx: ProcessorContext<Store>): AllowedRe
     return events
 }
 
-
-export { 
-    getHistoryInitializedEvents,
-    getSaleInitializedEvents, 
-    getSalesStartedEvents, 
-    getPurchasedEvents,
-    getRenewableEvents,
-    getRenewedEvents,
-    getTransferredEvents,
-    getPartitionedEvents,
-    getInterlacedEvents,
-    getAssignedEvents,
-    getPooledEvents,
-    getCoreCountRequestedEvents,
-    getCoreCountChangedEvents,
-    getReservationMadeEvents,
-    getReservationCancelledEvents,
-    getLeasedEvents,
-    getLeaseEndingEvents,
-    getRevenueClaimBegunEvents,
-    getRevenueClaimItemEvents,
-    getRevenueClaimPaidEvents,
-    getCreditPurchasedEvents,
-    getRegionDroppedEvents,
-    getContributionDroppedEvents,
-    getHistoryDroppedEvents,
-    getHistoryIgnoredEvents,
-    getClaimsReadyEvents,
-    getCoreAssignedEvents,
-    getAllowedRenewalDroppedEvents
+interface EntityMap {
+    [key: string]: any;
 }
+
+
+export const brokerEventFetchers: EntityMap = {
+    historyInitialized: getHistoryInitializedEvents,
+    saleInitialized: getSaleInitializedEvents,
+    salesStarted: getSalesStartedEvents,
+    purchased: getPurchasedEvents,
+    renewable: getRenewableEvents,
+    renewed: getRenewedEvents,
+    transferred: getTransferredEvents,
+    partitioned: getPartitionedEvents,
+    interlaced: getInterlacedEvents,
+    assigned: getAssignedEvents,
+    pooled: getPooledEvents,
+    coreCountRequested: getCoreCountRequestedEvents,
+    coreCountChanged: getCoreCountChangedEvents,
+    reservationMade: getReservationMadeEvents,
+    reservationCancelled: getReservationCancelledEvents,
+    leased: getLeasedEvents,
+    leaseEnding: getLeaseEndingEvents,
+    revenueClaimBegun: getRevenueClaimBegunEvents,
+    revenueClaimItem: getRevenueClaimItemEvents,
+    revenueClaimPaid: getRevenueClaimPaidEvents,
+    creditPurchased: getCreditPurchasedEvents,
+    regionDropped: getRegionDroppedEvents,
+    contributionDropped: getContributionDroppedEvents,
+    historyDropped: getHistoryDroppedEvents,
+    historyIgnored: getHistoryIgnoredEvents,
+    claimsReady: getClaimsReadyEvents,
+    coreAssigned: getCoreAssignedEvents,
+    allowedRenewalDropped: getAllowedRenewalDroppedEvents,
+};
