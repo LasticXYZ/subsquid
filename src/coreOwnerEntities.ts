@@ -34,6 +34,7 @@ export async function createCoreOwnerEntities(
         await processPartitionedEvent(ctx, event);
     }
 
+    // Process assigned and pooled events to update CoreOwner entries
     for (const event of assignedEvents) {
         await processAssignedEvent(ctx, event);
     }
@@ -107,8 +108,8 @@ async function processInterlacedEvent(ctx: DataHandlerContext<Store, Fields>, ev
       }}
     );
 
-    console.log("Interlaced Event")
-    console.log(existingCoreRegionId)
+    // console.log("Interlaced Event")
+    // console.log(existingCoreRegionId)
 
     if (existingCoreRegionId) {
         // Change one Region
@@ -145,8 +146,8 @@ async function processPartitionedEvent(ctx: DataHandlerContext<Store, Fields>, e
         }}
     );
 
-    console.log("Partitioned Event")
-    console.log(existingCoreRegionIdPart)
+    // console.log("Partitioned Event")
+    // console.log(existingCoreRegionIdPart)
 
     if (existingCoreRegionIdPart) {
         const oldDuration = existingCoreRegionIdPart.duration;
