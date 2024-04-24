@@ -28,7 +28,6 @@ import {
     ClaimsReadyEvent,
     CoreAssignedEvent,
     AllowedRenewalDroppedEvent,
-    CoreOwnerEvent
  } from '../interfaces'
 import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
@@ -163,59 +162,6 @@ function getPurchasedEvents(ctx: ProcessorContext<Store>): PurchasedEvent[] {
     }
     return events
 }
-
-// // This function is used to track the current owner of a core by regionId
-// // Depending on the event it changes the owner of the core
-// function getCoreOwnerEvents(ctx: ProcessorContext<Store>): CoreOwnerEvent[] {
-//     let events: CoreOwnerEvent[] = []
-//     let coreMap = new Map(); // Map to track core ownership by regionId
-    
-//     for (let block of ctx.blocks) {
-//         for (let event of block.events) {
-//             let decoded;
-//             if (event.name == purchased.name) {
-//                 decoded = purchased.v9430.decode(event) // adjust with actual decoder
-//                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
-                
-//                 const newEvent = {
-//                     id: event.id,
-//                     blockNumber: block.header.height,
-//                     timestamp: new Date(block.header.timestamp),
-//                     owner: ss58.codec(getChainConfig().prefix).encode(decoded.who),
-//                     regionId: decoded.regionId,
-//                     price: decoded.price,
-//                     duration: decoded.duration
-//                 }
-
-//                 events.push(newEvent);
-//                 coreMap.set(decoded.regionId, newEvent);
-//             }
-//             if (event.name == transferred.name) {
-//                 const decoded = transferred.v9430.decode(event) // adjust with actual decoder
-//                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
-                
-//                 // Check if core already exists and update owner
-//                 if (coreMap.has(decoded.regionId)) {
-//                     const existingEvent = coreMap.get(decoded.regionId);
-//                     existingEvent.owner = ss58.codec(getChainConfig().prefix).encode(decoded.owner);
-//                 } else {
-//                     // If the core is not found, create a new event (this should not happen in a well-formed data set)
-//                     const newEvent = {
-//                         id: event.id,
-//                         blockNumber: block.header.height,
-//                         timestamp: new Date(block.header.timestamp),
-//                         owner: ss58.codec(getChainConfig().prefix).encode(decoded.owner),
-//                         regionId: decoded.regionId,
-//                         duration: decoded.duration
-//                     };
-//                     events.push(newEvent);
-//                     coreMap.set(decoded.regionId, newEvent);
-//                 }
-//             }
-//         }
-//     }
-//     return events
-// }
 
 function getRenewableEvents(ctx: ProcessorContext<Store>): RenewableEvent[] {
     let events: RenewableEvent[] = []

@@ -65,6 +65,7 @@ interface CoreOwnerEvent {
     regionId: RegionId;
     price?: bigint | null;
     duration: number;
+    task: number | false;
 }
 
 interface RenewableEvent {

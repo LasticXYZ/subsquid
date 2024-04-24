@@ -22,17 +22,7 @@ export class CoreOwner {
     @Column_("text", {nullable: false})
     owner!: string
 
-    @Column_("jsonb", {
-        transformer: {
-            to: (regionId: RegionId) => ({
-                begin: regionId.begin,
-                core: regionId.core,
-                mask: regionId.mask
-            }), 
-            from: (json: any) => new RegionId(json)
-        },
-        nullable: false
-    })    
+    @Column_("jsonb", {transformer: {to: obj => obj.toJSON(), from: obj => obj == null ? undefined : new RegionId(undefined, obj)}, nullable: false})
     regionId!: RegionId
 
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
@@ -40,4 +30,11 @@ export class CoreOwner {
 
     @Column_("int4", {nullable: false})
     duration!: number
+
+    @Index_()
+    @Column_("bool", {nullable: false})
+    assigned!: boolean
+
+    @Column_("int4", {nullable: true})
+    task!: number | undefined | null
 }
