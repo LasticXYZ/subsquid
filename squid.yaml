@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: rococo-coretime
-version: 3
+version: 4
 description: Squid for indexing Rococo Coretime by Lastic
 build: 
 deploy:
