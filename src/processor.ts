@@ -77,9 +77,9 @@ export const processor = new SubstrateBatchProcessor()
     .setBlockRange({
         // genesis block happens to not have a timestamp, so it's easier
         // to start from 1 in cases when the deployment height is unknown
-        // 268800 for Rococo
-        // 22792000 for Kusama
-        from: 22792000        // putting this here temporarily to speed up testing
+        // 268800 for Rococo Coretime
+        // 1000000 for Kusama
+        from: 100000        // putting this here temporarily to speed up testing
     })
     // Uncomment to disable RPC ingestion and drastically reduce no of RPC calls
     //.useArchiveOnly()

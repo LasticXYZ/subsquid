@@ -15,7 +15,7 @@ import {
     MultisigCancelledEvent
 } from '../interfaces'
 
-import { Timepoint as TimepointType } from "../types/coretimeRococoV9430"
+import { Timepoint as TimepointType } from "../types/v1002000"
 
 interface ResultType {
     __kind: string;
