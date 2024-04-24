@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: kusama-coretime
-version: 1
+version: 2
 description: Squid for indexing Kusama Coretime by Lastic
 build: 
 deploy:

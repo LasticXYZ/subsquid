@@ -1,15 +1,15 @@
 import {sts, Block, Bytes, Option, Result, EventType, RuntimeCtx} from '../support'
-import * as coretimeRococoV9430 from '../coretimeRococoV9430'
+import * as v1002000 from '../v1002000'
 
 export const extrinsicSuccess =  {
     name: 'System.ExtrinsicSuccess',
     /**
      * An extrinsic completed successfully.
      */
-    coretimeRococoV9430: new EventType(
+    v1002000: new EventType(
         'System.ExtrinsicSuccess',
         sts.struct({
-            dispatchInfo: coretimeRococoV9430.DispatchInfo,
+            dispatchInfo: v1002000.DispatchInfo,
         })
     ),
 }
@@ -19,11 +19,11 @@ export const extrinsicFailed =  {
     /**
      * An extrinsic failed.
      */
-    coretimeRococoV9430: new EventType(
+    v1002000: new EventType(
         'System.ExtrinsicFailed',
         sts.struct({
-            dispatchError: coretimeRococoV9430.DispatchError,
-            dispatchInfo: coretimeRococoV9430.DispatchInfo,
+            dispatchError: v1002000.DispatchError,
+            dispatchInfo: v1002000.DispatchInfo,
         })
     ),
 }
