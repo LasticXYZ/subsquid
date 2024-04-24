@@ -22,14 +22,28 @@ export class CoreOwner {
     @Column_("text", {nullable: false})
     owner!: string
 
-    @Column_("jsonb", {transformer: {to: obj => obj.toJSON(), from: obj => obj == null ? undefined : new RegionId(undefined, obj)}, nullable: false})
+    @Column_("jsonb", {
+        transformer: {
+            to: (regionId: RegionId) => ({
+                begin: regionId.begin,
+                core: regionId.core,
+                mask: regionId.mask
+            }), 
+            from: (json: any) => new RegionId(json)
+        },
+        nullable: false
+    })    
     regionId!: RegionId
-
+    
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
     price!: bigint | undefined | null
 
     @Column_("int4", {nullable: false})
     duration!: number
+
+    @Index_()
+    @Column_("bool", {nullable: false})
+    pooled!: boolean
 
     @Index_()
     @Column_("bool", {nullable: false})

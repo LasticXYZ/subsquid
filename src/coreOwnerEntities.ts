@@ -12,7 +12,8 @@ export async function createCoreOwnerEntities(
     transferredEvents: inter.TransferredEvent[],
     interlacedEvents: inter.InterlacedEvent[],
     partitionedEvents: inter.PartitionedEvent[],
-    assignedEvents: inter.CoreAssignedEvent[],
+    assignedEvents: inter.AssignedEvent[],
+    pooledEvents: inter.PooledEvent[]
 ) {
     // Process purchased events and add them to the database
     const purchasedCores = purchasedEvents.map(event => createCoreOwnerFromEvent(event));
@@ -32,6 +33,14 @@ export async function createCoreOwnerEntities(
     for (const event of partitionedEvents) {
         await processPartitionedEvent(ctx, event);
     }
+
+    for (const event of assignedEvents) {
+        await processAssignedEvent(ctx, event);
+    }
+
+    for (const event of pooledEvents) {
+        await processPooledEvent(ctx, event);
+    }
 }
 
 function createCoreOwnerFromEvent(event: inter.PurchasedEvent): model.CoreOwner {
@@ -42,7 +51,9 @@ function createCoreOwnerFromEvent(event: inter.PurchasedEvent): model.CoreOwner 
         owner: event.who,
         regionId: convertRegionId(event.regionId),
         price: event.price,
-        duration: event.duration
+        duration: event.duration,
+        assigned: false,
+        pooled: false
     });
 }
 
@@ -75,7 +86,9 @@ async function processTransferredEvent(ctx: DataHandlerContext<Store, Fields>, e
             owner: event.owner,
             regionId: convertRegionId(event.regionId),
             price: null,   // transferred events don't have a price
-            duration: event.duration
+            duration: event.duration,
+            assigned: false,
+            pooled: false
         });
         await ctx.store.upsert(coreOwner);
     }
@@ -111,7 +124,9 @@ async function processInterlacedEvent(ctx: DataHandlerContext<Store, Fields>, ev
             owner: existingCoreRegionId.owner,
             regionId: convertRegionId(event.newRegionIds[1]),
             price: existingCoreRegionId.price,
-            duration: existingCoreRegionId.duration
+            duration: existingCoreRegionId.duration,
+            assigned: false,
+            pooled: false
         });
         await ctx.store.upsert([existingCoreRegionId, coreOwner2]);
     }
@@ -150,8 +165,57 @@ async function processPartitionedEvent(ctx: DataHandlerContext<Store, Fields>, e
             owner: existingCoreRegionIdPart.owner,
             regionId: convertRegionId(event.newRegionIds[1]),
             price: existingCoreRegionIdPart.price,
-            duration: oldDuration - (event.newRegionIds[1].begin - event.newRegionIds[0].begin)
+            duration: oldDuration - (event.newRegionIds[1].begin - event.newRegionIds[0].begin),
+            assigned: false,
+            pooled: false
         });
         await ctx.store.upsert([existingCoreRegionIdPart, coreOwner2Part]);
+    }
+}
+
+async function processAssignedEvent(ctx: DataHandlerContext<Store, Fields>, event: inter.AssignedEvent) {
+    const regionIdForModel = convertRegionId(event.regionId);
+
+    const findOption: FindOptionsWhere<model.CoreOwner> = {
+        regionId: {
+            begin: regionIdForModel.begin,
+            core: regionIdForModel.core,
+            mask: regionIdForModel.mask
+        }
+    };
+
+    const existingCoreOwner = await ctx.store.findOne(model.CoreOwner, { where: findOption });
+
+    if (existingCoreOwner) {
+        // Update existing CoreOwner with new owner
+        existingCoreOwner.timestamp = event.timestamp;
+        existingCoreOwner.blockNumber = event.blockNumber;
+        existingCoreOwner.duration = event.duration;
+        existingCoreOwner.assigned = true;
+        existingCoreOwner.task = event.task;
+        await ctx.store.upsert(existingCoreOwner);
+    }
+}
+
+async function processPooledEvent(ctx: DataHandlerContext<Store, Fields>, event: inter.PooledEvent) {
+    const regionIdForModel = convertRegionId(event.regionId);
+
+    const findOption: FindOptionsWhere<model.CoreOwner> = {
+        regionId: {
+            begin: regionIdForModel.begin,
+            core: regionIdForModel.core,
+            mask: regionIdForModel.mask
+        }
+    };
+
+    const existingCoreOwner = await ctx.store.findOne(model.CoreOwner, { where: findOption });
+
+    if (existingCoreOwner) {
+        // Update existing CoreOwner with new owner
+        existingCoreOwner.timestamp = event.timestamp;
+        existingCoreOwner.blockNumber = event.blockNumber;
+        existingCoreOwner.duration = event.duration;
+        existingCoreOwner.pooled = true;
+        await ctx.store.upsert(existingCoreOwner);
     }
 }
