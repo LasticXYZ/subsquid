@@ -73,7 +73,8 @@ processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
         allBrokerEvents.transferred as inter.TransferredEvent[],
         allBrokerEvents.interlaced as inter.InterlacedEvent[],
         allBrokerEvents.partitioned as inter.PartitionedEvent[],
-        allBrokerEvents.assigned as inter.CoreAssignedEvent[]
+        allBrokerEvents.assigned as inter.AssignedEvent[],
+        allBrokerEvents.pooled as inter.PooledEvent[]
     )
 
     // Perform batch insertions

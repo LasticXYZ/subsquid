@@ -1,6 +1,3 @@
-# 1. Install dependencies
-npm ci
-
 npx sqd down
 
 # 2. Start target Postgres database and detach

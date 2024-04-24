@@ -34,10 +34,21 @@ export class CoreOwner {
         nullable: false
     })    
     regionId!: RegionId
-
+    
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
     price!: bigint | undefined | null
 
     @Column_("int4", {nullable: false})
     duration!: number
+
+    @Index_()
+    @Column_("bool", {nullable: false})
+    pooled!: boolean
+
+    @Index_()
+    @Column_("bool", {nullable: false})
+    assigned!: boolean
+
+    @Column_("int4", {nullable: true})
+    task!: number | undefined | null
 }

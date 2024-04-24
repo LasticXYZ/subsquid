@@ -50,6 +50,9 @@ type CoreOwner @entity {
   regionId: RegionId!
   price: BigInt
   duration: Int!
+  pooled: Boolean! @index
+  assigned: Boolean! @index
+  task: Int
 }
 
 type Renewable @entity {
