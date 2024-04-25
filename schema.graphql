@@ -300,7 +300,7 @@ type StartSalesExt @entity {
   timestamp: DateTime! @index
   extrinsicHash: String @index
   initialPrice: BigInt!
-  coreCount: Int!
+  coreCount: Int
 }
 
 type PurchaseExt @entity {
@@ -422,9 +422,8 @@ type RequestCoreCountExt @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   extrinsicHash: String @index
-  coreCount: Int!
+  coreCount: Int
 }
-
 
 
 

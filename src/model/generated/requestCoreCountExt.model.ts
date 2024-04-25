@@ -21,6 +21,6 @@ export class RequestCoreCountExt {
     @Column_("text", {nullable: true})
     extrinsicHash!: string | undefined | null
 
-    @Column_("int4", {nullable: false})
-    coreCount!: number
+    @Column_("int4", {nullable: true})
+    coreCount!: number | undefined | null
 }

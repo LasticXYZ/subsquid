@@ -17,6 +17,6 @@ export class CoreCountRequested {
     @Column_("timestamp with time zone", {nullable: false})
     timestamp!: Date
 
-    @Column_("int4", {nullable: false})
-    coreCount!: number
+    @Column_("int4", {nullable: true})
+    coreCount!: number | undefined | null
 }

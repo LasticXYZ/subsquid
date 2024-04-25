@@ -22,6 +22,9 @@ export class CoreOwner {
     @Column_("text", {nullable: false})
     owner!: string
 
+    // @Column_("jsonb", {transformer: {to: obj => obj.toJSON(), from: obj => obj == null ? undefined : new RegionId(undefined, obj)}, nullable: false})
+    // regionId!: RegionId
+
     @Column_("jsonb", {
         transformer: {
             to: (regionId: RegionId) => ({
@@ -32,9 +35,9 @@ export class CoreOwner {
             from: (json: any) => new RegionId(json)
         },
         nullable: false
-    })    
+    })
     regionId!: RegionId
-    
+
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
     price!: bigint | undefined | null
 
