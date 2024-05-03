@@ -79,3 +79,8 @@ sqd migration:apply
 sqd up
 sqd process
 ```
+
+Deploy command :
+```
+sqd deploy --org lastic .
+```

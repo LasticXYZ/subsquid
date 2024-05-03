@@ -209,7 +209,7 @@ function getTransferCalls(ctx: ProcessorContext<Store>) {
                     timestamp: new Date(block.header.timestamp),
                     extrinsicHash: call.extrinsic?.hash,
                     regionId: decoded.regionId,
-                    newOwner: ss58.codec(getChainConfig().prefix).encode(decoded.newOwner),
+                    newOwner: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.newOwner),
                 });
             }
         }
@@ -341,7 +341,7 @@ function getPurchaseCreditCalls(ctx: ProcessorContext<Store>) {
                     timestamp: new Date(block.header.timestamp),
                     extrinsicHash: call.extrinsic?.hash,
                     amount: decoded.amount,
-                    beneficiary: ss58.codec(getChainConfig().prefix).encode(decoded.beneficiary),
+                    beneficiary: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.beneficiary),
                 });
             }
         }
