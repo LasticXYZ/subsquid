@@ -57,7 +57,7 @@ async function batchInsert(ctx: any, ...entitiesArray: any[][]) {
 }
 
 
-processor.run(new TypeormDatabase({supportHotBlocks: true}), async (ctx) => {
+processor.run(new TypeormDatabase({supportHotBlocks: false}), async (ctx) => {
 
     const allBrokerEvents = fetchAll(brokerEventFetchers, ctx);
     const allMultisigEvents = fetchAll(multisigEventFetchers, ctx);

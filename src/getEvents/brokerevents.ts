@@ -168,6 +168,7 @@ function getRenewableEvents(ctx: ProcessorContext<Store>): RenewableEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == renewable.name) {
+                // if (!renewable.v1002000.is(event)) {
                 const decoded = renewable.v1002000.decode(event)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 

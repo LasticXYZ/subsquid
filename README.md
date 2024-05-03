@@ -79,3 +79,8 @@ sqd migration:apply
 sqd up
 sqd process
 ```
+
+Deploy squid:
+```
+sqd deploy --org lastic .
+```
