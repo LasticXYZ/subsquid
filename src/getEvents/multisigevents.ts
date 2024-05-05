@@ -15,7 +15,6 @@ import {
 } from '../types/multisig/events'
 
 import {Store} from '@subsquid/typeorm-store'
-import { getChainConfig } from '../const'
 
 // Implement the logic to extract NewMultisigEvents events
 function getNewMultisigEvents(ctx: ProcessorContext<Store>): NewMultisigEvent[] {
@@ -30,8 +29,8 @@ function getNewMultisigEvents(ctx: ProcessorContext<Store>): NewMultisigEvent[] 
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    approving: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.approving),
-                    multisig: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.multisig),
+                    approving: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.approving),
+                    multisig: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.multisig),
                     callHash: event.extrinsic?.hash
                 })
             }
@@ -53,7 +52,7 @@ function getMultisigApprovalEvents(ctx: ProcessorContext<Store>): MultisigApprov
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    approving: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.approving),
+                    approving: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.approving),
                     timepoint: decoded.timepoint,
                     callHash: event.extrinsic?.hash
                 })
@@ -76,9 +75,9 @@ function getMultisigExecutedEvents(ctx: ProcessorContext<Store>): MultisigExecut
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    approving: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.approving),
+                    approving: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.approving),
                     timepoint: decoded.timepoint,
-                    multisig: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.multisig),
+                    multisig: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.multisig),
                     callHash: event.extrinsic?.hash,
                     result: decoded.result
                 })
@@ -101,9 +100,9 @@ function getMultisigCancelledEvents(ctx: ProcessorContext<Store>): MultisigCance
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    cancelling: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.cancelling),
+                    cancelling: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.cancelling),
                     timepoint: decoded.timepoint,
-                    multisig: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.multisig),
+                    multisig: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.multisig),
                     callHash: event.extrinsic?.hash
                 })
             }

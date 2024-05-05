@@ -78,7 +78,7 @@ export const processor = new SubstrateBatchProcessor()
         // to start from 1 in cases when the deployment height is unknown
         // 268800 for Rococo
         // 22792000 for Kusama
-        from: 268800        // putting this here temporarily to speed up testing
+        from: 1366400        // putting this here temporarily to speed up testing
     })
     // Uncomment to disable RPC ingestion and drastically reduce no of RPC calls
     //.useArchiveOnly()

@@ -63,7 +63,6 @@ import {
 } from '../types/broker/events'
 
 import {Store} from '@subsquid/typeorm-store'
-import { getChainConfig } from '../const'
 
 // Implement the logic to extract HistoryInitialized events
 function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryInitializedEvent[] {
@@ -152,7 +151,7 @@ function getPurchasedEvents(ctx: ProcessorContext<Store>): PurchasedEvent[] {
                     id: event.id,
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    who: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.who),
+                    who: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.who),
                     regionId: decoded.regionId,
                     price: decoded.price,
                     duration: decoded.duration
@@ -198,7 +197,7 @@ function getRenewedEvents(ctx: ProcessorContext<Store>): RenewedEvent[] {
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    who: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.who),
+                    who: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.who),
                     price: decoded.price,
                     oldCore: decoded.oldCore,
                     core: decoded.core,
@@ -218,18 +217,22 @@ function getTransferredEvents(ctx: ProcessorContext<Store>): TransferredEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == transferred.name) {
-                const decoded = transferred.v9430.decode(event)
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+                // Check if the event transferred is of the v9430 type
+                if (transferred.v9430.is(event)) {
+                    const decoded = transferred.v9430.decode(event)
+                
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
-                events.push({
-                    id: event.id, 
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    regionId: decoded.regionId,
-                    duration: decoded.duration,
-                    oldOwner: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.oldOwner),
-                    owner: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.owner)
-                })
+                    events.push({
+                        id: event.id, 
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        regionId: decoded.regionId,
+                        duration: decoded.duration,
+                        oldOwner: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.oldOwner),
+                        owner: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.owner)
+                    })
+                }
             }
         }
     }
@@ -510,7 +513,7 @@ function getRevenueClaimPaidEvents(ctx: ProcessorContext<Store>): RevenueClaimPa
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    who: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.who),
+                    who: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.who),
                     amount: decoded.amount,
                     next: decoded.next ? decoded.next : null
                 })
@@ -533,8 +536,8 @@ function getCreditPurchasedEvents(ctx: ProcessorContext<Store>): CreditPurchased
                     id: event.id, 
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
-                    who: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.who),
-                    beneficiary: ss58.codec(process.env.PREFIX_CHAIN ? process.env.PREFIX_CHAIN : 42).encode(decoded.beneficiary),
+                    who: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.who),
+                    beneficiary: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.beneficiary),
                     amount: decoded.amount
                 })
             }
