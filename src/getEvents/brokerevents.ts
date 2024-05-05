@@ -69,29 +69,31 @@ import { ReservationMade } from '../model'
 
 
 // Implement the logic to extract HistoryInitialized events
-function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryInitializedEvent[] {
-    let events: HistoryInitializedEvent[] = []
-    for (let block of ctx.blocks) {
-        for (let event of block.events) {
-            if (event.name == historyInitialized.name) {
-                const decoded = decodeEvent(event, historyInitialized)
-                //const decoded = historyInitialized.v9430.decode(event) // adjust with actual decoder
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+// History initialized commented out, mainly because it is called the most amount of times
+// and it is not used at all
+// function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryInitializedEvent[] {
+//     let events: HistoryInitializedEvent[] = []
+//     for (let block of ctx.blocks) {
+//         for (let event of block.events) {
+//             if (event.name == historyInitialized.name) {
+//                 const decoded = decodeEvent(event, historyInitialized)
+//                 //const decoded = historyInitialized.v9430.decode(event) // adjust with actual decoder
+//                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
-                events.push({
-                    id: event.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: event.extrinsic?.hash,
-                    when: decoded.when,
-                    privatePoolSize: decoded.privatePoolSize,
-                    systemPoolSize: decoded.systemPoolSize
-                })
-            }
-        }
-    }
-    return events
-}
+//                 events.push({
+//                     id: event.id,
+//                     blockNumber: block.header.height,
+//                     timestamp: new Date(block.header.timestamp),
+//                     extrinsicHash: event.extrinsic?.hash,
+//                     when: decoded.when,
+//                     privatePoolSize: decoded.privatePoolSize,
+//                     systemPoolSize: decoded.systemPoolSize
+//                 })
+//             }
+//         }
+//     }
+//     return events
+// }
 
 function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitializedEvent[] {
     let events: SaleInitializedEvent[] = []
@@ -745,7 +747,7 @@ interface EntityMap {
 
 
 export const brokerEventFetchers: EntityMap = {
-    historyInitialized: getHistoryInitializedEvents,
+    //historyInitialized: getHistoryInitializedEvents,
     saleInitialized: getSaleInitializedEvents,
     salesStarted: getSalesStartedEvents,
     purchased: getPurchasedEvents,

@@ -10,6 +10,7 @@ export function decodeEvent(block_event: any, gen_type_event: any) {
     if (gen_type_event.v9430.is(block_event)) {
         // Check if the event transferred is of the v9430 type
         console.log('Transferred event is of type v9430')
+        console.log('Decoding event...', block_event);
         decoded = gen_type_event.v9430.decode(block_event);
     } else if (gen_type_event.v1011000.is(block_event)) {
         // Check if the event transferred is of the v1011000 type
