@@ -25,6 +25,6 @@ export class SalesStarted {
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     price!: bigint
 
-    @Column_("int4", {nullable: false})
-    coreCount!: number
+    @Column_("int4", {nullable: true})
+    coreCount!: number | undefined | null
 }

@@ -66,6 +66,24 @@ export const startSales =  {
             coreCount: sts.number(),
         })
     ),
+    /**
+     * Begin the Bulk Coretime sales rotation.
+     * 
+     * - `origin`: Must be Root or pass `AdminOrigin`.
+     * - `initial_price`: The price of Bulk Coretime in the first sale.
+     * - `extra_cores`: Number of extra cores that should be requested on top of the cores
+     *   required for `Reservations` and `Leases`.
+     * 
+     * This will call [`Self::request_core_count`] internally to set the correct core count on
+     * the relay chain.
+     */
+    v1011000: new CallType(
+        'Broker.start_sales',
+        sts.struct({
+            initialPrice: sts.bigint(),
+            extraCores: sts.number(),
+        })
+    ),
 }
 
 export const purchase =  {

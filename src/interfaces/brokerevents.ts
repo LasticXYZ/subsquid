@@ -99,8 +99,8 @@ interface TransferredEvent {
     timestamp: Date;
     regionId: RegionId;
     duration: number;
-    oldOwner: string;
-    owner: string;
+    oldOwner?: string;
+    owner?: string;
 }
 
 interface PartitionedEvent {

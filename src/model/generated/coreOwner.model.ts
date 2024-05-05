@@ -19,8 +19,8 @@ export class CoreOwner {
     @Column_("timestamp with time zone", {nullable: false})
     timestamp!: Date
 
-    @Column_("text", {nullable: false})
-    owner!: string
+    @Column_("text", {nullable: true})
+    owner!: string | undefined | null
 
     @Column_("jsonb", {
         transformer: {

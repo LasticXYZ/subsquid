@@ -1,0 +1,27 @@
+{
+  "outDir": "src/types",
+  "specVersions": "myMetadataKusama.jsonl",
+  "pallets": {
+    "Multisig": {
+      "events": true,
+      "calls": true,
+      "storage": [],
+      "constants": true
+    },
+    "System": {
+      "events": [
+        "ExtrinsicSuccess",
+        "ExtrinsicFailed"
+      ],
+      "calls": [],
+      "storage": [],
+      "constants": []
+    },
+    "Broker": {
+      "events": true,
+      "calls": true,
+      "storage": [],
+      "constants": true
+    }
+  }
+}

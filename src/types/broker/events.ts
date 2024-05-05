@@ -1,5 +1,6 @@
 import {sts, Block, Bytes, Option, Result, EventType, RuntimeCtx} from '../support'
 import * as v9430 from '../v9430'
+import * as v1011000 from '../v1011000'
 
 export const purchased =  {
     name: 'Broker.Purchased',
@@ -123,6 +124,30 @@ export const transferred =  {
              * The new owner of the Region.
              */
             owner: v9430.AccountId32,
+        })
+    ),
+    /**
+     * Ownership of a Region has been transferred.
+     */
+    v1011000: new EventType(
+        'Broker.Transferred',
+        sts.struct({
+            /**
+             * The Region which has been transferred.
+             */
+            regionId: v1011000.RegionId,
+            /**
+             * The duration of the Region.
+             */
+            duration: sts.number(),
+            /**
+             * The old owner of the Region.
+             */
+            oldOwner: sts.option(() => v1011000.AccountId32),
+            /**
+             * The new owner of the Region.
+             */
+            owner: sts.option(() => v1011000.AccountId32),
         })
     ),
 }

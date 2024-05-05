@@ -46,7 +46,7 @@ type CoreOwner @entity {
   id: ID!
   blockNumber: Int! @index
   timestamp: DateTime! @index
-  owner: String!
+  owner: String
   regionId: RegionId!
   price: BigInt
   duration: Int!
@@ -84,8 +84,8 @@ type Transferred @entity {
   timestamp: DateTime! @index
   regionId: RegionId!
   duration: Int!
-  oldOwner: String!
-  owner: String!
+  oldOwner: String
+  owner: String
 }
 
 type Partitioned @entity {
