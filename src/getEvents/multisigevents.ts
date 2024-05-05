@@ -8,33 +8,59 @@ import {
 import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
 import {
-    newMultisig,
-    multisigApproval,
-    multisigExecuted,
-    multisigCancelled
-} from '../types/multisig/events'
+    newMultisig as newMultisigROC,
+    multisigApproval as multisigApprovalROC,
+    multisigExecuted as multisigExecutedROC,
+    multisigCancelled as multisigCancelledROC
+} from '../types/rococo/multisig/events'
+import {
+    newMultisig as newMultisigKSM,
+    multisigApproval as multisigApprovalKSM,
+    multisigExecuted as multisigExecutedKSM,
+    multisigCancelled as multisigCancelledKSM
+} from '../types/kusama/multisig/events'
 
 import {Store} from '@subsquid/typeorm-store'
 import { decodeEvent } from './helper'
+
+const chainIdx = process.env.IDX_CHAIN || 'kusama' as 'rococo' | 'kusama';
+
+// Mapping of chains to their respective events
+const chainEvents = {
+    'rococo': {
+        newMultisig: newMultisigROC,
+        multisigApproval: multisigApprovalROC,
+        multisigExecuted: multisigExecutedROC,
+        multisigCancelled: multisigCancelledROC
+    },
+    'kusama': {
+        newMultisig: newMultisigKSM,
+        multisigApproval: multisigApprovalKSM,
+        multisigExecuted: multisigExecutedKSM,
+        multisigCancelled: multisigCancelledKSM
+    }
+};
 
 // Implement the logic to extract NewMultisigEvents events
 function getNewMultisigEvents(ctx: ProcessorContext<Store>): NewMultisigEvent[] {
     let events: NewMultisigEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
-            if (event.name == newMultisig.name) {
+            if (event.name == chainEvents[chainIdx].newMultisig.name) {
                 const decoded = decodeEvent(event, newMultisig)
                 //const decoded = newMultisig.v9430.decode(event) // adjust with actual decoder
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
-                events.push({
-                    id: event.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    approving: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.approving),
-                    multisig: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.multisig),
-                    callHash: event.extrinsic?.hash
-                })
+                    events.push({
+                        id: event.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        approving: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.approving),
+                        multisig: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.multisig),
+                        callHash: event.extrinsic?.hash
+                    })
+                }
             }
         }
     }
@@ -49,16 +75,18 @@ function getMultisigApprovalEvents(ctx: ProcessorContext<Store>): MultisigApprov
             if (event.name == multisigApproval.name) {
                 const decoded = decodeEvent(event, multisigApproval)
                 //const decoded = multisigApproval.v9430.decode(event) // adjust with actual decoder
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
-                events.push({
-                    id: event.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    approving: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.approving),
-                    timepoint: decoded.timepoint,
-                    callHash: event.extrinsic?.hash
-                })
+                    events.push({
+                        id: event.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        approving: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.approving),
+                        timepoint: decoded.timepoint,
+                        callHash: event.extrinsic?.hash
+                    })
+                }
             }
         }
     }
@@ -72,19 +100,22 @@ function getMultisigExecutedEvents(ctx: ProcessorContext<Store>): MultisigExecut
         for (let event of block.events) {
             if (event.name == multisigExecuted.name) {
                 const decoded = decodeEvent(event, multisigExecuted)
-                //const decoded = multisigExecuted.v9430.decode(event) // adjust with actual decoder
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+                //const decoded = multisigExecuted.v1002000.decode(event) // adjust with actual decoder
+                
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
-                events.push({
-                    id: event.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    approving: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.approving),
-                    timepoint: decoded.timepoint,
-                    multisig: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.multisig),
-                    callHash: event.extrinsic?.hash,
-                    result: decoded.result
-                })
+                    events.push({
+                        id: event.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        approving: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.approving),
+                        timepoint: decoded.timepoint,
+                        multisig: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.multisig),
+                        callHash: event.extrinsic?.hash,
+                        result: decoded.result
+                    })
+                }
             }
         }
     }
@@ -99,17 +130,19 @@ function getMultisigCancelledEvents(ctx: ProcessorContext<Store>): MultisigCance
             if (event.name == multisigCancelled.name) {
                 const decoded = decodeEvent(event, multisigCancelled)
                 //const decoded = multisigCancelled.v9430.decode(event) // adjust with actual decoder
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
-                events.push({
-                    id: event.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    cancelling: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.cancelling),
-                    timepoint: decoded.timepoint,
-                    multisig: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.multisig),
-                    callHash: event.extrinsic?.hash
-                })
+                    events.push({
+                        id: event.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        cancelling: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.cancelling),
+                        timepoint: decoded.timepoint,
+                        multisig: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.multisig),
+                        callHash: event.extrinsic?.hash
+                    })
+                }
             }
         }
     }

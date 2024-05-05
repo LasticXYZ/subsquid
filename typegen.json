@@ -1,5 +1,5 @@
 {
-  "outDir": "src/types",
+  "outDir": "src/types/rococo",
   "specVersions": "myMetadata.jsonl",
   "pallets": {
     "Multisig": {

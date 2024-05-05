@@ -1,5 +1,5 @@
 {
-  "outDir": "src/types",
+  "outDir": "src/types/kusama",
   "specVersions": "myMetadataKusama.jsonl",
   "pallets": {
     "Multisig": {

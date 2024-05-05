@@ -68,7 +68,6 @@ import {
     transformScheduleItem, 
     transformCoreAssignments
 } from './helper'
-import { RegionId } from '../types/v9430';
 
 function createHistoryInitializedEntities(events: HistoryInitializedEvent[]): HistoryInitialized[] {
     return events.map(event => new HistoryInitialized({
