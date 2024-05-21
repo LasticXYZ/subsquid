@@ -11,7 +11,8 @@
     "ctag": "ctags package.json src/* README.md schema.graphql squid.yaml scripts/* commands.json .env run.sh tsconfig.json typegen.json docker-compose.yml ",
     "processor:start": "node lib/processor.js",
     "query-node:start": "squid-graphql-server",
-    "db:migrate": "npx sqd db migrate"
+    "db:migrate": "npx sqd db migrate",
+    "deploy": "npx sqd deploy --org lastic ."
   },
   "dependencies": {
     "@subsquid/graphql-server": "^4.5.1",

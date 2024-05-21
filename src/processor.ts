@@ -19,7 +19,7 @@ export const processor = new SubstrateBatchProcessor()
         // https://docs.subsquid.io/deploy-squid/env-variables/
         url: process.env.RPC_ENDPOINT ? process.env.RPC_ENDPOINT : 'wss://rococo-coretime-rpc.polkadot.io',
         // More RPC connection options at https://docs.subsquid.io/substrate-indexing/setup/general/#set-data-source
-        rateLimit: 300
+        //rateLimit: 300
     })
     .addEvent({
         name: [
@@ -76,7 +76,7 @@ export const processor = new SubstrateBatchProcessor()
         // to start from 1 in cases when the deployment height is unknown
         // 268800 for Rococo
         // 22792000 for Kusama
-        from: 1366400        // putting this here temporarily to speed up testing
+        from: process.env.START_BLOCK ? +process.env.START_BLOCK : 0        // putting this here temporarily to speed up testing
     })
     // Uncomment to disable RPC ingestion and drastically reduce no of RPC calls
     //.useArchiveOnly()

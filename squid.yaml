@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
 name: rococo-coretime
-version: 7
+version: 8
 description: Squid for indexing Rococo Coretime by Lastic
 build: 
 deploy:
@@ -14,6 +14,7 @@ deploy:
       RPC_ENDPOINT: 'wss://rococo-coretime-rpc.polkadot.io'
       IDX_CHAIN: 'rococo'
       PREFIX_CHAIN: 42
+      START_BLOCK: 268800
   api:
     cmd:
       - sqd
