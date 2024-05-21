@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
-name: rococo-coretime
-version: 8
+name: kusama-coretime
+version: 5
 description: Squid for indexing Rococo Coretime by Lastic
 build: 
 deploy:
@@ -11,10 +11,10 @@ deploy:
       - sqd
       - process:prod
     env:
-      RPC_ENDPOINT: 'wss://rococo-coretime-rpc.polkadot.io'
-      IDX_CHAIN: 'rococo'
-      PREFIX_CHAIN: 42
-      START_BLOCK: 268800
+      RPC_ENDPOINT: 'wss://kusama-coretime-rpc.polkadot.io'
+      IDX_CHAIN: 'kusama'
+      PREFIX_CHAIN: 2
+      START_BLOCK: 22792000
   api:
     cmd:
       - sqd

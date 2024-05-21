@@ -1,6 +1,6 @@
 {
-  "outDir": "src/types/rococo",
-  "specVersions": "myMetadata.jsonl",
+  "outDir": "src/types/kusama",
+  "specVersions": "myMetadataKSM.jsonl",
   "pallets": {
     "Multisig": {
       "events": true,

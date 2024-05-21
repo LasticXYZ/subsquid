@@ -43,24 +43,28 @@ import {
     dropHistory,
     dropRenewal,
     requestCoreCount
-} from "../types/broker/calls";
-import { getChainConfig } from "../const";
+} from "./chainDep";
+import { decodeEvent } from "./helper";
 
 function getConfigureCalls(ctx: ProcessorContext<Store>) {
     let calls: ConfigureCall[] = [];
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === configure.name) {
-                const decoded = configure.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                const decoded = decodeEvent(call, configure);
+                //const decoded = configure.v9430.decode(call);
+                
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    config: decoded.config,
-                });
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        config: decoded.config,
+                    });
+                }
             }
         }
     }
@@ -72,16 +76,19 @@ function getReserveCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === reserve.name) {
-                const decoded = reserve.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                const decoded = decodeEvent(call, reserve);
+                // const decoded = reserve.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    workload: decoded.workload,
-                });
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        workload: decoded.workload,
+                    });
+                }
             }
         }
     }
@@ -93,16 +100,20 @@ function getUnreserveCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === unreserve.name) {
-                const decoded = unreserve.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                const decoded = decodeEvent(call, unreserve);
+                //const decoded = unreserve.v9430.decode(call);
 
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    itemIndex: decoded.itemIndex,
-                });
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        itemIndex: decoded.itemIndex,
+                    });
+                }
             }
         }
     }
@@ -114,17 +125,21 @@ function getSetLeaseCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === setLease.name) {
-                const decoded = setLease.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    task: decoded.task,
-                    until: decoded.until,
-                });
+                const decoded = decodeEvent(call, setLease);
+                //const decoded = setLease.v9430.decode(call);
+                
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        task: decoded.task,
+                        until: decoded.until,
+                    });
+                }
             }
         }
     }
@@ -136,17 +151,21 @@ function getStartSalesCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === startSales.name) {
-                const decoded = startSales.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                //const decoded = startSales.v9430.decode(call);
+                const decoded = decodeEvent(call, startSales);
 
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    initialPrice: decoded.initialPrice,
-                    coreCount: decoded.coreCount,
-                });
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        initialPrice: decoded.initialPrice,
+                        coreCount: decoded.coreCount,
+                    });
+                }
             }
         }
     }
@@ -158,16 +177,19 @@ function getPurchaseCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === purchase.name) {
-                const decoded = purchase.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                const decoded = decodeEvent(call, purchase);
+                //const decoded = purchase.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
 
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    priceLimit: decoded.priceLimit,
-                });
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        priceLimit: decoded.priceLimit,
+                    });
+                }
             }
         }
     }
@@ -179,16 +201,20 @@ function getRenewCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === renew.name) {
-                const decoded = renew.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                const decoded = decodeEvent(call, renew);
+                //const decoded = renew.v9430.decode(call);
 
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    core: decoded.core,
-                });
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        core: decoded.core,
+                    });
+                }
             }
         }
     }
@@ -200,17 +226,21 @@ function getTransferCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === transfer.name) {
-                const decoded = transfer.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                const decoded = decodeEvent(call, transfer)
+                //const decoded = transfer.v9430.decode(call);
 
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    regionId: decoded.regionId,
-                    newOwner: ss58.codec(getChainConfig().prefix).encode(decoded.newOwner),
-                });
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        regionId: decoded.regionId,
+                        newOwner: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.newOwner),
+                    });
+                }
             }
         }
     }
@@ -222,16 +252,19 @@ function getPartitionCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === partition.name) {
-                const decoded = partition.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash, 
-                    regionId: decoded.regionId,
-                    pivot: decoded.pivot,
-                });
+                const decoded = decodeEvent(call, partition);
+                //const decoded = partition.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash, 
+                        regionId: decoded.regionId,
+                        pivot: decoded.pivot,
+                    });
+                }
             }
         }
     }
@@ -243,16 +276,20 @@ function getInterlaceCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === interlace.name) {
-                const decoded = interlace.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash, 
-                    regionId: decoded.regionId,
-                    pivot: decoded.pivot,
-                });
+                const decoded = decodeEvent(call, interlace);
+                // const decoded = interlace.v9430.decode(call);
+
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash, 
+                        regionId: decoded.regionId,
+                        pivot: decoded.pivot,
+                    });
+                }
             }
         }
     }
@@ -264,17 +301,20 @@ function getAssignCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === assign.name) {
-                const decoded = assign.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash, 
-                    regionId: decoded.regionId,
-                    task: decoded.task,
-                    finality: decoded.finality,
-                });
+                const decoded = decodeEvent(call, assign);
+                // const decoded = assign.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash, 
+                        regionId: decoded.regionId,
+                        task: decoded.task,
+                        finality: decoded.finality,
+                    });
+                }
             }
         }
     }
@@ -286,18 +326,21 @@ function getPoolCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === pool.name) {
-                const decoded = pool.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash, 
-                    regionId: decoded.regionId,
-                    payee: decoded.payee,
-                    finality: decoded.finality,
-                });
+                const decoded = decodeEvent(call, pool);
+                // const decoded = pool.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash, 
+                        regionId: decoded.regionId,
+                        payee: decoded.payee,
+                        finality: decoded.finality,
+                    });
+                }
             }
         }
     }
@@ -310,17 +353,21 @@ function getClaimRevenueCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === claimRevenue.name) {
-                const decoded = claimRevenue.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    regionId: decoded.regionId,
-                    maxTimeslices: decoded.maxTimeslices,
-                });
+                const decoded = decodeEvent(call, claimRevenue);
+                //const decoded = claimRevenue.v9430.decode(call);
+
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        regionId: decoded.regionId,
+                        maxTimeslices: decoded.maxTimeslices,
+                    });
+                }
             }
         }
     }
@@ -332,17 +379,20 @@ function getPurchaseCreditCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === purchaseCredit.name) {
-                const decoded = purchaseCredit.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    amount: decoded.amount,
-                    beneficiary: ss58.codec(getChainConfig().prefix).encode(decoded.beneficiary),
-                });
+                const decoded = decodeEvent(call, purchaseCredit);
+                //const decoded = purchaseCredit.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        amount: decoded.amount,
+                        beneficiary: ss58.codec(process.env.PREFIX_CHAIN ? Number(process.env.PREFIX_CHAIN) : 42).encode(decoded.beneficiary),
+                    });
+                }
             }
         }
     }
@@ -354,15 +404,18 @@ function getDropRegionCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === dropRegion.name) {
-                const decoded = dropRegion.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    regionId: decoded.regionId,
-                });
+                // const decoded = dropRegion.v9430.decode(call);
+                const decoded = decodeEvent(call, dropRegion);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        regionId: decoded.regionId,
+                    });
+                }
             }
         }
     }
@@ -374,16 +427,19 @@ function getDropContributionCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === dropContribution.name) {
-                const decoded = dropContribution.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    regionId: decoded.regionId,
-                });
+                const decoded = decodeEvent(call, dropContribution);
+                //const decoded = dropContribution.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        regionId: decoded.regionId,
+                    });
+                }
             }
         }
     }
@@ -395,16 +451,19 @@ function getDropHistoryCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === dropHistory.name) {
-                const decoded = dropHistory.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    when: decoded.when,
-                });
+                const decoded = decodeEvent(call, dropHistory);
+                //const decoded = dropHistory.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        when: decoded.when,
+                    });
+                }
             }
         }
     }
@@ -416,17 +475,20 @@ function getDropRenewalCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === dropRenewal.name) {
-                const decoded = dropRenewal.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: call.extrinsic?.hash,
-                    core: decoded.core,
-                    when: decoded.when,
-                });
+                const decoded = decodeEvent(call, dropRenewal);
+                //const decoded = dropRenewal.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp),
+                        extrinsicHash: call.extrinsic?.hash,
+                        core: decoded.core,
+                        when: decoded.when,
+                    });
+                }
             }
         }
     }
@@ -438,15 +500,18 @@ function getRequestCoreCountCalls(ctx: ProcessorContext<Store>) {
     for (let block of ctx.blocks) {
         for (let call of block.calls) {
             if (call.name === requestCoreCount.name) {
-                const decoded = requestCoreCount.v9430.decode(call);
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
-                
-                calls.push({
-                    id: call.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp), 
-                    coreCount: decoded.coreCount,
-                });
+                const decoded = decodeEvent(call, requestCoreCount);
+                //const decoded = requestCoreCount.v9430.decode(call);
+                if (decoded) {
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
+                    
+                    calls.push({
+                        id: call.id,
+                        blockNumber: block.header.height,
+                        timestamp: new Date(block.header.timestamp), 
+                        coreCount: decoded.coreCount,
+                    });
+                }
             }
         }
     }

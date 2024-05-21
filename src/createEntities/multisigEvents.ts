@@ -7,32 +7,14 @@ import {
     Timepoint,
     ResultType as ResultEntity
 } from '../model'
-import {In} from 'typeorm'
 import {
     NewMultisigEvent,
     MultisigApprovalEvent,
     MultisigExecutedEvent,
     MultisigCancelledEvent
 } from '../interfaces'
+import { convertTimepoint, convertResultType } from './helper'
 
-import { Timepoint as TimepointType } from "../types/v9430"
-
-interface ResultType {
-    __kind: string;
-}
-
-function convertResultType(result: ResultType): ResultEntity {
-    return new ResultEntity({
-        kind: result.__kind
-    });
-}
-
-export function convertTimepoint(timepoint?: TimepointType): Timepoint {
-    return new Timepoint({
-        height: timepoint?.height,
-        index: timepoint?.index
-    });
-}
 
 function createNewMultisigntities(events: NewMultisigEvent[]): NewMultisig[] {
     return events.map(event => new NewMultisig({

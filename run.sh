@@ -1,5 +1,5 @@
 # 1. Install dependencies
-npm ci
+pnpm install --frozen-lockfile
 
 npx sqd down
 

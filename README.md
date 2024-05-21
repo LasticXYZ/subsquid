@@ -56,6 +56,11 @@ Generate specVersions:
 npx substrate-metadata-explorer --rpc wss://rococo-coretime-rpc.polkadot.io --out myMetadata.jsonl
 ```
 
+Generated specVersions Kusama:
+```
+npx substrate-metadata-explorer --rpc wss://kusama-coretime-rpc.polkadot.io --out myMetadataKusama.jsonl
+```
+
 Generate typegen with:
 ```sh
 npx squid-substrate-typegen typegen.json  
@@ -78,4 +83,9 @@ sqd migration:generate
 sqd migration:apply
 sqd up
 sqd process
+```
+
+Deploy command :
+```
+sqd deploy --org lastic .
 ```

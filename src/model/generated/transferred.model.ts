@@ -25,9 +25,9 @@ export class Transferred {
     @Column_("int4", {nullable: false})
     duration!: number
 
-    @Column_("text", {nullable: false})
-    oldOwner!: string
+    @Column_("text", {nullable: true})
+    oldOwner!: string | undefined | null
 
-    @Column_("text", {nullable: false})
-    owner!: string
+    @Column_("text", {nullable: true})
+    owner!: string | undefined | null
 }

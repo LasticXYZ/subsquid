@@ -1,5 +1,5 @@
 
-import { CoreAssignment, ScheduleItem, RegionId, AccountId32 } from "../types/v9430"
+import { CoreAssignment, ScheduleItem, RegionId, AccountId32 } from "../types/kusama/v1002000"
 
 
 interface TransferEvent {
@@ -99,8 +99,8 @@ interface TransferredEvent {
     timestamp: Date;
     regionId: RegionId;
     duration: number;
-    oldOwner: string;
-    owner: string;
+    oldOwner?: string;
+    owner?: string;
 }
 
 interface PartitionedEvent {
