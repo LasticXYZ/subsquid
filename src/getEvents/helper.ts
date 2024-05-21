@@ -14,6 +14,26 @@ export function decodeEvent(block_event_or_call: any, gen_type_event: any) {
         console.log('Transferred event is of type v9430')
         //console.log('Decoding event...', block_event_or_call);
         decoded = gen_type_event.v9430.decode(block_event_or_call);
+    } else if (gen_type_event.v1005000 && gen_type_event.v1005000.is(block_event_or_call)) {
+        // Check if the event transferred is of the v1005000 type
+        console.log('Transferred event is of type v1005000');
+        decoded = gen_type_event.v1005000.decode(block_event_or_call);
+    } else if (gen_type_event.v1005001 && gen_type_event.v1005001.is(block_event_or_call)) {
+        // Check if the event transferred is of the v1005001 type
+        console.log('Transferred event is of type v1005001');
+        decoded = gen_type_event.v1005001.decode(block_event_or_call);
+    } else if (gen_type_event.v1007000 && gen_type_event.v1007000.is(block_event_or_call)) {
+        // Check if the event transferred is of the v1007000 type
+        console.log('Transferred event is of type v1007000');
+        decoded = gen_type_event.v1007000.decode(block_event_or_call);
+    } else if (gen_type_event.v1009000 && gen_type_event.v1009000.is(block_event_or_call)) {
+        // Check if the event transferred is of the v1009000 type
+        console.log('Transferred event is of type v1009000');
+        decoded = gen_type_event.v1009000.decode(block_event_or_call);
+    } else if (gen_type_event.v1010000 && gen_type_event.v1010000.is(block_event_or_call)) {
+        // Check if the event transferred is of the v1010000 type
+        console.log('Transferred event is of type v1010000');
+        decoded = gen_type_event.v1010000.decode(block_event_or_call);
     } else if (gen_type_event.v1011000 && gen_type_event.v1011000.is(block_event_or_call)) {
         // Check if the event transferred is of the v1011000 type
         console.log('Transferred event is of type v1011000');
