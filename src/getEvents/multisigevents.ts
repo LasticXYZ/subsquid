@@ -8,45 +8,24 @@ import {
 import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
 import {
-    newMultisig as newMultisigROC,
-    multisigApproval as multisigApprovalROC,
-    multisigExecuted as multisigExecutedROC,
-    multisigCancelled as multisigCancelledROC
-} from '../types/rococo/multisig/events'
-import {
-    newMultisig as newMultisigKSM,
-    multisigApproval as multisigApprovalKSM,
-    multisigExecuted as multisigExecutedKSM,
-    multisigCancelled as multisigCancelledKSM
-} from '../types/kusama/multisig/events'
+    newMultisig,
+    multisigApproval,
+    multisigExecuted,
+    multisigCancelled
+} from './chainDep'
 
 import {Store} from '@subsquid/typeorm-store'
 import { decodeEvent } from './helper'
 
-const chainIdx = process.env.IDX_CHAIN || 'kusama' as 'rococo' | 'kusama';
+const chainIdx = process.env.IDX_CHAIN as 'rococo' | 'kusama';
 
-// Mapping of chains to their respective events
-const chainEvents = {
-    'rococo': {
-        newMultisig: newMultisigROC,
-        multisigApproval: multisigApprovalROC,
-        multisigExecuted: multisigExecutedROC,
-        multisigCancelled: multisigCancelledROC
-    },
-    'kusama': {
-        newMultisig: newMultisigKSM,
-        multisigApproval: multisigApprovalKSM,
-        multisigExecuted: multisigExecutedKSM,
-        multisigCancelled: multisigCancelledKSM
-    }
-};
 
 // Implement the logic to extract NewMultisigEvents events
 function getNewMultisigEvents(ctx: ProcessorContext<Store>): NewMultisigEvent[] {
     let events: NewMultisigEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
-            if (event.name == chainEvents[chainIdx].newMultisig.name) {
+            if (event.name == newMultisig.name) {
                 const decoded = decodeEvent(event, newMultisig)
                 //const decoded = newMultisig.v9430.decode(event) // adjust with actual decoder
                 if (decoded) {

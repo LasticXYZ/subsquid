@@ -9,8 +9,6 @@ import {
     Extrinsic as _Extrinsic
 } from '@subsquid/substrate-processor'
 
-import {events} from './types'
-
 export const processor = new SubstrateBatchProcessor()
     // Lookup archive by the network name in Subsquid registry
     // See https://docs.subsquid.io/substrate-indexing/supported-networks/

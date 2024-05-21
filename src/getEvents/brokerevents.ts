@@ -60,7 +60,7 @@ import {
     claimsReady,
     coreAssigned,
     allowedRenewalDropped
-} from '../types/broker/events'
+} from './chainDep'
 
 import {Store} from '@subsquid/typeorm-store'
 import { decodeEvent } from './helper'

@@ -43,7 +43,7 @@ import {
     dropHistory,
     dropRenewal,
     requestCoreCount
-} from "../types/broker/calls";
+} from "./chainDep";
 import { decodeEvent } from "./helper";
 
 function getConfigureCalls(ctx: ProcessorContext<Store>) {

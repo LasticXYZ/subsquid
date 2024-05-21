@@ -9,9 +9,36 @@ import {
     ScheduleItem as ScheduleItemEvent,
     CoreAssignment as CoreAssignmentEvent,
     ConfigRecord as ConfigRecordCall,
-} from '../types/rococo/v9430'
+} from '../types/kusama/v1002000'
+
+import {
+    Timepoint,
+    ResultType as ResultEntity
+} from '../model'
+import { Timepoint as TimepointType } from "../types/rococo/v9430"
+
 import { ConfigRecord } from '../model'
 
+// Multisig helpers
+
+function convertTimepoint(timepoint?: TimepointType): Timepoint {
+    return new Timepoint({
+        height: timepoint?.height,
+        index: timepoint?.index
+    });
+}
+
+interface ResultType {
+    __kind: string;
+}
+
+function convertResultType(result: ResultType): ResultEntity {
+    return new ResultEntity({
+        kind: result.__kind
+    });
+}
+
+// Broker helpers
 
 function convertRegionId(regionId: RegionIdFromEvent): RegionIdForModel {
     return new RegionIdForModel({
@@ -83,6 +110,8 @@ function convertConfigureRecord(config_recod: ConfigRecordCall): ConfigRecord {
 
 
 export {
+    convertTimepoint,
+    convertResultType,
     convertRegionId,
     transformCoreAssignment,
     transformScheduleItem,
