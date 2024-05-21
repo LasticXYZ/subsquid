@@ -1,6 +1,6 @@
 {
   "outDir": "src/types/kusama",
-  "specVersions": "myMetadataKusama.jsonl",
+  "specVersions": "myMetadataKSM.jsonl",
   "pallets": {
     "Multisig": {
       "events": true,

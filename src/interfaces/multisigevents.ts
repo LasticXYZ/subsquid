@@ -1,4 +1,4 @@
-import { DispatchError, Timepoint, AccountId32 } from "../types/v9430"
+import { DispatchError, Timepoint, AccountId32 } from "../types/kusama/v1002000"
 
 interface ResultType {
     __kind: string;
