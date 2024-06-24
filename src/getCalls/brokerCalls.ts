@@ -44,7 +44,7 @@ import {
     dropRenewal,
     requestCoreCount
 } from "./chainDep";
-import { decodeEvent } from "./helper";
+import { decodeEvent } from "../helper";
 
 function getConfigureCalls(ctx: ProcessorContext<Store>) {
     let calls: ConfigureCall[] = [];

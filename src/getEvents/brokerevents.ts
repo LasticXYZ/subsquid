@@ -63,7 +63,7 @@ import {
 } from './chainDep'
 
 import {Store} from '@subsquid/typeorm-store'
-import { decodeEvent } from './helper'
+import { decodeEvent } from '../helper'
 import { ReservationMade } from '../model'
 
 

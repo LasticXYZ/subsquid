@@ -352,6 +352,47 @@ export const saleInitialized =  {
             coresOffered: sts.number(),
         })
     ),
+    /**
+     * A new sale has been initialized.
+     */
+    v1013000: new EventType(
+        'Broker.SaleInitialized',
+        sts.struct({
+            /**
+             * The local block number at which the sale will/did start.
+             */
+            saleStart: sts.number(),
+            /**
+             * The length in blocks of the Leadin Period (where the price is decreasing).
+             */
+            leadinLength: sts.number(),
+            /**
+             * The price of Bulk Coretime at the beginning of the Leadin Period.
+             */
+            startPrice: sts.bigint(),
+            /**
+             * The price of Bulk Coretime after the Leadin Period.
+             */
+            endPrice: sts.bigint(),
+            /**
+             * The first timeslice of the Regions which are being sold in this sale.
+             */
+            regionBegin: sts.number(),
+            /**
+             * The timeslice on which the Regions which are being sold in the sale terminate.
+             * (i.e. One after the last timeslice which the Regions control.)
+             */
+            regionEnd: sts.number(),
+            /**
+             * The number of cores we want to sell, ideally.
+             */
+            idealCoresSold: sts.number(),
+            /**
+             * Number of cores which are/have been offered for sale.
+             */
+            coresOffered: sts.number(),
+        })
+    ),
 }
 
 export const leased =  {
@@ -661,6 +702,26 @@ export const allowedRenewalDropped =  {
      */
     v9430: new EventType(
         'Broker.AllowedRenewalDropped',
+        sts.struct({
+            /**
+             * The timeslice whose renewal is no longer available.
+             */
+            when: sts.number(),
+            /**
+             * The core whose workload is no longer available to be renewed for `when`.
+             */
+            core: sts.number(),
+        })
+    ),
+}
+
+export const potentialRenewalDropped =  {
+    name: 'Broker.PotentialRenewalDropped',
+    /**
+     * Some historical Instantaneous Core Pool payment record has been dropped.
+     */
+    v1013000: new EventType(
+        'Broker.PotentialRenewalDropped',
         sts.struct({
             /**
              * The timeslice whose renewal is no longer available.

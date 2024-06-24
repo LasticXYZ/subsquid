@@ -15,7 +15,7 @@ import {
 } from './chainDep'
 
 import {Store} from '@subsquid/typeorm-store'
-import { decodeEvent } from './helper'
+import { decodeEvent } from '../helper'
 
 const chainIdx = process.env.IDX_CHAIN as 'rococo' | 'kusama';
 
