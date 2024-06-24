@@ -1,6 +1,6 @@
 {
   "outDir": "src/types",
-  "specVersions": "myMetadata.jsonl",
+  "specVersions": "myMetadataKSM.jsonl",
   "pallets": {
     "Multisig": {
       "events": true,
