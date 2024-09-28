@@ -1,33 +1,31 @@
 
 import { CoreAssignment, ScheduleItem, RegionId, AccountId32 } from "../types/kusama/v1002000"
 
-
-interface TransferEvent {
-    id: string
-    blockNumber: number
-    timestamp: Date
-    extrinsicHash?: string
-    from: string
-    to: string
-    amount: bigint
-    fee?: bigint
-}
-
-interface HistoryInitializedEvent {
+// Common property interfaces
+interface BaseEvent {
     id: string;
     blockNumber: number;
     timestamp: Date;
     extrinsicHash?: string;
+}
+
+
+
+interface TransferEventData {
+    from: string;
+    to: string;
+    amount: bigint;
+    fee?: bigint;
+}
+
+interface HistoryInitializedEventData {
     when: number;
     privatePoolSize: number;
     systemPoolSize: number;
 }
 
-interface SaleInitializedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
-    extrinsicHash?: string;
+// EventData-specific data interfaces without common properties
+interface SaleInitializedEventData {
     saleStart: number;
     leadinLength: number;
     startPrice: bigint;
@@ -38,29 +36,30 @@ interface SaleInitializedEvent {
     coresOffered: number;
 }
 
-interface SalesStartedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
-    extrinsicHash?: string;
+interface SaleInitializedEventData {
+    saleStart: number;
+    leadinLength: number;
+    startPrice: bigint;
+    regularPrice: bigint;
+    regionBegin: number;
+    regionEnd: number;
+    idealCoresSold: number;
+    coresOffered: number;
+}
+
+interface SalesStartedEventData {
     price: bigint;
     coreCount: number;
 }
 
-interface PurchasedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface PurchasedEventData {
     who: string;
     regionId: RegionId;
     price: bigint;
     duration: number;
 }
 
-interface CoreOwnerEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface CoreOwnerEventData {
     owner: string;
     regionId: RegionId;
     price?: bigint | null;
@@ -70,20 +69,14 @@ interface CoreOwnerEvent {
     task: number | null;
 }
 
-interface RenewableEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface RenewableEventData {
     core: number;
     price: bigint;
     begin: number;
     workload: ScheduleItem[];
 }
 
-interface RenewedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface RenewedEventData {
     who: string;
     price: bigint;
     oldCore: number;
@@ -93,188 +86,187 @@ interface RenewedEvent {
     workload: ScheduleItem[];
 }
 
-interface TransferredEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface TransferredEventData {
     regionId: RegionId;
     duration: number;
     oldOwner?: string;
     owner?: string;
 }
 
-interface PartitionedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface PartitionedEventData {
     oldRegionId: RegionId;
     newRegionIds: [RegionId, RegionId];
 }
 
-interface InterlacedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface InterlacedEventData {
     oldRegionId: RegionId;
     newRegionIds: [RegionId, RegionId];
 }
 
-interface AssignedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface AssignedEventData {
     regionId: RegionId;
     duration: number;
     task: number;
 }
 
-interface PooledEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface PooledEventData {
     regionId: RegionId;
     duration: number;
 }
 
-interface CoreCountRequestedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface CoreCountRequestedEventData {
     coreCount: number;
 }
 
-interface CoreCountChangedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface CoreCountChangedEventData {
     coreCount: number;
 }
 
-interface ReservationMadeEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface ReservationMadeEventData {
     index: number;
     workload: ScheduleItem[];
 }
 
-interface ReservationCancelledEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface ReservationCancelledEventData {
     index: number;
     workload: ScheduleItem[];
 }
 
-interface LeasedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface LeasedEventData {
     task: number;
     until: number;
 }
 
-interface LeaseEndingEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface LeaseEndingEventData {
     task: number;
     when: number;
 }
 
-interface RevenueClaimBegunEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface RevenueClaimBegunEventData {
     region: RegionId;
     maxTimeslices: number;
 }
 
-interface RevenueClaimItemEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface RevenueClaimItemEventData {
     when: number;
     amount: bigint;
 }
 
-interface RevenueClaimPaidEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface RevenueClaimPaidEventData {
     who: string;
     amount: bigint;
     next: RegionId | null;
 }
 
-interface CreditPurchasedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface CreditPurchasedEventData {
     who: string;
     beneficiary: string;
     amount: bigint;
 }
 
-interface RegionDroppedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface RegionDroppedEventData {
     regionId: RegionId;
     duration: number;
 }
 
-interface ContributionDroppedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface ContributionDroppedEventData {
     regionId: RegionId;
 }
 
-interface HistoryDroppedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface HistoryDroppedEventData {
     when: number;
     revenue: bigint;
 }
 
-interface HistoryIgnoredEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface HistoryIgnoredEventData {
     when: number;
     revenue: bigint;
 }
 
-interface ClaimsReadyEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface ClaimsReadyEventData {
     when: number;
     systemPayout: bigint;
     privatePayout: bigint;
 }
 
-interface CoreAssignedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface CoreAssignedEventData {
     core: number;
     when: number;
     assignment: [CoreAssignment, number][];
 }
 
-interface AllowedRenewalDroppedEvent {
-    id: string;
-    blockNumber: number;
-    timestamp: Date;
+interface AllowedRenewalDroppedEventData {
     when: number;
     core: number;
 }
 
+// Event-specific interfaces with common properties
+interface TransferEvent extends BaseEvent, TransferEventData {}
+interface HistoryInitializedEvent extends BaseEvent, HistoryInitializedEventData {}
+interface SaleInitializedEvent extends BaseEvent, SaleInitializedEventData {}
+interface SalesStartedEvent extends BaseEvent, SalesStartedEventData {}
+interface PurchasedEvent extends BaseEvent, PurchasedEventData {}
+interface CoreOwnerEvent extends BaseEvent, CoreOwnerEventData {}
+interface RenewableEvent extends BaseEvent, RenewableEventData {}
+interface RenewedEvent extends BaseEvent, RenewedEventData {}
+interface TransferredEvent extends BaseEvent, TransferredEventData {}
+interface PartitionedEvent extends BaseEvent, PartitionedEventData {}
+interface InterlacedEvent extends BaseEvent, InterlacedEventData {}
+interface AssignedEvent extends BaseEvent, AssignedEventData {}
+interface PooledEvent extends BaseEvent, PooledEventData {}
+interface CoreCountRequestedEvent extends BaseEvent, CoreCountRequestedEventData {}
+interface CoreCountChangedEvent extends BaseEvent, CoreCountChangedEventData {}
+interface ReservationMadeEvent extends BaseEvent, ReservationMadeEventData {}
+interface ReservationCancelledEvent extends BaseEvent, ReservationCancelledEventData {}
+interface LeasedEvent extends BaseEvent, LeasedEventData {}
+interface LeaseEndingEvent extends BaseEvent, LeaseEndingEventData {}
+interface RevenueClaimBegunEvent extends BaseEvent, RevenueClaimBegunEventData {}
+interface RevenueClaimItemEvent extends BaseEvent, RevenueClaimItemEventData {}
+interface RevenueClaimPaidEvent extends BaseEvent, RevenueClaimPaidEventData {}
+interface CreditPurchasedEvent extends BaseEvent, CreditPurchasedEventData {}
+interface RegionDroppedEvent extends BaseEvent, RegionDroppedEventData {}
+interface ContributionDroppedEvent extends BaseEvent, ContributionDroppedEventData {}
+interface HistoryDroppedEvent extends BaseEvent, HistoryDroppedEventData {}
+interface HistoryIgnoredEvent extends BaseEvent, HistoryIgnoredEventData {}
+interface ClaimsReadyEvent extends BaseEvent, ClaimsReadyEventData {}
+interface CoreAssignedEvent extends BaseEvent, CoreAssignedEventData {}
+interface AllowedRenewalDroppedEvent extends BaseEvent, AllowedRenewalDroppedEventData {}
+
 
 // Export all interfaces
+export {
+    TransferEventData,
+    HistoryInitializedEventData,
+    SaleInitializedEventData,
+    SalesStartedEventData,
+    PurchasedEventData,
+    CoreOwnerEventData,
+    RenewableEventData,
+    RenewedEventData,
+    TransferredEventData,
+    PartitionedEventData,
+    InterlacedEventData,
+    AssignedEventData,
+    PooledEventData,
+    CoreCountRequestedEventData,
+    CoreCountChangedEventData,
+    ReservationMadeEventData,
+    ReservationCancelledEventData,
+    LeasedEventData,
+    LeaseEndingEventData,
+    RevenueClaimBegunEventData,
+    RevenueClaimItemEventData,
+    RevenueClaimPaidEventData,
+    CreditPurchasedEventData,
+    RegionDroppedEventData,
+    ContributionDroppedEventData,
+    HistoryDroppedEventData,
+    HistoryIgnoredEventData,
+    ClaimsReadyEventData,
+    CoreAssignedEventData,
+    AllowedRenewalDroppedEventData
+}
+
 export {
     TransferEvent,
     HistoryInitializedEvent,

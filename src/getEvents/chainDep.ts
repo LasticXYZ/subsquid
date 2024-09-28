@@ -217,3 +217,9 @@ export {
     coreAssigned,
     allowedRenewalDropped
 };
+
+
+export {
+  saleInitializedROC,
+  saleInitializedKSM
+}

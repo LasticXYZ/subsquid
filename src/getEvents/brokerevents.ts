@@ -28,7 +28,37 @@ import {
     ClaimsReadyEvent,
     CoreAssignedEvent,
     AllowedRenewalDroppedEvent,
- } from '../interfaces'
+    TransferEventData,
+    HistoryInitializedEventData,
+    SaleInitializedEventData,
+    SalesStartedEventData,
+    PurchasedEventData,
+    CoreOwnerEventData,
+    RenewableEventData,
+    RenewedEventData,
+    TransferredEventData,
+    PartitionedEventData,
+    InterlacedEventData,
+    AssignedEventData,
+    PooledEventData,
+    CoreCountRequestedEventData,
+    CoreCountChangedEventData,
+    ReservationMadeEventData,
+    ReservationCancelledEventData,
+    LeasedEventData,
+    LeaseEndingEventData,
+    RevenueClaimBegunEventData,
+    RevenueClaimItemEventData,
+    RevenueClaimPaidEventData,
+    CreditPurchasedEventData,
+    RegionDroppedEventData,
+    ContributionDroppedEventData,
+    HistoryDroppedEventData,
+    HistoryIgnoredEventData,
+    ClaimsReadyEventData,
+    CoreAssignedEventData,
+    AllowedRenewalDroppedEventData
+} from '../interfaces'
 import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
 import {
@@ -59,12 +89,14 @@ import {
     historyIgnored,
     claimsReady,
     coreAssigned,
-    allowedRenewalDropped
+    allowedRenewalDropped,
+    saleInitializedROC,
+    saleInitializedKSM
 } from './chainDep'
 
 import {Store} from '@subsquid/typeorm-store'
 import { decodeEvent } from '../helper'
-import { ReservationMade } from '../model'
+import { CoreAssigned, ReservationMade } from '../model'
 
 
 
@@ -95,16 +127,33 @@ import { ReservationMade } from '../model'
 //     return events
 // }
 
+// type SaleInitializedROCType = typeof saleInitializedROC;
+// type SaleInitializedKSMType = typeof saleInitializedKSM;
+
+// // Custom type guards
+// function isSaleInitializedROC(saleInitialized: any): saleInitialized is SaleInitializedROCType {
+//     return (saleInitialized as SaleInitializedROCType).v9430 !== undefined;
+// }
+
+// function isSaleInitializedKSM(saleInitialized: any): saleInitialized is SaleInitializedKSMType {
+//     return (saleInitialized as SaleInitializedKSMType).v1002000 !== undefined;
+// }
+
 function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitializedEvent[] {
-    let events: SaleInitializedEvent[] = []
+    let events: SaleInitializedEvent[] = [];
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == saleInitialized.name) {
-                const decoded = decodeEvent(event, saleInitialized)
-                //const decoded = saleInitialized.v9430.decode(event) // adjust with actual decoder
-
+                const decoded = decodeEvent<SaleInitializedEventData>(event, saleInitialized);
+                // let decoded: SaleInitializedEventData | null = null;
+                // if (isSaleInitializedROC(saleInitialized) && saleInitialized.v9430.is(event)) {
+                //     decoded = saleInitialized.v9430.decode(event); // adjust with actual decoder
+                // } else if (isSaleInitializedKSM(saleInitialized) && saleInitialized.v1002000.is(event)) {
+                //     decoded = saleInitialized.v1002000.decode(event); // adjust with actual decoder
+                // }
+                
                 if (decoded) {
-                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+                    assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`);
                     
                     events.push({
                         id: event.id,
@@ -119,13 +168,14 @@ function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitialized
                         regionEnd: decoded.regionEnd,
                         idealCoresSold: decoded.idealCoresSold,
                         coresOffered: decoded.coresOffered
-                    })
+                    });
                 }
             }
         }
     }
-    return events
+    return events;
 }
+
 
 // Implement the logic to extract SalesStarted events
 function getSalesStartedEvents(ctx: ProcessorContext<Store>): SalesStartedEvent[] {
@@ -133,7 +183,7 @@ function getSalesStartedEvents(ctx: ProcessorContext<Store>): SalesStartedEvent[
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == salesStarted.name) {
-                const decoded = decodeEvent(event, salesStarted)
+                const decoded = decodeEvent<SalesStartedEventData>(event, salesStarted)
                 //const decoded = salesStarted.v9430.decode(event) // adjust with actual decoder
                 
                 if (decoded) {
@@ -160,7 +210,7 @@ function getPurchasedEvents(ctx: ProcessorContext<Store>): PurchasedEvent[] {
         for (let event of block.events) {
             if (event.name == purchased.name) {
                 //const decoded = purchased.v9430.decode(event) // adjust with actual decoder
-                const decoded = decodeEvent(event, purchased)
+                const decoded = decodeEvent<PurchasedEventData>(event, purchased)
                 
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -186,7 +236,7 @@ function getRenewableEvents(ctx: ProcessorContext<Store>): RenewableEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == renewable.name) {
-                const decoded = decodeEvent(event, renewable)
+                const decoded = decodeEvent<RenewableEventData>(event, renewable)
                 
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -212,7 +262,7 @@ function getRenewedEvents(ctx: ProcessorContext<Store>): RenewedEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == renewed.name) {
-                const decoded = decodeEvent(event, renewed)
+                const decoded = decodeEvent<RenewedEventData>(event, renewed)
 
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -242,7 +292,7 @@ function getTransferredEvents(ctx: ProcessorContext<Store>): TransferredEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == transferred.name) {
-                const decoded = decodeEvent(event, transferred)
+                const decoded = decodeEvent<TransferredEventData>(event, transferred)
                 // let decoded;
                 // if (transferred.v9430.is(event)) {
                 //     // Check if the event transferred is of the v9430 type
@@ -278,7 +328,7 @@ function getPartitionedEvents(ctx: ProcessorContext<Store>): PartitionedEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == partitioned.name) {
-                const decoded = decodeEvent(event, partitioned)
+                const decoded = decodeEvent<PartitionedEventData>(event, partitioned)
                 //const decoded = partitioned.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -302,7 +352,7 @@ function getInterlacedEvents(ctx: ProcessorContext<Store>): InterlacedEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == interlaced.name) {
-                const decoded = decodeEvent(event, interlaced)
+                const decoded = decodeEvent<InterlacedEventData>(event, interlaced)
                 //const decoded = interlaced.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -327,7 +377,7 @@ function getAssignedEvents(ctx: ProcessorContext<Store>): AssignedEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == assigned.name) {
-                const decoded = decodeEvent(event, assigned)
+                const decoded = decodeEvent<AssignedEventData>(event, assigned)
                 //const decoded = assigned.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -353,7 +403,7 @@ function getPooledEvents(ctx: ProcessorContext<Store>): PooledEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == pooled.name) {
-                const decoded = decodeEvent(event, pooled)
+                const decoded = decodeEvent<PooledEventData>(event, pooled)
                 //const decoded = pooled.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -378,7 +428,7 @@ function getCoreCountRequestedEvents(ctx: ProcessorContext<Store>): CoreCountReq
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == coreCountRequested.name) {
-                const decoded = decodeEvent(event, coreCountRequested)
+                const decoded = decodeEvent<CoreCountRequestedEventData>(event, coreCountRequested)
                 //const decoded = coreCountRequested.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -402,7 +452,7 @@ function getCoreCountChangedEvents(ctx: ProcessorContext<Store>): CoreCountChang
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == coreCountChanged.name) {
-                const decoded = decodeEvent(event, coreCountChanged)
+                const decoded = decodeEvent<CoreCountChangedEventData>(event, coreCountChanged)
                 //const decoded = coreCountChanged.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -426,7 +476,7 @@ function getReservationMadeEvents(ctx: ProcessorContext<Store>): ReservationMade
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == reservationMade.name) {
-                const decoded = decodeEvent(event, ReservationMade)
+                const decoded = decodeEvent<ReservationMadeEventData>(event, reservationMade)
                 //const decoded = reservationMade.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -450,7 +500,7 @@ function getReservationCancelledEvents(ctx: ProcessorContext<Store>): Reservatio
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == reservationCancelled.name) {
-                const decoded = decodeEvent(event, reservationCancelled)
+                const decoded = decodeEvent<ReservationCancelledEventData>(event, reservationCancelled)
                 //const decoded = reservationCancelled.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -475,7 +525,7 @@ function getLeasedEvents(ctx: ProcessorContext<Store>): LeasedEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == leased.name) {
-                const decoded = decodeEvent(event, leased)
+                const decoded = decodeEvent<LeasedEventData>(event, leased)
                 //const decoded = leased.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -500,7 +550,7 @@ function getLeaseEndingEvents(ctx: ProcessorContext<Store>): LeaseEndingEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == leaseEnding.name) {
-                const decoded = decodeEvent(event, leaseEnding)
+                const decoded = decodeEvent<LeaseEndingEventData>(event, leaseEnding)
                 //const decoded = leaseEnding.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -525,7 +575,7 @@ function getRevenueClaimBegunEvents(ctx: ProcessorContext<Store>): RevenueClaimB
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == revenueClaimBegun.name) {
-                const decoded = decodeEvent(event, revenueClaimBegun)
+                const decoded = decodeEvent<RevenueClaimBegunEventData>(event, revenueClaimBegun)
                 //const decoded = revenueClaimBegun.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -550,7 +600,7 @@ function getRevenueClaimItemEvents(ctx: ProcessorContext<Store>): RevenueClaimIt
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == revenueClaimItem.name) {
-                const decoded = decodeEvent(event, revenueClaimItem)
+                const decoded = decodeEvent<RevenueClaimItemEventData>(event, revenueClaimItem)
                 //const decoded = revenueClaimItem.v9430.decode(event)
 
                 if (decoded) {
@@ -576,7 +626,7 @@ function getRevenueClaimPaidEvents(ctx: ProcessorContext<Store>): RevenueClaimPa
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == revenueClaimPaid.name) {
-                const decoded = decodeEvent(event, revenueClaimPaid)
+                const decoded = decodeEvent<RevenueClaimPaidEventData>(event, revenueClaimPaid)
                 //const decoded = revenueClaimPaid.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -602,7 +652,7 @@ function getCreditPurchasedEvents(ctx: ProcessorContext<Store>): CreditPurchased
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == creditPurchased.name) {
-                const decoded = decodeEvent(event, creditPurchased)
+                const decoded = decodeEvent<CreditPurchasedEventData>(event, creditPurchased)
                 //const decoded = creditPurchased.v9430.decode(event)
 
                 if (decoded) {
@@ -629,7 +679,7 @@ function getRegionDroppedEvents(ctx: ProcessorContext<Store>): RegionDroppedEven
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == regionDropped.name) {
-                const decoded = decodeEvent(event, regionDropped)
+                const decoded = decodeEvent<RegionDroppedEventData>(event, regionDropped)
                 //const decoded = regionDropped.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -654,7 +704,7 @@ function getContributionDroppedEvents(ctx: ProcessorContext<Store>): Contributio
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == contributionDropped.name) {
-                const decoded = decodeEvent(event, contributionDropped)
+                const decoded = decodeEvent<ContributionDroppedEventData>(event, contributionDropped)
                 //const decoded = contributionDropped.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -678,7 +728,7 @@ function getHistoryDroppedEvents(ctx: ProcessorContext<Store>): HistoryDroppedEv
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == historyDropped.name) {
-                const decoded = decodeEvent(event, historyDropped)
+                const decoded = decodeEvent<HistoryDroppedEventData>(event, historyDropped)
                 //const decoded = historyDropped.v9430.decode(event)
                 if (decoded) {
                     assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
@@ -703,7 +753,7 @@ function getHistoryIgnoredEvents(ctx: ProcessorContext<Store>): HistoryIgnoredEv
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == historyIgnored.name) {
-                const decoded = decodeEvent(event, historyIgnored)
+                const decoded = decodeEvent<HistoryIgnoredEventData>(event, historyIgnored)
                 //const decoded = historyIgnored.v9430.decode(event)
 
                 if (decoded) {
@@ -729,7 +779,7 @@ function getClaimsReadyEvents(ctx: ProcessorContext<Store>): ClaimsReadyEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == claimsReady.name) {
-                const decoded = decodeEvent(event, claimsReady)
+                const decoded = decodeEvent<ClaimsReadyEventData>(event, claimsReady)
                 //const decoded = claimsReady.v9430.decode(event)
 
                 if (decoded) {
@@ -756,7 +806,7 @@ function getCoreAssignedEvents(ctx: ProcessorContext<Store>): CoreAssignedEvent[
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == coreAssigned.name) {
-                const decoded = decodeEvent(event, coreAssigned)
+                const decoded = decodeEvent<CoreAssignedEventData>(event, coreAssigned)
                 //const decoded = coreAssigned.v9430.decode(event)
 
                 if (decoded) {
@@ -783,7 +833,7 @@ function getAllowedRenewalDroppedEvents(ctx: ProcessorContext<Store>): AllowedRe
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == allowedRenewalDropped.name) {
-                const decoded = decodeEvent(event, allowedRenewalDropped)
+                const decoded = decodeEvent<AllowedRenewalDroppedEventData>(event, allowedRenewalDropped)
                 //const decoded = allowedRenewalDropped.v9430.decode(event)
 
                 if (decoded) {

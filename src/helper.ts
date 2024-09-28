@@ -1,29 +1,36 @@
+interface GenTypeEvent<T> {
+    is: (event: any) => boolean;
+    decode: (event: any) => T;
+}
+
+interface EventType {
+    [key: string]: GenTypeEvent<any> | string;
+}
+
 /**
  * Decodes an arbitrary event based on its version.
- * @param {Object} block_event_or_call - The event to be decoded.
- * @param {Object} gen_type_event - An object containing different versions and their respective methods to check and decode events.
- * @returns {Object|null} The decoded event object if successful, or null if no appropriate decoder was found.
+ * @param {any} block_event_or_call - The event to be decoded.
+ * @param {EventType} gen_type_event - An object containing different versions and their respective methods to check and decode events.
+ * @returns {T | null} The decoded event object if successful, or null if no appropriate decoder was found.
  */
-export function decodeEvent(block_event_or_call: any, gen_type_event: any) {
-    const versions = [
-        'v9430', 'v1005000', 'v1005001', 'v1007000', 
-        'v1009000', 'v1010000', 'v1011000', 'v1012000', 
-        'v1002000', 'v1002004', 'v1013000',
-    ];
+export function decodeEvent<T>(block_event_or_call: any, gen_type_event: EventType): T | null {
+    const versions = Object.keys(gen_type_event).filter(key => key !== 'name');
 
-    console.log('Decoding event...', block_event_or_call)
-    console.log('Decoding event...', gen_type_event)
+    console.log('Decoding event...', block_event_or_call);
+    console.log('Decoding event...', gen_type_event);
 
     for (const version of versions) {
-        if (gen_type_event[version] && gen_type_event[version].is(block_event_or_call)) {
+        const eventType = gen_type_event[version] as GenTypeEvent<T>;
+        if (eventType && eventType.is(block_event_or_call)) {
             console.log(`Transferred event is of type ${version}`);
-            return gen_type_event[version].decode(block_event_or_call);
+            return eventType.decode(block_event_or_call);
         }
     }
 
     console.log('Transferred event is of unknown type');
     return null;
 }
+
 
 
 
