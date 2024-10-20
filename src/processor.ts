@@ -9,18 +9,16 @@ import {
 } from '@subsquid/substrate-processor'
 
 export const processor = new SubstrateBatchProcessor()
-    .setDataSource({
-        // Lookup archive by the network name in Subsquid registry
-        // See https://docs.subsquid.io/substrate-indexing/supported-networks/
-        //archive: lookupArchive('kusama', {release: 'ArrowSquid'}),
-        // Chain RPC endpoint is required on Substrate for metadata and real-time updates
-        chain: {
-            // Set via .env for local runs or via secrets when deploying to Subsquid Cloud
-            // https://docs.subsquid.io/deploy-squid/env-variables/
-            url: 'wss://sys.ibp.network/coretime-kusama',
-            // More RPC connection options at https://docs.subsquid.io/substrate-indexing/setup/general/#set-data-source
-            rateLimit: 300
-        }
+    // Lookup archive by the network name in Subsquid registry
+    // See https://docs.subsquid.io/substrate-indexing/supported-networks/
+    //.setGateway('https://v2.archive.subsquid.io/network/kusama')
+    // Chain RPC endpoint is required on Substrate for metadata and real-time updates
+    .setRpcEndpoint({
+        // Set via .env for local runs or via secrets when deploying to Subsquid Cloud
+        // https://docs.subsquid.io/deploy-squid/env-variables/
+        url: process.env.RPC_ENDPOINT ? process.env.RPC_ENDPOINT : 'wss://rococo-coretime-rpc.polkadot.io',
+        // More RPC connection options at https://docs.subsquid.io/substrate-indexing/setup/general/#set-data-source
+        //rateLimit: 300
     })
     .addEvent({
         name: [
@@ -76,8 +74,8 @@ export const processor = new SubstrateBatchProcessor()
         // genesis block happens to not have a timestamp, so it's easier
         // to start from 1 in cases when the deployment height is unknown
         // 268800 for Rococo Coretime
-        // 1000000 for Kusama
-        from: 717459        // putting this here temporarily to speed up testing
+        // 22792000 for Kusama
+        from: process.env.START_BLOCK ? +process.env.START_BLOCK : 0         // putting this here temporarily to speed up testing
     })
     // Uncomment to disable RPC ingestion and drastically reduce no of RPC calls
     //.useArchiveOnly()
