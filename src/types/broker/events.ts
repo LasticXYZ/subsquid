@@ -1,5 +1,6 @@
 import {sts, Block, Bytes, Option, Result, EventType, RuntimeCtx} from '../support'
 import * as v1002000 from '../v1002000'
+import * as v1003000 from '../v1003000'
 
 export const purchased =  {
     name: 'Broker.Purchased',
@@ -123,6 +124,30 @@ export const transferred =  {
              * The new owner of the Region.
              */
             owner: v1002000.AccountId32,
+        })
+    ),
+    /**
+     * Ownership of a Region has been transferred.
+     */
+    v1003000: new EventType(
+        'Broker.Transferred',
+        sts.struct({
+            /**
+             * The Region which has been transferred.
+             */
+            regionId: v1003000.RegionId,
+            /**
+             * The duration of the Region.
+             */
+            duration: sts.number(),
+            /**
+             * The old owner of the Region.
+             */
+            oldOwner: sts.option(() => v1003000.AccountId32),
+            /**
+             * The new owner of the Region.
+             */
+            owner: sts.option(() => v1003000.AccountId32),
         })
     ),
 }
@@ -319,6 +344,47 @@ export const saleInitialized =  {
             /**
              * The number of cores we want to sell, ideally. Selling this amount would result in
              * no change to the price for the next sale.
+             */
+            idealCoresSold: sts.number(),
+            /**
+             * Number of cores which are/have been offered for sale.
+             */
+            coresOffered: sts.number(),
+        })
+    ),
+    /**
+     * A new sale has been initialized.
+     */
+    v1003000: new EventType(
+        'Broker.SaleInitialized',
+        sts.struct({
+            /**
+             * The local block number at which the sale will/did start.
+             */
+            saleStart: sts.number(),
+            /**
+             * The length in blocks of the Leadin Period (where the price is decreasing).
+             */
+            leadinLength: sts.number(),
+            /**
+             * The price of Bulk Coretime at the beginning of the Leadin Period.
+             */
+            startPrice: sts.bigint(),
+            /**
+             * The price of Bulk Coretime after the Leadin Period.
+             */
+            endPrice: sts.bigint(),
+            /**
+             * The first timeslice of the Regions which are being sold in this sale.
+             */
+            regionBegin: sts.number(),
+            /**
+             * The timeslice on which the Regions which are being sold in the sale terminate.
+             * (i.e. One after the last timeslice which the Regions control.)
+             */
+            regionEnd: sts.number(),
+            /**
+             * The number of cores we want to sell, ideally.
              */
             idealCoresSold: sts.number(),
             /**
@@ -636,6 +702,26 @@ export const allowedRenewalDropped =  {
      */
     v1002000: new EventType(
         'Broker.AllowedRenewalDropped',
+        sts.struct({
+            /**
+             * The timeslice whose renewal is no longer available.
+             */
+            when: sts.number(),
+            /**
+             * The core whose workload is no longer available to be renewed for `when`.
+             */
+            core: sts.number(),
+        })
+    ),
+}
+
+export const potentialRenewalDropped =  {
+    name: 'Broker.PotentialRenewalDropped',
+    /**
+     * Some historical Instantaneous Core Pool payment record has been dropped.
+     */
+    v1003000: new EventType(
+        'Broker.PotentialRenewalDropped',
         sts.struct({
             /**
              * The timeslice whose renewal is no longer available.

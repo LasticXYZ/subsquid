@@ -1,5 +1,6 @@
 import {sts, Block, Bytes, Option, Result, CallType, RuntimeCtx} from '../support'
 import * as v1002000 from '../v1002000'
+import * as v1003000 from '../v1003000'
 
 export const configure =  {
     name: 'Broker.configure',
@@ -64,6 +65,24 @@ export const startSales =  {
         sts.struct({
             initialPrice: sts.bigint(),
             coreCount: sts.number(),
+        })
+    ),
+    /**
+     * Begin the Bulk Coretime sales rotation.
+     * 
+     * - `origin`: Must be Root or pass `AdminOrigin`.
+     * - `end_price`: The price after the leadin period of Bulk Coretime in the first sale.
+     * - `extra_cores`: Number of extra cores that should be requested on top of the cores
+     *   required for `Reservations` and `Leases`.
+     * 
+     * This will call [`Self::request_core_count`] internally to set the correct core count on
+     * the relay chain.
+     */
+    v1003000: new CallType(
+        'Broker.start_sales',
+        sts.struct({
+            endPrice: sts.bigint(),
+            extraCores: sts.number(),
         })
     ),
 }
@@ -269,6 +288,27 @@ export const notifyCoreCount =  {
         'Broker.notify_core_count',
         sts.struct({
             coreCount: sts.number(),
+        })
+    ),
+}
+
+export const notifyRevenue =  {
+    name: 'Broker.notify_revenue',
+    v1003000: new CallType(
+        'Broker.notify_revenue',
+        sts.struct({
+            revenue: v1003000.OnDemandRevenueRecord,
+        })
+    ),
+}
+
+export const swapLeases =  {
+    name: 'Broker.swap_leases',
+    v1003000: new CallType(
+        'Broker.swap_leases',
+        sts.struct({
+            id: sts.number(),
+            other: sts.number(),
         })
     ),
 }

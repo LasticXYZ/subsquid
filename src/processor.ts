@@ -17,7 +17,7 @@ export const processor = new SubstrateBatchProcessor()
         chain: {
             // Set via .env for local runs or via secrets when deploying to Subsquid Cloud
             // https://docs.subsquid.io/deploy-squid/env-variables/
-            url: 'wss://kusama-coretime-rpc.polkadot.io',
+            url: 'wss://sys.ibp.network/coretime-kusama',
             // More RPC connection options at https://docs.subsquid.io/substrate-indexing/setup/general/#set-data-source
             rateLimit: 300
         }
