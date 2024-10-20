@@ -9,7 +9,7 @@ export const depositBase =  {
      *  `4 + sizeof((BlockNumber, Balance, AccountId))` bytes and whose key size is
      *  `32 + sizeof(AccountId)` bytes.
      */
-    v1002000: new ConstantType(
+    v1003000: new ConstantType(
         'Multisig.DepositBase',
         sts.bigint()
     ),
@@ -21,7 +21,7 @@ export const depositFactor =  {
      * 
      *  This is held for adding 32 bytes more into a pre-existing storage value.
      */
-    v1002000: new ConstantType(
+    v1003000: new ConstantType(
         'Multisig.DepositFactor',
         sts.bigint()
     ),
@@ -31,7 +31,7 @@ export const maxSignatories =  {
     /**
      *  The maximum amount of signatories allowed in the multisig.
      */
-    v1002000: new ConstantType(
+    v1003000: new ConstantType(
         'Multisig.MaxSignatories',
         sts.number()
     ),

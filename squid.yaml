@@ -1,6 +1,6 @@
 manifestVersion: subsquid.io/v0.1
-name: kusama-coretime
-version: 5
+name: polkadot-coretime
+version: 1
 description: Squid for indexing Kusama Coretime by Lastic
 build: 
 deploy:
@@ -11,9 +11,9 @@ deploy:
       - sqd
       - process:prod
     env:
-      RPC_ENDPOINT: 'wss://sys.ibp.network/coretime-kusama'
-      IDX_CHAIN: 'kusama'
-      PREFIX_CHAIN: 2
+      RPC_ENDPOINT: 'wss://coretime-polkadot.dotters.network'
+      IDX_CHAIN: 'polkadot'
+      PREFIX_CHAIN: 0
       START_BLOCK: 51749
   api:
     cmd:

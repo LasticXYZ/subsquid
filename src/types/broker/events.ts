@@ -1,5 +1,4 @@
 import {sts, Block, Bytes, Option, Result, EventType, RuntimeCtx} from '../support'
-import * as v1002000 from '../v1002000'
 import * as v1003000 from '../v1003000'
 
 export const purchased =  {
@@ -7,17 +6,17 @@ export const purchased =  {
     /**
      * A Region of Bulk Coretime has been purchased.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.Purchased',
         sts.struct({
             /**
              * The identity of the purchaser.
              */
-            who: v1002000.AccountId32,
+            who: v1003000.AccountId32,
             /**
              * The identity of the Region.
              */
-            regionId: v1002000.RegionId,
+            regionId: v1003000.RegionId,
             /**
              * The price paid for this Region.
              */
@@ -35,7 +34,7 @@ export const renewable =  {
     /**
      * The workload of a core has become renewable.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.Renewable',
         sts.struct({
             /**
@@ -55,7 +54,7 @@ export const renewable =  {
             /**
              * The actual workload which can be renewed.
              */
-            workload: sts.array(() => v1002000.ScheduleItem),
+            workload: sts.array(() => v1003000.ScheduleItem),
         })
     ),
 }
@@ -65,13 +64,13 @@ export const renewed =  {
     /**
      * A workload has been renewed.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.Renewed',
         sts.struct({
             /**
              * The identity of the renewer.
              */
-            who: v1002000.AccountId32,
+            who: v1003000.AccountId32,
             /**
              * The price paid for this renewal.
              */
@@ -95,37 +94,13 @@ export const renewed =  {
             /**
              * The workload which was renewed.
              */
-            workload: sts.array(() => v1002000.ScheduleItem),
+            workload: sts.array(() => v1003000.ScheduleItem),
         })
     ),
 }
 
 export const transferred =  {
     name: 'Broker.Transferred',
-    /**
-     * Ownership of a Region has been transferred.
-     */
-    v1002000: new EventType(
-        'Broker.Transferred',
-        sts.struct({
-            /**
-             * The Region which has been transferred.
-             */
-            regionId: v1002000.RegionId,
-            /**
-             * The duration of the Region.
-             */
-            duration: sts.number(),
-            /**
-             * The old owner of the Region.
-             */
-            oldOwner: v1002000.AccountId32,
-            /**
-             * The new owner of the Region.
-             */
-            owner: v1002000.AccountId32,
-        })
-    ),
     /**
      * Ownership of a Region has been transferred.
      */
@@ -157,17 +132,17 @@ export const partitioned =  {
     /**
      * A Region has been split into two non-overlapping Regions.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.Partitioned',
         sts.struct({
             /**
              * The Region which was split.
              */
-            oldRegionId: v1002000.RegionId,
+            oldRegionId: v1003000.RegionId,
             /**
              * The new Regions into which it became.
              */
-            newRegionIds: sts.tuple(() => [v1002000.RegionId, v1002000.RegionId]),
+            newRegionIds: sts.tuple(() => [v1003000.RegionId, v1003000.RegionId]),
         })
     ),
 }
@@ -177,17 +152,17 @@ export const interlaced =  {
     /**
      * A Region has been converted into two overlapping Regions each of lesser regularity.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.Interlaced',
         sts.struct({
             /**
              * The Region which was interlaced.
              */
-            oldRegionId: v1002000.RegionId,
+            oldRegionId: v1003000.RegionId,
             /**
              * The new Regions into which it became.
              */
-            newRegionIds: sts.tuple(() => [v1002000.RegionId, v1002000.RegionId]),
+            newRegionIds: sts.tuple(() => [v1003000.RegionId, v1003000.RegionId]),
         })
     ),
 }
@@ -197,13 +172,13 @@ export const assigned =  {
     /**
      * A Region has been assigned to a particular task.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.Assigned',
         sts.struct({
             /**
              * The Region which was assigned.
              */
-            regionId: v1002000.RegionId,
+            regionId: v1003000.RegionId,
             /**
              * The duration of the assignment.
              */
@@ -221,13 +196,13 @@ export const pooled =  {
     /**
      * A Region has been added to the Instantaneous Coretime Pool.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.Pooled',
         sts.struct({
             /**
              * The Region which was added to the Instantaneous Coretime Pool.
              */
-            regionId: v1002000.RegionId,
+            regionId: v1003000.RegionId,
             /**
              * The duration of the Region.
              */
@@ -241,7 +216,7 @@ export const coreCountRequested =  {
     /**
      * A new number of cores has been requested.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.CoreCountRequested',
         sts.struct({
             /**
@@ -257,7 +232,7 @@ export const coreCountChanged =  {
     /**
      * The number of cores available for scheduling has changed.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.CoreCountChanged',
         sts.struct({
             /**
@@ -273,7 +248,7 @@ export const reservationMade =  {
     /**
      * There is a new reservation for a workload.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.ReservationMade',
         sts.struct({
             /**
@@ -283,7 +258,7 @@ export const reservationMade =  {
             /**
              * The workload of the reservation.
              */
-            workload: sts.array(() => v1002000.ScheduleItem),
+            workload: sts.array(() => v1003000.ScheduleItem),
         })
     ),
 }
@@ -293,7 +268,7 @@ export const reservationCancelled =  {
     /**
      * A reservation for a workload has been cancelled.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.ReservationCancelled',
         sts.struct({
             /**
@@ -303,55 +278,13 @@ export const reservationCancelled =  {
             /**
              * The workload of the now cancelled reservation.
              */
-            workload: sts.array(() => v1002000.ScheduleItem),
+            workload: sts.array(() => v1003000.ScheduleItem),
         })
     ),
 }
 
 export const saleInitialized =  {
     name: 'Broker.SaleInitialized',
-    /**
-     * A new sale has been initialized.
-     */
-    v1002000: new EventType(
-        'Broker.SaleInitialized',
-        sts.struct({
-            /**
-             * The local block number at which the sale will/did start.
-             */
-            saleStart: sts.number(),
-            /**
-             * The length in blocks of the Leadin Period (where the price is decreasing).
-             */
-            leadinLength: sts.number(),
-            /**
-             * The price of Bulk Coretime at the beginning of the Leadin Period.
-             */
-            startPrice: sts.bigint(),
-            /**
-             * The price of Bulk Coretime after the Leadin Period.
-             */
-            regularPrice: sts.bigint(),
-            /**
-             * The first timeslice of the Regions which are being sold in this sale.
-             */
-            regionBegin: sts.number(),
-            /**
-             * The timeslice on which the Regions which are being sold in the sale terminate.
-             * (i.e. One after the last timeslice which the Regions control.)
-             */
-            regionEnd: sts.number(),
-            /**
-             * The number of cores we want to sell, ideally. Selling this amount would result in
-             * no change to the price for the next sale.
-             */
-            idealCoresSold: sts.number(),
-            /**
-             * Number of cores which are/have been offered for sale.
-             */
-            coresOffered: sts.number(),
-        })
-    ),
     /**
      * A new sale has been initialized.
      */
@@ -400,7 +333,7 @@ export const leased =  {
     /**
      * A new lease has been created.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.Leased',
         sts.struct({
             /**
@@ -422,7 +355,7 @@ export const leaseEnding =  {
     /**
      * A lease is about to end.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.LeaseEnding',
         sts.struct({
             /**
@@ -442,7 +375,7 @@ export const salesStarted =  {
     /**
      * The sale rotation has been started and a new sale is imminent.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.SalesStarted',
         sts.struct({
             /**
@@ -462,13 +395,13 @@ export const revenueClaimBegun =  {
     /**
      * The act of claiming revenue has begun.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.RevenueClaimBegun',
         sts.struct({
             /**
              * The region to be claimed for.
              */
-            region: v1002000.RegionId,
+            region: v1003000.RegionId,
             /**
              * The maximum number of timeslices which should be searched for claimed.
              */
@@ -482,7 +415,7 @@ export const revenueClaimItem =  {
     /**
      * A particular timeslice has a non-zero claim.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.RevenueClaimItem',
         sts.struct({
             /**
@@ -502,13 +435,13 @@ export const revenueClaimPaid =  {
     /**
      * A revenue claim has (possibly only in part) been paid.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.RevenueClaimPaid',
         sts.struct({
             /**
              * The account to whom revenue has been paid.
              */
-            who: v1002000.AccountId32,
+            who: v1003000.AccountId32,
             /**
              * The total amount of revenue claimed and paid.
              */
@@ -516,7 +449,7 @@ export const revenueClaimPaid =  {
             /**
              * The next region which should be claimed for the continuation of this contribution.
              */
-            next: sts.option(() => v1002000.RegionId),
+            next: sts.option(() => v1003000.RegionId),
         })
     ),
 }
@@ -526,17 +459,17 @@ export const creditPurchased =  {
     /**
      * Some Instantaneous Coretime Pool credit has been purchased.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.CreditPurchased',
         sts.struct({
             /**
              * The account which purchased the credit.
              */
-            who: v1002000.AccountId32,
+            who: v1003000.AccountId32,
             /**
              * The Relay-chain account to which the credit will be made.
              */
-            beneficiary: v1002000.AccountId32,
+            beneficiary: v1003000.AccountId32,
             /**
              * The amount of credit purchased.
              */
@@ -550,13 +483,13 @@ export const regionDropped =  {
     /**
      * A Region has been dropped due to being out of date.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.RegionDropped',
         sts.struct({
             /**
              * The Region which no longer exists.
              */
-            regionId: v1002000.RegionId,
+            regionId: v1003000.RegionId,
             /**
              * The duration of the Region.
              */
@@ -570,13 +503,13 @@ export const contributionDropped =  {
     /**
      * Some historical Instantaneous Core Pool contribution record has been dropped.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.ContributionDropped',
         sts.struct({
             /**
              * The Region whose contribution is no longer exists.
              */
-            regionId: v1002000.RegionId,
+            regionId: v1003000.RegionId,
         })
     ),
 }
@@ -586,7 +519,7 @@ export const historyInitialized =  {
     /**
      * Some historical Instantaneous Core Pool payment record has been initialized.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.HistoryInitialized',
         sts.struct({
             /**
@@ -611,7 +544,7 @@ export const historyDropped =  {
     /**
      * Some historical Instantaneous Core Pool payment record has been dropped.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.HistoryDropped',
         sts.struct({
             /**
@@ -632,7 +565,7 @@ export const historyIgnored =  {
      * Some historical Instantaneous Core Pool payment record has been ignored because the
      * timeslice was already known. Governance may need to intervene.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.HistoryIgnored',
         sts.struct({
             /**
@@ -652,7 +585,7 @@ export const claimsReady =  {
     /**
      * Some historical Instantaneous Core Pool Revenue is ready for payout claims.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.ClaimsReady',
         sts.struct({
             /**
@@ -676,7 +609,7 @@ export const coreAssigned =  {
     /**
      * A Core has been assigned to one or more tasks and/or the Pool on the Relay-chain.
      */
-    v1002000: new EventType(
+    v1003000: new EventType(
         'Broker.CoreAssigned',
         sts.struct({
             /**
@@ -690,27 +623,7 @@ export const coreAssigned =  {
             /**
              * The workload to be done on the Core.
              */
-            assignment: sts.array(() => sts.tuple(() => [v1002000.CoreAssignment, sts.number()])),
-        })
-    ),
-}
-
-export const allowedRenewalDropped =  {
-    name: 'Broker.AllowedRenewalDropped',
-    /**
-     * Some historical Instantaneous Core Pool payment record has been dropped.
-     */
-    v1002000: new EventType(
-        'Broker.AllowedRenewalDropped',
-        sts.struct({
-            /**
-             * The timeslice whose renewal is no longer available.
-             */
-            when: sts.number(),
-            /**
-             * The core whose workload is no longer available to be renewed for `when`.
-             */
-            core: sts.number(),
+            assignment: sts.array(() => sts.tuple(() => [v1003000.CoreAssignment, sts.number()])),
         })
     ),
 }
