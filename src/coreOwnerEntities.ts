@@ -76,7 +76,7 @@ async function processTransferredEvent(ctx: DataHandlerContext<Store, Fields>, e
         // Update existing CoreOwner with new owner
         existingCoreOwner.timestamp = event.timestamp;
         existingCoreOwner.blockNumber = event.blockNumber;
-        existingCoreOwner.owner = event.owner;
+        existingCoreOwner.owner = event.owner ?? '';
         await ctx.store.upsert(existingCoreOwner);
     } else {
         // Add new CoreOwner with updated owner

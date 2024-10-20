@@ -1,6 +1,6 @@
 import { ProcessorContext } from '../processor'
 import {
-    HistoryInitializedEvent,
+    // HistoryInitializedEvent,
     SaleInitializedEvent,
     SalesStartedEvent,
     PurchasedEvent,
@@ -32,7 +32,7 @@ import {
 import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
 import {
-    historyInitialized,
+    // historyInitialized,
     saleInitialized,
     salesStarted,
     purchased,
@@ -64,37 +64,38 @@ import {
 
 import {Store} from '@subsquid/typeorm-store'
 import { getChainConfig } from '../const'
+import { decodeEvent } from './helper'
 
-// Implement the logic to extract HistoryInitialized events
-function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryInitializedEvent[] {
-    let events: HistoryInitializedEvent[] = []
-    for (let block of ctx.blocks) {
-        for (let event of block.events) {
-            if (event.name == historyInitialized.name) {
-                const decoded = historyInitialized.v1002000.decode(event) // adjust with actual decoder
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+// // Implement the logic to extract HistoryInitialized events
+// function getHistoryInitializedEvents(ctx: ProcessorContext<Store>): HistoryInitializedEvent[] {
+//     let events: HistoryInitializedEvent[] = []
+//     for (let block of ctx.blocks) {
+//         for (let event of block.events) {
+//             if (event.name == historyInitialized.name) {
+//                 const decoded = decodeEvent(event, historyInitialized)
+//                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
-                events.push({
-                    id: event.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    extrinsicHash: event.extrinsic?.hash,
-                    when: decoded.when,
-                    privatePoolSize: decoded.privatePoolSize,
-                    systemPoolSize: decoded.systemPoolSize
-                })
-            }
-        }
-    }
-    return events
-}
+//                 events.push({
+//                     id: event.id,
+//                     blockNumber: block.header.height,
+//                     timestamp: new Date(block.header.timestamp),
+//                     extrinsicHash: event.extrinsic?.hash,
+//                     when: decoded.when,
+//                     privatePoolSize: decoded.privatePoolSize,
+//                     systemPoolSize: decoded.systemPoolSize
+//                 })
+//             }
+//         }
+//     }
+//     return events
+// }
 
 function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitializedEvent[] {
     let events: SaleInitializedEvent[] = []
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == saleInitialized.name) {
-                const decoded = saleInitialized.v1002000.decode(event) // adjust with actual decoder
+                const decoded = decodeEvent(event, saleInitialized)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
                 
                 events.push({
@@ -123,7 +124,7 @@ function getSalesStartedEvents(ctx: ProcessorContext<Store>): SalesStartedEvent[
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == salesStarted.name) {
-                const decoded = salesStarted.v1002000.decode(event) // adjust with actual decoder
+                const decoded = decodeEvent(event, salesStarted)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
                 
                 events.push({
@@ -145,7 +146,7 @@ function getPurchasedEvents(ctx: ProcessorContext<Store>): PurchasedEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == purchased.name) {
-                const decoded = purchased.v1002000.decode(event) // adjust with actual decoder
+                const decoded = decodeEvent(event, purchased)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
                 
                 events.push({
@@ -169,7 +170,7 @@ function getRenewableEvents(ctx: ProcessorContext<Store>): RenewableEvent[] {
         for (let event of block.events) {
             if (event.name == renewable.name) {
                 // if (!renewable.v1002000.is(event)) {
-                const decoded = renewable.v1002000.decode(event)
+                const decoded = decodeEvent(event, renewable)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -192,7 +193,7 @@ function getRenewedEvents(ctx: ProcessorContext<Store>): RenewedEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == renewed.name) {
-                const decoded = renewed.v1002000.decode(event)
+                const decoded = decodeEvent(event, renewed)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -219,7 +220,7 @@ function getTransferredEvents(ctx: ProcessorContext<Store>): TransferredEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == transferred.name) {
-                const decoded = transferred.v1002000.decode(event)
+                const decoded = decodeEvent(event, transferred)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -243,7 +244,7 @@ function getPartitionedEvents(ctx: ProcessorContext<Store>): PartitionedEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == partitioned.name) {
-                const decoded = partitioned.v1002000.decode(event)
+                const decoded = decodeEvent(event, partitioned)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -264,7 +265,7 @@ function getInterlacedEvents(ctx: ProcessorContext<Store>): InterlacedEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == interlaced.name) {
-                const decoded = interlaced.v1002000.decode(event)
+                const decoded = decodeEvent(event, interlaced)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -286,7 +287,7 @@ function getAssignedEvents(ctx: ProcessorContext<Store>): AssignedEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == assigned.name) {
-                const decoded = assigned.v1002000.decode(event)
+                const decoded = decodeEvent(event, assigned)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -309,7 +310,7 @@ function getPooledEvents(ctx: ProcessorContext<Store>): PooledEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == pooled.name) {
-                const decoded = pooled.v1002000.decode(event)
+                const decoded = decodeEvent(event, pooled)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -331,7 +332,7 @@ function getCoreCountRequestedEvents(ctx: ProcessorContext<Store>): CoreCountReq
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == coreCountRequested.name) {
-                const decoded = coreCountRequested.v1002000.decode(event)
+                const decoded = decodeEvent(event, coreCountRequested)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -352,7 +353,7 @@ function getCoreCountChangedEvents(ctx: ProcessorContext<Store>): CoreCountChang
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == coreCountChanged.name) {
-                const decoded = coreCountChanged.v1002000.decode(event)
+                const decoded = decodeEvent(event, coreCountChanged)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -373,7 +374,7 @@ function getReservationMadeEvents(ctx: ProcessorContext<Store>): ReservationMade
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == reservationMade.name) {
-                const decoded = reservationMade.v1002000.decode(event)
+                const decoded = decodeEvent(event, reservationMade)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -381,7 +382,7 @@ function getReservationMadeEvents(ctx: ProcessorContext<Store>): ReservationMade
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
                     index: decoded.index,
-                    workload: decoded.workload.map(w => ({ mask: w.mask, assignment: w.assignment })) // Assuming ScheduleItem[] mapping
+                    workload: decoded.workload.map((w: { mask: any; assignment: any }) => ({ mask: w.mask, assignment: w.assignment })) // Assuming ScheduleItem[] mapping
                 })
             }
         }
@@ -394,7 +395,7 @@ function getReservationCancelledEvents(ctx: ProcessorContext<Store>): Reservatio
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == reservationCancelled.name) {
-                const decoded = reservationCancelled.v1002000.decode(event)
+                const decoded = decodeEvent(event, reservationCancelled)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -402,7 +403,7 @@ function getReservationCancelledEvents(ctx: ProcessorContext<Store>): Reservatio
                     blockNumber: block.header.height,
                     timestamp: new Date(block.header.timestamp),
                     index: decoded.index,
-                    workload: decoded.workload.map(w => ({ mask: w.mask, assignment: w.assignment })) // Assuming ScheduleItem[] mapping
+                    workload: decoded.workload.map((w: { mask: any; assignment: any }) => ({ mask: w.mask, assignment: w.assignment })) // Assuming ScheduleItem[] mapping
                 })
             }
         }
@@ -416,7 +417,7 @@ function getLeasedEvents(ctx: ProcessorContext<Store>): LeasedEvent[] {
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == leased.name) {
-                const decoded = leased.v1002000.decode(event)
+                const decoded = decodeEvent(event, leased)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -438,7 +439,7 @@ function getLeaseEndingEvents(ctx: ProcessorContext<Store>): LeaseEndingEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == leaseEnding.name) {
-                const decoded = leaseEnding.v1002000.decode(event)
+                const decoded = decodeEvent(event, leaseEnding)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -460,7 +461,7 @@ function getRevenueClaimBegunEvents(ctx: ProcessorContext<Store>): RevenueClaimB
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == revenueClaimBegun.name) {
-                const decoded = revenueClaimBegun.v1002000.decode(event)
+                const decoded = decodeEvent(event, revenueClaimBegun)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -482,7 +483,7 @@ function getRevenueClaimItemEvents(ctx: ProcessorContext<Store>): RevenueClaimIt
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == revenueClaimItem.name) {
-                const decoded = revenueClaimItem.v1002000.decode(event)
+                const decoded = decodeEvent(event, revenueClaimItem)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -504,7 +505,7 @@ function getRevenueClaimPaidEvents(ctx: ProcessorContext<Store>): RevenueClaimPa
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == revenueClaimPaid.name) {
-                const decoded = revenueClaimPaid.v1002000.decode(event)
+                const decoded = decodeEvent(event, revenueClaimPaid)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -527,7 +528,7 @@ function getCreditPurchasedEvents(ctx: ProcessorContext<Store>): CreditPurchased
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == creditPurchased.name) {
-                const decoded = creditPurchased.v1002000.decode(event)
+                const decoded = decodeEvent(event, creditPurchased)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -550,7 +551,7 @@ function getRegionDroppedEvents(ctx: ProcessorContext<Store>): RegionDroppedEven
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == regionDropped.name) {
-                const decoded = regionDropped.v1002000.decode(event)
+                const decoded = decodeEvent(event, regionDropped)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -572,7 +573,7 @@ function getContributionDroppedEvents(ctx: ProcessorContext<Store>): Contributio
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == contributionDropped.name) {
-                const decoded = contributionDropped.v1002000.decode(event)
+                const decoded = decodeEvent(event, contributionDropped)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -593,7 +594,7 @@ function getHistoryDroppedEvents(ctx: ProcessorContext<Store>): HistoryDroppedEv
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == historyDropped.name) {
-                const decoded = historyDropped.v1002000.decode(event)
+                const decoded = decodeEvent(event, historyDropped)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -615,7 +616,7 @@ function getHistoryIgnoredEvents(ctx: ProcessorContext<Store>): HistoryIgnoredEv
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == historyIgnored.name) {
-                const decoded = historyIgnored.v1002000.decode(event)
+                const decoded = decodeEvent(event, historyIgnored)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -637,7 +638,7 @@ function getClaimsReadyEvents(ctx: ProcessorContext<Store>): ClaimsReadyEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == claimsReady.name) {
-                const decoded = claimsReady.v1002000.decode(event)
+                const decoded = decodeEvent(event, claimsReady)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -660,7 +661,7 @@ function getCoreAssignedEvents(ctx: ProcessorContext<Store>): CoreAssignedEvent[
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == coreAssigned.name) {
-                const decoded = coreAssigned.v1002000.decode(event)
+                const decoded = decodeEvent(event, coreAssigned)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -683,7 +684,7 @@ function getAllowedRenewalDroppedEvents(ctx: ProcessorContext<Store>): AllowedRe
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == allowedRenewalDropped.name) {
-                const decoded = allowedRenewalDropped.v1002000.decode(event)
+                const decoded = decodeEvent(event, allowedRenewalDropped)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -706,7 +707,7 @@ interface EntityMap {
 
 
 export const brokerEventFetchers: EntityMap = {
-    historyInitialized: getHistoryInitializedEvents,
+    // historyInitialized: getHistoryInitializedEvents,
     saleInitialized: getSaleInitializedEvents,
     salesStarted: getSalesStartedEvents,
     purchased: getPurchasedEvents,
