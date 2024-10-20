@@ -10,13 +10,13 @@ export function getChainConfig() {
             }
         case 'kusama':
             return {
-                url: 'wss://kusama-coretime-rpc.polkadot.io',
+                url: 'wss://sys.ibp.network/coretime-kusama',
                 rateLimit: 300,
                 prefix: 2
             }
         case 'polkadot':
             return {
-                url: 'wss://polkadot-coretime-rpc.polkadot.io',
+                url: 'wss://coretime-polkadot.dotters.network',
                 rateLimit: 300,
                 prefix: 0
             }
