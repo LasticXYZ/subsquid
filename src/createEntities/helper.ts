@@ -9,7 +9,7 @@ import {
     ScheduleItem as ScheduleItemEvent,
     CoreAssignment as CoreAssignmentEvent,
     ConfigRecord as ConfigRecordCall,
-} from '../types/v1002000'
+} from '../types/v1003000'
 import { ConfigureCall } from '../interfaces'
 import { ConfigRecord } from '../model'
 

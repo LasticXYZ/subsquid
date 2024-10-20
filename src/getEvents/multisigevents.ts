@@ -16,6 +16,7 @@ import {
 
 import {Store} from '@subsquid/typeorm-store'
 import { getChainConfig } from '../const'
+import { decodeEvent } from './helper'
 
 // Implement the logic to extract NewMultisigEvents events
 function getNewMultisigEvents(ctx: ProcessorContext<Store>): NewMultisigEvent[] {
@@ -23,7 +24,7 @@ function getNewMultisigEvents(ctx: ProcessorContext<Store>): NewMultisigEvent[] 
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == newMultisig.name) {
-                const decoded = newMultisig.v1002000.decode(event) // adjust with actual decoder
+                const decoded = decodeEvent(event, newMultisig)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -46,7 +47,7 @@ function getMultisigApprovalEvents(ctx: ProcessorContext<Store>): MultisigApprov
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == multisigApproval.name) {
-                const decoded = multisigApproval.v1002000.decode(event) // adjust with actual decoder
+                const decoded = decodeEvent(event, multisigApproval)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -69,7 +70,7 @@ function getMultisigExecutedEvents(ctx: ProcessorContext<Store>): MultisigExecut
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == multisigExecuted.name) {
-                const decoded = multisigExecuted.v1002000.decode(event) // adjust with actual decoder
+                const decoded = decodeEvent(event, multisigApproval)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({
@@ -94,7 +95,7 @@ function getMultisigCancelledEvents(ctx: ProcessorContext<Store>): MultisigCance
     for (let block of ctx.blocks) {
         for (let event of block.events) {
             if (event.name == multisigCancelled.name) {
-                const decoded = multisigCancelled.v1002000.decode(event) // adjust with actual decoder
+                const decoded = decodeEvent(event, multisigCancelled)
                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
                 events.push({

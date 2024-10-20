@@ -1,4 +1,4 @@
-import { ConfigRecord, ScheduleItem, RegionId, AccountId32, CoreMask, Finality } from "../types/v1002000";
+import { ConfigRecord, ScheduleItem, RegionId, AccountId32, CoreMask, Finality } from "../types/v1003000";
 
 interface ConfigureCall {
     id: string;

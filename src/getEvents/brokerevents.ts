@@ -27,7 +27,7 @@ import {
     HistoryIgnoredEvent,
     ClaimsReadyEvent,
     CoreAssignedEvent,
-    AllowedRenewalDroppedEvent,
+    // AllowedRenewalDroppedEvent,
  } from '../interfaces'
 import * as ss58 from '@subsquid/ss58'
 import assert from 'assert'
@@ -59,7 +59,7 @@ import {
     historyIgnored,
     claimsReady,
     coreAssigned,
-    allowedRenewalDropped
+    // allowedRenewalDropped
 } from '../types/broker/events'
 
 import {Store} from '@subsquid/typeorm-store'
@@ -679,27 +679,27 @@ function getCoreAssignedEvents(ctx: ProcessorContext<Store>): CoreAssignedEvent[
     return events
 }
 
-function getAllowedRenewalDroppedEvents(ctx: ProcessorContext<Store>): AllowedRenewalDroppedEvent[] {
-    let events: AllowedRenewalDroppedEvent[] = []
-    for (let block of ctx.blocks) {
-        for (let event of block.events) {
-            if (event.name == allowedRenewalDropped.name) {
-                const decoded = decodeEvent(event, allowedRenewalDropped)
-                assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
+// function getAllowedRenewalDroppedEvents(ctx: ProcessorContext<Store>): AllowedRenewalDroppedEvent[] {
+//     let events: AllowedRenewalDroppedEvent[] = []
+//     for (let block of ctx.blocks) {
+//         for (let event of block.events) {
+//             if (event.name == allowedRenewalDropped.name) {
+//                 const decoded = decodeEvent(event, allowedRenewalDropped)
+//                 assert(block.header.timestamp, `Undefined timestamp at block ${block.header.height}`)
 
-                events.push({
-                    id: event.id,
-                    blockNumber: block.header.height,
-                    timestamp: new Date(block.header.timestamp),
-                    when: decoded.when,
-                    core: decoded.core
-                })
-            }
-        }
-    }
+//                 events.push({
+//                     id: event.id,
+//                     blockNumber: block.header.height,
+//                     timestamp: new Date(block.header.timestamp),
+//                     when: decoded.when,
+//                     core: decoded.core
+//                 })
+//             }
+//         }
+//     }
 
-    return events
-}
+//     return events
+// }
 
 interface EntityMap {
     [key: string]: any;
@@ -734,5 +734,5 @@ export const brokerEventFetchers: EntityMap = {
     historyIgnored: getHistoryIgnoredEvents,
     claimsReady: getClaimsReadyEvents,
     coreAssigned: getCoreAssignedEvents,
-    allowedRenewalDropped: getAllowedRenewalDroppedEvents,
+    // allowedRenewalDropped: getAllowedRenewalDroppedEvents,
 };
