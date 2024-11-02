@@ -67,7 +67,7 @@ processor.run(new TypeormDatabase({supportHotBlocks: false}), async (ctx) => {
     const eventMultisigEntities = createEntities(entityMultisigEventCreators, allMultisigEvents);
     const callBrokerEntities = createEntities(entityBrokerCallCreators, allBrokerCalls); // Adjust as needed
 
-    createCoreOwnerEntities(
+    await createCoreOwnerEntities(
         ctx,
         allBrokerEvents.purchased as inter.PurchasedEvent[],
         allBrokerEvents.transferred as inter.TransferredEvent[],
