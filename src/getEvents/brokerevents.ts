@@ -106,7 +106,7 @@ function getSaleInitializedEvents(ctx: ProcessorContext<Store>): SaleInitialized
                     saleStart: decoded.saleStart,
                     leadinLength: decoded.leadinLength,
                     startPrice: decoded.startPrice,
-                    regularPrice: decoded.regularPrice,
+                    regularPrice: decoded.regularPrice ?? 0,
                     regionBegin: decoded.regionBegin,
                     regionEnd: decoded.regionEnd,
                     idealCoresSold: decoded.idealCoresSold,
