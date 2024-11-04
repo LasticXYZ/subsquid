@@ -31,8 +31,11 @@ export class SaleInitialized {
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     startPrice!: bigint
 
-    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-    regularPrice!: bigint
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
+    regularPrice!: bigint | undefined | null
+
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
+    endPrice!: bigint | undefined | null
 
     @Column_("int4", {nullable: false})
     regionBegin!: number

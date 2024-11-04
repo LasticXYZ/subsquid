@@ -22,9 +22,15 @@ export class StartSalesExt {
     @Column_("text", {nullable: true})
     extrinsicHash!: string | undefined | null
 
-    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
-    initialPrice!: bigint
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
+    initialPrice!: bigint | undefined | null
+
+    @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
+    endPrice!: bigint | undefined | null
 
     @Column_("int4", {nullable: true})
     coreCount!: number | undefined | null
+
+    @Column_("int4", {nullable: true})
+    extraCores!: number | undefined | null
 }

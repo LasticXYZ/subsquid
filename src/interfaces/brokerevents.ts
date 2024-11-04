@@ -31,7 +31,8 @@ interface SaleInitializedEvent {
     saleStart: number;
     leadinLength: number;
     startPrice: bigint;
-    regularPrice: bigint;
+    regularPrice?: bigint;
+    endPrice?: bigint;
     regionBegin: number;
     regionEnd: number;
     idealCoresSold: number;

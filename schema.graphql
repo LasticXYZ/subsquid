@@ -16,7 +16,8 @@ type SaleInitialized @entity {
   saleStart: Int!
   leadinLength: Int!
   startPrice: BigInt!
-  regularPrice: BigInt!
+  regularPrice: BigInt
+  endPrice: BigInt
   regionBegin: Int!
   regionEnd: Int!
   idealCoresSold: Int!
@@ -84,8 +85,8 @@ type Transferred @entity {
   timestamp: DateTime! @index
   regionId: RegionId!
   duration: Int!
-  oldOwner: String!
-  owner: String!
+  oldOwner: String
+  owner: String
 }
 
 type Partitioned @entity {
@@ -258,6 +259,14 @@ type AllowedRenewalDropped @entity {
   core: Int!
 }
 
+type PotentialRenewalDropped @entity {
+  id: ID!
+  blockNumber: Int! @index
+  timestamp: DateTime! @index
+  when: Int!
+  core: Int!
+}
+
 
 
 
@@ -299,8 +308,10 @@ type StartSalesExt @entity {
   blockNumber: Int! @index
   timestamp: DateTime! @index
   extrinsicHash: String @index
-  initialPrice: BigInt!
+  initialPrice: BigInt
+  endPrice: BigInt
   coreCount: Int
+  extraCores: Int
 }
 
 type PurchaseExt @entity {
